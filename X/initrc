@@ -1,0 +1,5 @@
+#!/bin/sh
+[ -z "$ENV" ] && . ~/.profile
+[ -f "$XDG_CONFIG_HOME"/X/rc ] && . "$XDG_CONFIG_HOME"/X/rc
+[ -f "$XDG_CONFIG_HOME"/X/initrc.local ] && . "$XDG_CONFIG_HOME"/X/initrc.local
+exec i3

@@ -1,0 +1,12 @@
+#!/bin/sh
+cd ~ || return
+for i in $(find -maxdepth 3 -type d -name '.git'|sed 's|^./||g;s|/.git$||'); do (
+  cd "$i" || continue
+  a="$(git rev-parse --abbrev-ref HEAD)"
+  remote="$(git config branch.$a.remote)"
+  [ -n "$remote" ] || continue
+  b="$remote/$a"
+  git show-branch "remotes/$b" >/dev/null 2>&1 || b="$remote/master"
+  git rev-list --left-right --count "$a...$b" |\
+    awk -v name="$i" '{if($2>0) {print(name, "has", $2, "unmerged commits")} if($1>0) {print(name, "has", $1, "unpushed commits")}}'
+); done

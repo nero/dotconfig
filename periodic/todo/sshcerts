@@ -1,0 +1,8 @@
+#!/bin/sh
+now="$(date +%s)"
+for cert in ~/.ssh/*-cert.pub; do
+	[ -e "$cert" ] || continue
+	expires="$(ssh-keygen -L -f "$cert"|grep 'Valid: '|awk '{print($5)}'|cut -dT -f1)"
+	expires="$(date +%s -d "$expires")"
+	echo "${expires} ${now} ${cert##*/}"|awk '{d=($1-$2)/(60*60*24);if(d<30){printf("%s expires in %d days\n",$3,d)}}'
+done

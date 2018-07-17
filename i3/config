@@ -1,0 +1,72 @@
+set $mod mod1
+floating_modifier $mod
+font pango:Monospace 12
+
+# resize wallpaper with
+#   new="$(xrandr | grep \* | cut -d' ' -f4)"
+#   convert orig -resize "$new^" -gravity center -crop "$new"+0+0 wallpaper
+
+exec "exec i3-sensible-terminal"
+
+# i3 stuff
+bindsym $mod+Return exec "exec i3-sensible-terminal"
+bindsym $mod+space exec --no-startup-id i3-dmenu-desktop --entry-type=command
+bindsym $mod+c exec --no-startup-id "i3-msg restart; sh $XDG_CONFIG_HOME/X/rc"
+bindsym $mod+i exit
+bindsym $mod+l exec --no-startup-id "i3lock -i $XDG_CONFIG_HOME/wallpaper"
+bindsym $mod+o exec --no-startup-id killall -9 firefox firefox-esr x-www-browser
+
+# Legacy keybinds
+bindsym Mod1+F4 kill
+bindsym Mod1+Tab focus right
+bindsym Mod1+Shift+Tab focus left
+
+# Standalone keys
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 5dB+ unmute
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 5dB- unmute
+bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
+bindsym XF86PowerOff exit
+
+bindsym $mod+f floating toggle
+
+# move focus
+bindsym $mod+w focus up
+bindsym $mod+a focus left
+bindsym $mod+s focus down
+bindsym $mod+d focus right
+bindsym $mod+q workspace 1
+bindsym $mod+e workspace 2
+
+# move window
+bindsym $mod+Shift+w move up
+bindsym $mod+Shift+a move left
+bindsym $mod+Shift+s move down
+bindsym $mod+Shift+d move right
+bindsym $mod+Shift+q move container to workspace 1
+bindsym $mod+Shift+e move container to workspace 2
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+new_window pixel 2
+new_float pixel 2
+hide_edge_borders both
+workspace_layout tabbed
+
+for_window [title="^rdesktop"] floating disable
+
+# class                 border  backgr. text    indicator child_border
+client.focused          #02D8FC #02D8FC #000000 #2e9ef4   #285577
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #000000 #000000 #02D8FC #292d2e   #222222
+client.urgent           #FDA400 #FDA400 #000000 #900000   #900000
+
+client.background       #ffffff
