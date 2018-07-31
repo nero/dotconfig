@@ -52,6 +52,30 @@ preexec() {
   printf '\033]0;%s\007' "$1";
 }
 
+mrproper() (
+  [ -n "$1" ] || set -- -exec rm -rf {} \;
+  cd "$HOME" && find \( \
+    -name '*history' -o \
+    -name '*cache' -o \
+    -name '.thumbnails' -o \
+    -path '*/mc/filepos' -o \
+    -path './.w3m' \) "$@"
+)
+
+pastebin() (
+  [ -n "$1" ] && exec < "$1"
+  curl -F'file=@-' http://0x0.st
+)
+
+p() (
+  dir="$XDG_CONFIG_HOME"/periodic/"$1"
+  [ -d "$dir" ] || exit 1
+  for i in "$dir"/*; do
+    [ -n "$VERBOSE" ] && echo "$i:" >&2
+    "$i"
+  done
+)
+
 {
   export SSH_AUTH_SOCK="$HOME"/.ssh/ssh-agent."$HOSTNAME".sock
   unset SSH_AGENT_PID
