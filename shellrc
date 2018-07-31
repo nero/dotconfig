@@ -59,7 +59,8 @@ mrproper() (
     -name '*cache' -o \
     -name '.thumbnails' -o \
     -path '*/mc/filepos' -o \
-    -path './.w3m' \) "$@"
+    -path './.w3m' -o \
+    -path '*git/logs' \) "$@"
 )
 
 pastebin() (
