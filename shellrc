@@ -70,7 +70,7 @@ pastebin() (
 p() (
   dir="$XDG_CONFIG_HOME"/periodic/"$1"
   cd "$dir" || exit 1
-  for i in ./*; "$i"
+  for i in ./*; do "$i"; done
 )
 
 {
