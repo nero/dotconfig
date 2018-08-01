@@ -69,11 +69,8 @@ pastebin() (
 
 p() (
   dir="$XDG_CONFIG_HOME"/periodic/"$1"
-  [ -d "$dir" ] || exit 1
-  for i in "$dir"/*; do
-    [ -n "$VERBOSE" ] && echo "$i:" >&2
-    "$i"
-  done
+  cd "$dir" || exit 1
+  for i in ./*; "$i"
 )
 
 {

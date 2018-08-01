@@ -1,9 +1,6 @@
 #!/bin/sh
-opts=""
-[ -n "$VERBOSE" ] || opts="-q"
 cd ~ || return
 for i in $(find -maxdepth 3 -type d -name '.git'|sed 's|^./||g;s|/.git$||'); do (
   cd "$i" || continue
-  [ -n "$VERBOSE" ] && echo "repo: $i" >&2
-  git fetch --all $opts
+  git fetch --all
 ); done
