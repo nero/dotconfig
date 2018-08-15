@@ -1,22 +1,22 @@
 #!/bin/sh
 if test -z "$XDG_CONFIG_HOME"; then
-  export XDG_CONFIG_HOME=$(dirname "$(readlink -f "$0")")
+  XDG_CONFIG_HOME=$(dirname "$(readlink -f "$0")")
   unset ENV
 fi
 
 if test -z "$ENV"; then
-  echo 'Run `. ~/.profile; . $ENV` or re-login.' >&2
+  echo "Run \`. ~/.profile; . \$ENV\` or re-login." >&2
 fi
 
 bin_check() {
   unset xorg missing
-  type startx >/dev/null 2>&1 && xorg=1
+  command -v startx >/dev/null 2>&1 && xorg=1
 
   bins="ssh-agent ssh-keygen gpg-agent curl"
   xbins="xrdb setxkbmap xmodmap xset feh i3"
 
   for bin in $bins ${xorg:+$xbins}; do
-    type $bin >/dev/null 2>&1 || missing="$missing$bin "
+    command -v "$bin" >/dev/null 2>&1 || missing="$missing$bin "
   done
 
   [ -n "$missing" ] && echo "Recommended to install: $missing" >&2
@@ -39,7 +39,7 @@ cronjobs() {
 
 mkdotsymlink() (
   # $1 is name in $XDG_CONFIG_HOME, $2 is name in $HOME
-  cd "$HOME"
+  cd "$HOME" || exit 1
   # I dont know why the following works reliably
   case "$(stat -c "%F" "$2" 2>/dev/null)" in
   'regular file')
@@ -63,9 +63,9 @@ setup_symlinks() {
   esac
   mkdotsymlink profile .profile
 
-  type tmux >/dev/null 2>&1 && \
+  command -v tmux >/dev/null 2>&1 && \
     mkdotsymlink tmux/tmux.conf .tmux.conf
-  type startx >/dev/null 2>&1 && \
+  command -v startx >/dev/null 2>&1 && \
     mkdotsymlink X/initrc .xinitrc
 }
 
