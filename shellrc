@@ -27,7 +27,7 @@ elif [ -n "${KSH_VERSION##*PD KSH*}" ]; then
 fi
 
 _ps_prompt() {
-  $1 '\033[1;32m'
+  $1 '\033[${HOSTCOLOR:-1;32}m'
   printf '%s' '${USER:+$USER@}${HOSTNAME%%.*}'
   $1 '\033[0m'
   printf '%s' ':'
