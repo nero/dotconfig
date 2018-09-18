@@ -1,5 +1,5 @@
 xrdb $XDG_CONFIG_HOME/X/resources
-setxkbmap de T3 || setxkbmap de
+setxkbmap us
 xmodmap $XDG_CONFIG_HOME/X/modmap
 xset b off
 feh --no-fehbg --bg-fill $XDG_CONFIG_HOME/wallpaper
