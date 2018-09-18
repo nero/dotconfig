@@ -1,8 +1,8 @@
 # Config for interactive shells
 
 case "$-" in
- *i*) ;;
- *) return;;
+ (*i*) ;;
+ (*) return;;
 esac
 
 export VISUAL=$(
@@ -42,7 +42,7 @@ PS1=$(
   _ps_init
   _ps_prompt _ps_unprintf
   case "$TERM" in
-  xterm*|rxvt*|st*|screen*|tmux*)
+  (xterm*|rxvt*|st*|screen*|tmux*)
     _ps_unprintf '\033]0;%s\007' "$(_ps_prompt true)"
     ;;
   esac

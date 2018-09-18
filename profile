@@ -6,8 +6,8 @@
 if [ -z "$XDG_CONFIG_HOME" ] && [ -L "$HOME/.profile" ]; then
   profile=$(readlink "$HOME/.profile")
   case "$profile" in
-    /*) ;;
-    *) profile="$HOME/$profile";;
+    (/*) ;;
+    (*) profile="$HOME/$profile";;
   esac
   export XDG_CONFIG_HOME="${profile%/*}"
   unset profile
@@ -22,8 +22,8 @@ fi
 
 register_path() {
   case ":$PATH:" in
-  *:$1:*) return;;
-  *) PATH="$1:$PATH";
+  (*:$1:*) return;;
+  (*) PATH="$1:$PATH";
   esac
 }
 
