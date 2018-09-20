@@ -5,12 +5,6 @@ case "$-" in
  (*) return;;
 esac
 
-export VISUAL=$(
-  for e in nano mcedit vi vim; do
-    hash "$e" >/dev/null 2>&1 && echo "$e" && break
-  done
-)
-
 _ps_init() { :;}
 _ps_unprintf() { printf "$@";}
 
@@ -52,37 +46,6 @@ preexec() {
   printf '\033]0;%s\007' "$1";
 }
 
-mrproper() (
-  rm -rf ~/.ccache ~/.buildroot-ccache ~/.cache ~/.thumbnails \
-    ~/.local/share/Trash ~/.local/share/*/*history*
-    ~/.local/share/gvfs-metadata ~/.w3m
-
-  rm ~/.local/share/mc/filepos ~/.local/share/mc/history \
-    ~/.local/share/mc/mcedit/mcedit.clip ~/.local/share/recently-used* \
-    ~/.*_history ~/.lesshst ~/.wget-hsts ~/clip
-)
-
-pastebin() (
-  [ -n "$1" ] && exec < "$1"
-  curl -F'file=@-' http://0x0.st
-)
-
-p() (
-  dir="$XDG_CONFIG_HOME"/periodic/"$1"
-  cd "$dir" || exit 1
-  for i in ./*; do "$i"; done
-)
-
-{
-  export SSH_AUTH_SOCK="$HOME"/.ssh/ssh-agent."$HOSTNAME".sock
-  unset SSH_AGENT_PID
-  ssh-add -L
-  [ "$?" = "2" ] && rm -f "$SSH_AUTH_SOCK" && ssh-agent -a "$SSH_AUTH_SOCK"
-
-  gpg-connect-agent /bye
-  export GPG_TTY=$(tty)
-} > /dev/null 2>&1
-
-for f in "$XDG_CONFIG_HOME"/local/shellrc; do
+for f in "$XDG_CONFIG_HOME"/shellrc.d/*; do
   [ -e "$f" ] && . "$f"
 done
