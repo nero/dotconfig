@@ -16,10 +16,6 @@ fi
 export ENV="$XDG_CONFIG_HOME/shellrc"
 export HOSTNAME=$(uname -n)
 
-if [ -d "$HOME/Maildir" ]; then
-  export MAIL="$HOME/Maildir/"
-fi
-
 register_path() {
   case ":$PATH:" in
   (*:$1:*) return;;
@@ -29,7 +25,7 @@ register_path() {
 
 register_path "$HOME"/bin
 
-for f in "$XDG_CONFIG_HOME"/local/profile; do
+for f in "$XDG_CONFIG_HOME"/profile.d/*; do
   [ -e "$f" ] && . "$f"
 done
 
