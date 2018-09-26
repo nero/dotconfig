@@ -23,6 +23,8 @@ fi
 _ps_prompt() {
   $1 '\033[${HOSTCOLOR:-1;32}m'
   printf '%s' '${USER:+$USER@}${HOSTNAME%%.*}'
+  $1 '\033[1;31m'
+  printf '%s' '${debian_chroot:+/$debian_chroot}'
   $1 '\033[0m'
   printf '%s' ':'
   $1 '\033[1;36m'
