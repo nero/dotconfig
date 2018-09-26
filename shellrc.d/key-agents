@@ -1,3 +1,4 @@
+[ -z "$debian_chroot" ] &&
 {
   export SSH_AUTH_SOCK="$HOME"/.ssh/ssh-agent."$HOSTNAME".sock
   unset SSH_AGENT_PID
