@@ -16,6 +16,10 @@ fi
 export ENV="$XDG_CONFIG_HOME/shellrc"
 export HOSTNAME=$(uname -n)
 
+if [ -z "$XDG_RUNTIME_DIR" ] && mkdir -p "$HOME/.run/$HOSTNAME"; then
+  export XDG_RUNTIME_DIR=$HOME/.run/$HOSTNAME
+fi
+
 register_path() {
   case ":$PATH:" in
   (*:$1:*) return;;

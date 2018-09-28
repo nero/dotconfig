@@ -1,9 +1,13 @@
-[ -z "$debian_chroot" ] &&
+[ -n "$XDG_RUNTIME_DIR" ] && [ -z "$debian_chroot" ] &&
 {
-  export SSH_AUTH_SOCK="$HOME"/.ssh/ssh-agent."$HOSTNAME".sock
-  unset SSH_AGENT_PID
+  export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR"/ssh-agent.sock
   ssh-add -L
-  [ "$?" = "2" ] && rm -f "$SSH_AUTH_SOCK" && ssh-agent -a "$SSH_AUTH_SOCK"
+  if [ "$?" = "2" ]; then
+    rm -f "$SSH_AUTH_SOCK"
+    eval $(ssh-agent -a "$SSH_AUTH_SOCK")
+    echo "$SSH_AGENT_PID" > "$XDG_RUNTIME_DIR"/ssh-agent.pid
+  fi
+  unset SSH_AGENT_PID
 
   gpg-connect-agent /bye
   export GPG_TTY=$(tty)
