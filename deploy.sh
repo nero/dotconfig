@@ -76,7 +76,9 @@ if ! test -e "$XDG_CONFIG_HOME"/crontab && test -n "$(crontab -l)"; then
   crontab -l > "$XDG_CONFIG_HOME"/crontab
 fi
 
-git config --global include.path "$XDG_CONFIG_HOME"/git/gitconfig
+git config --global --replace-all include.path \
+  "$XDG_CONFIG_HOME"/git/gitconfig \
+  "$XDG_CONFIG_HOME"/git/gitconfig
 
 (
   cat "$XDG_CONFIG_HOME"/crontab 2>/dev/null
