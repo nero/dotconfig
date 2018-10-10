@@ -72,13 +72,13 @@ setup_symlinks() {
 bin_check
 setup_symlinks
 
-if ! test -e "$XDG_CONFIG_HOME"/crontab && test -n "$(crontab -l)"; then
-  crontab -l > "$XDG_CONFIG_HOME"/crontab
-fi
-
 git config --global --replace-all include.path \
   "$XDG_CONFIG_HOME"/git/gitconfig \
   "$XDG_CONFIG_HOME"/git/gitconfig
+
+if ! test -e "$XDG_CONFIG_HOME"/crontab && test -n "$(crontab -l)"; then
+  crontab -l > "$XDG_CONFIG_HOME"/crontab
+fi
 
 (
   cat "$XDG_CONFIG_HOME"/crontab 2>/dev/null
