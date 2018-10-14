@@ -8,6 +8,31 @@ if test -z "$ENV"; then
   echo "Run \`. ~/.profile; . \$ENV\` or re-login." >&2
 fi
 
+ssh_config() {
+  config=$HOME/.ssh/config
+  touch "$config"
+  awk -v n="$1" -v v="$2" -v ws="  " '
+/^\s/ { ws=$0;gsub("[^ 	].*", "", ws) }
+/^(Host|Match)/ { area=$0 }
+{
+  if (n && area=="Host *" && $1==n) {
+    printf("%s%s %s\n",ws,n,v)
+    n=""
+  } else {
+    print($0)
+  }
+}
+END {
+  if (n) {
+    if (area!="Host *") {
+      print("Host *")
+    }
+    printf("%s%s %s\n",ws,n,v)
+  }
+}
+' <"$config" >"$config".tmp && mv "$config".tmp "$config"
+}
+
 bin_check() {
   unset xorg missing
   command -v startx >/dev/null 2>&1 && xorg=1
@@ -73,6 +98,7 @@ bin_check
 setup_symlinks
 
 git config --global user.useConfigOnly true 2>/dev/null
+ssh_config ServerAliveInterval 60
 
 if ! test -e "$XDG_CONFIG_HOME"/crontab && test -n "$(crontab -l)"; then
   crontab -l > "$XDG_CONFIG_HOME"/crontab
