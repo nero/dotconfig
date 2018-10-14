@@ -3,4 +3,3 @@ export VISUAL=$(
     hash "$e" >/dev/null 2>&1 && echo "$e" && break
   done
 )
-
