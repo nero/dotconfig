@@ -7,8 +7,3 @@ mrproper() (
     ~/.local/share/mc/mcedit/mcedit.clip ~/.local/share/recently-used* \
     ~/.*_history ~/.lesshst ~/.wget-hsts ~/clip
 )
-
-pastebin() (
-  [ -n "$1" ] && exec < "$1"
-  curl -F'file=@-' http://0x0.st
-)
