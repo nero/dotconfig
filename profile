@@ -36,5 +36,3 @@ register_path "$HOME"/bin
 for f in "$XDG_CONFIG_HOME"/profile.d/*; do
   [ -e "$f" ] && . "$f"
 done
-
-[ -n "$BASH_VERSION" ] && . "$ENV"

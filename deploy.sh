@@ -78,7 +78,7 @@ mkdotsymlink() (
 setup_symlinks() {
   case "$SHELL" in
   *bash)
-    mkdotsymlink profile .bash_profile
+    mkdotsymlink shellrc .bash_profile
     mkdotsymlink shellrc .bashrc
     ;;
   *zsh)
