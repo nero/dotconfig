@@ -12,9 +12,3 @@ pastebin() (
   [ -n "$1" ] && exec < "$1"
   curl -F'file=@-' http://0x0.st
 )
-
-p() (
-  dir="$XDG_CONFIG_HOME"/periodic/"$1"
-  cd "$dir" || exit 1
-  for i in ./*; do "$i"; done
-)

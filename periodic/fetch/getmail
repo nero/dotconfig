@@ -1,3 +1,0 @@
-#!/bin/sh
-[ -d ~/.getmail ] || return
-getmail $(ls .getmail|grep -v -E '(^oldmail|disabled)'|awk '{printf("-r\n%s\n", $1)}')

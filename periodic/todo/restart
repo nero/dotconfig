@@ -1,4 +1,0 @@
-#!/bin/sh
-find /lib/modules -mindepth 1 -maxdepth 1 -print 2>/dev/null | grep -q . && \
-	! [ -e "/lib/modules/$(uname -r)" ] && \
-	echo "Reboot for kernel update"
