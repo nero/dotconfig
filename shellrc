@@ -7,48 +7,18 @@ case "$-" in
  (*) return;;
 esac
 
-_ps_init() { :;}
-_ps_unprintf() { printf "$@";}
+. "$XDG_CONFIG_HOME"/prompt
+PS1=$(prompt_ps1)
 
 if [ -n "$BASH_VERSION" ]; then
   shopt -s checkwinsize
-  _ps_unprintf() { p="$1"; shift; printf "\\[$p\\]" "$@";}
 elif [ -n "$ZSH_VERSION" ]; then
   setopt PROMPT_SUBST autolist noautomenu
   unsetopt menucomplete nomatch beep
-  _ps_unprintf() { p="$1"; shift; printf "%%{$p%%}" "$@";}
-elif [ -n "${KSH_VERSION##*PD KSH*}" ]; then
-  _ps_init() { printf '\001\r';}
-  _ps_unprintf() { p="$1"; shift; printf "\\001$p\\001" "$@";}
+  preexec() {
+    printf '\033]0;%s\007' "$1";
+  }
 fi
-
-_ps_prompt() {
-  $1 '\033[${HOSTCOLOR:-1;32}m'
-  printf '%s' '${USER:+$USER@}${HOSTNAME%%.*}'
-  $1 '\033[1;31m'
-  printf '%s' '${debian_chroot:+/$debian_chroot}'
-  $1 '\033[0m'
-  printf '%s' ':'
-  $1 '\033[1;36m'
-  printf '%s' '${PWD##$HOME/}'
-  $1 '\033[0m'
-  printf '%s' '[$?]'
-  printf '%s' ': '
-}
-
-PS1=$(
-  _ps_init
-  _ps_prompt _ps_unprintf
-  case "$TERM" in
-  (xterm*|rxvt*|st*|screen*|tmux*)
-    _ps_unprintf '\033]0;%s\007' "$(_ps_prompt true)"
-    ;;
-  esac
-)
-
-preexec() {
-  printf '\033]0;%s\007' "$1";
-}
 
 for f in "$XDG_CONFIG_HOME"/shellrc.d/*; do
   [ -e "$f" ] && . "$f"

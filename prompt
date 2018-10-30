@@ -1,0 +1,41 @@
+prompt_detect_shell() {
+  for i in BASH ZSH KSH; do
+    if eval "test -n \"\$${i}_VERSION\""; then
+      echo $i|tr "[:upper:]" "[:lower:]"
+      return
+    fi
+  done
+  echo raw
+}
+
+prompt_quote_bash() { p="$1"; shift; printf "\\[$p\\]" "$@"; }
+prompt_quote_zsh()  { p="$1"; shift; printf "%%{$p%%}" "$@"; }
+prompt_quote_ksh()  { p="$1"; shift; printf "\\001$p\\001" "$@"; }
+prompt_quote_raw()  { printf "$@"; }
+prompt_quote_none() { :; }
+
+prompt_string() {
+  f=prompt_quote_${1:-raw}
+  $f '\033[1;32m'
+  printf '%s' '${USER:+$USER@}${HOSTNAME%%.*}'
+  $f '\033[1;31m'
+  printf '%s' '${debian_chroot:+/$debian_chroot}'
+  $f '\033[0m'
+  printf '%s' ':'
+  $f '\033[1;36m'
+  printf '%s' '${PWD##$HOME/}'
+  $f '\033[0m'
+  printf '%s' '[$?]'
+  printf '%s' ': '
+}
+
+prompt_ps1() {
+  sh=$(prompt_detect_shell)
+  [ "$sh" == "ksh" ] && printf '\001\r'
+  prompt_string $sh
+  case "$TERM" in
+  (xterm*|rxvt*|st*|screen*|tmux*)
+    prompt_quote_$sh '\033]0;%s\007' "$(prompt_string none)"
+    ;;
+  esac
+}
