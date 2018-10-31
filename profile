@@ -24,11 +24,6 @@ fi
 
 export ENV="$XDG_CONFIG_HOME/shellrc"
 
-pastebin() (
-  [ -n "$1" ] && exec < "$1"
-  curl -F'file=@-' http://0x0.st
-)
-
 register_path() {
   case ":$PATH:" in
   (*:$1:*) return;;
