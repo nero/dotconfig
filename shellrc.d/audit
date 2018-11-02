@@ -6,6 +6,6 @@ session_exit_hook() {
   session_log_event close
 }
 
-session_log_event open $- ${SSH_CLIENT%% *}
+session_log_event open $- ${DISPLAY} ${SSH_CLIENT%% *}
 
 trap session_exit_hook EXIT
