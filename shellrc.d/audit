@@ -1,5 +1,7 @@
 session_log_event() {
-  [ -f ~/log/shell.log ] && ( echo $(date -Iseconds) $(tty) $$ "$@" >> ~/log/shell.log )
+  (
+  echo $(date -Iseconds) $(tty 2>&1|sed 's/.* .*/"&"/g') $$ "$@" >> "~/log/shell.log"
+  ) 2>/dev/null
 }
 
 session_exit_hook() {
