@@ -1,0 +1,9 @@
+if [ -n "$SSH_AUTH_SOCK" ]; then
+  ssh-add -L >/dev/null 2>&1
+  if [ "$?" = "2" ]; then
+    rm -f "$SSH_AUTH_SOCK"
+    eval $(ssh-agent -a "$SSH_AUTH_SOCK") >/dev/null
+    echo "$SSH_AGENT_PID" > "$XDG_RUNTIME_DIR"/ssh-agent.pid
+  fi
+  unset SSH_AGENT_PID
+fi
