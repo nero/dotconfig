@@ -104,7 +104,6 @@ if [ -e "$XDG_CONFIG_HOME"/policy ]; then
   . "$XDG_CONFIG_HOME"/policy
   for z in $ZONE; do
     [ -e ~/.ssh/id_"$z" ] || ssh-keygen -t ed25519 -f ~/.ssh/id_"$z"
-    [ "$z" == "w1r3" ] && curl -s -F pubkey=@"$HOME"/.ssh/id_"$z".pub https://w1r3.net/cgi-bin/pubkeys.php
   done
 fi
 
