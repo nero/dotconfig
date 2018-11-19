@@ -14,8 +14,8 @@ if [ -z "$XDG_CONFIG_HOME" ]; then
 fi
 
 if [ -z "$XDG_RUNTIME_DIR" ]; then
-  for i in "$HOME/.run/$HOSTNAME" "/tmp/$USER-run"; do
-    if test -n "$i" && mkdir -m 0700 -p "$i" && test -w "$i"; then
+  for i in "/run/user/$(id -u)" "$HOME/.run/$HOSTNAME" "/tmp/$USER-run"; do
+    if test -n "$i" && mkdir -m 0700 -p "$i" 2>/dev/null && test -w "$i"; then
       export XDG_RUNTIME_DIR=$i
       break
     fi
