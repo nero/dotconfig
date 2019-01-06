@@ -1,12 +1,7 @@
 #!/bin/sh
-if test -z "$XDG_CONFIG_HOME"; then
-  XDG_CONFIG_HOME=$(dirname "$(readlink -f "$0")")
-  unset ENV
-fi
 
-if test -z "$ENV"; then
-  echo "Run \`. ~/.profile; . \$ENV\` or re-login." >&2
-fi
+fail() { echo "FAIL: $1" >&2; exit 1; }
+info() { echo "INFO: $1" >&2; }
 
 ssh_config() {
   config=$HOME/.ssh/config
@@ -33,81 +28,46 @@ END {
 ' <"$config" >"$config".tmp && mv "$config".tmp "$config"
 }
 
-bin_check() {
-  unset xorg missing
-  command -v startx >/dev/null 2>&1 && xorg=1
-
-  bins="ssh-agent ssh-keygen gpg-agent curl"
-  xbins="xrdb setxkbmap xmodmap xset feh i3"
-
-  for bin in $bins ${xorg:+$xbins}; do
-    command -v "$bin" >/dev/null 2>&1 || missing="$missing$bin "
-  done
-
-  [ -n "$missing" ] && echo "Recommended to install: $missing" >&2
-}
-
-cronjobs() {
-        dir="$XDG_CONFIG_HOME/periodic"
-        cmd=". $XDG_CONFIG_HOME/profile; run-parts"
-        [ -e "$dir/15min" ] && \
-                echo "*/15 * * * * $cmd $dir/15min"
-        [ -e "$dir/hourly" ] && \
-                echo "0 * * * * $cmd $dir/hourly"
-        [ -e "$dir/daily" ] && \
-                echo "0 2 * * * $cmd $dir/daily"
-        [ -e "$dir/weekly" ] && \
-                echo "0 3 * * 6 $cmd $dir/weekly"
-        [ -e "$dir/monthly" ] && \
-                echo "0 4 1 * * $cmd $dir/monthly"
-}
-
-mkdotsymlink() (
+dot_ln() (
   # $1 is name in $XDG_CONFIG_HOME, $2 is name in $HOME
   cd "$HOME" || exit 1
   # I dont know why the following works reliably
   case "$(stat -c "%F" "$2" 2>/dev/null)" in
   'regular file')
     mv "$2" "$2.old" && \
-    echo "Renamed $2 to $2.old" >&2
+    info "Renamed $2 to $2.old"
     ;;
   esac
   ln -sfn "${XDG_CONFIG_HOME##$HOME/}/$1" "$2"
 )
 
-setup_symlinks() {
-  case "$SHELL" in
-  *bash)
-    mkdotsymlink shellrc .bash_profile
-    mkdotsymlink shellrc .bashrc
-    ;;
-  *zsh)
-    mkdotsymlink profile .zprofile
-    mkdotsymlink shellrc .zshrc
-    ;;
-  esac
-  mkdotsymlink profile .profile
-
-  command -v tmux >/dev/null 2>&1 && \
-    mkdotsymlink tmux/tmux.conf .tmux.conf
-  command -v startx >/dev/null 2>&1 && \
-    mkdotsymlink X/initrc .xinitrc
-}
-
-bin_check
-setup_symlinks
-
-git config --global user.useConfigOnly true 2>/dev/null
-ssh_config ServerAliveInterval 60
-
-if [ -e "$XDG_CONFIG_HOME"/policy ]; then
-  . "$XDG_CONFIG_HOME"/policy
-  for z in $ZONE; do
-    [ -e ~/.ssh/id_"$z" ] || ssh-keygen -t ed25519 -f ~/.ssh/id_"$z"
-  done
+if test -z "$XDG_CONFIG_HOME"; then
+  XDG_CONFIG_HOME=$(dirname "$(readlink -f "$0")")
+  unset ENV
 fi
 
-if [ -e "$XDG_CONFIG_HOME"/periodic ]; then
-  test -e "$XDG_CONFIG_HOME"/crontab || crontab -l > "$XDG_CONFIG_HOME"/crontab
-  ( cat "$XDG_CONFIG_HOME"/crontab 2>/dev/null; cronjobs ) | crontab -
+case "$SHELL" in
+*/bash)
+  dot_ln shellrc .bash_profile
+  dot_ln shellrc .bashrc
+  ;;
+*/zsh)
+  dot_ln profile .zprofile
+  dot_ln shellrc .zshrc
+  ;;
+esac
+
+dot_ln profile .profile
+
+git config --global user.useConfigOnly true 2>/dev/null
+
+ssh_config ServerAliveInterval 60
+ssh_config CanonicalizeHostname yes
+
+if ! [ -e ~/.ssh/id_ed25519 ]; then
+  ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -C "$USER@$(hostname -f)"
+fi
+
+if test -z "$ENV"; then
+  info "Run \`. ~/.profile; . \$ENV\` or re-login." >&2
 fi
