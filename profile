@@ -28,15 +28,6 @@ fi
 
 export ENV="$XDG_CONFIG_HOME/shellrc"
 
-register_path() {
-  case ":$PATH:" in
-  (*:$1:*) return;;
-  (*) PATH="$1:$PATH";
-  esac
-}
-
-register_path "$HOME"/bin
-
 for f in "$XDG_CONFIG_HOME"/profile.d/*; do
   [ -e "$f" ] && . "$f"
 done
