@@ -31,7 +31,7 @@ prompt_string() {
 
 prompt_ps1() {
   sh=${1:-$(prompt_detect_shell)}
-  [ "$sh" == "ksh" ] && printf '\001\r'
+  [ "$sh" = "ksh" ] && printf '\001\r'
   prompt_string $sh
   case "$TERM" in
   (xterm*|rxvt*|st*|screen*|tmux*)
