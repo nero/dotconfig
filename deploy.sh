@@ -48,7 +48,7 @@ fi
 
 case "$SHELL" in
 */bash)
-  dot_ln shellrc .bash_profile
+  dot_ln profile .bash_profile
   dot_ln shellrc .bashrc
   ;;
 */zsh)

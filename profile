@@ -42,3 +42,5 @@ PATH=$(
     echo "/sbin"
   ) | while read p; do ! test -e "$p" || echo "$p"; done | awk '!seen[$0]++' | paste -d: -s
 )
+
+[ -n "$BASH_VERSION" ] && . "$ENV"

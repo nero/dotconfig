@@ -1,7 +1,5 @@
 # Config for interactive shells
 
-. ~/.profile
-
 case "$-" in
  (*i*) ;;
  (*) return;;
