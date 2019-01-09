@@ -31,3 +31,14 @@ export ENV="$XDG_CONFIG_HOME/shellrc"
 for f in "$XDG_CONFIG_HOME"/profile.d/*; do
   [ -e "$f" ] && . "$f"
 done
+
+PATH=$(
+  (
+    echo "$HOME"/bin
+    echo "$HOME"/.bin
+    echo "${XDG_CONFIG_HOME:-$HOME/.config}/bin"
+    echo "$PATH"|tr ':' '\n'
+    echo "/usr/sbin"
+    echo "/sbin"
+  ) | while read p; do ! test -e "$p" || echo "$p"; done | awk '!seen[$0]++' | paste -d: -s
+)
