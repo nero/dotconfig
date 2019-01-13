@@ -41,6 +41,11 @@ dot_ln() (
   ln -sfn "${XDG_CONFIG_HOME##$HOME/}/$1" "$2"
 )
 
+groups=$(for i in /dev/kvm /dev/snd/pcm* /dev/input/event* /dev/ttyS* /dev/dri*; do
+  test -w "$i" || stat -c '%G' "$i"
+done|grep -v root|sort -u)
+[ -n "$groups" ] && echo "Recommended groups:" $groups || true
+
 if test -z "$XDG_CONFIG_HOME"; then
   XDG_CONFIG_HOME=$(dirname "$(readlink -f "$0")")
   unset ENV
