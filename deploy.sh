@@ -41,10 +41,7 @@ dot_ln() (
   ln -sfn "${XDG_CONFIG_HOME##$HOME/}/$1" "$2"
 )
 
-groups=$(for i in /dev/kvm /dev/snd/pcm* /dev/input/event* /dev/ttyS0 /dev/dri/*; do
-  test -e "$i" && ! test -w "$i" && stat -c '%G' "$i"
-done|grep -v root|sort -u)
-[ -n "$groups" ] && echo "Recommended groups:" $groups || true
+devs="/dev/kvm"
 
 if test -z "$XDG_CONFIG_HOME"; then
   XDG_CONFIG_HOME=$(dirname "$(readlink -f "$0")")
@@ -62,6 +59,15 @@ case "$SHELL" in
   ;;
 esac
 
+if command -V i3 >/dev/null || [ -n "$DISPLAY" ]; then
+  devs="$devs $(echo /dev/input/event* /dev/dri/*)"
+  dot_ln X/initrc .xinitrc
+fi
+
+if command -V alsamixer >/dev/null; then
+  devs="$devs $(echo /dev/snd/pcm*)"
+fi
+
 dot_ln profile .profile
 
 git config --global user.useConfigOnly true 2>/dev/null
@@ -72,6 +78,11 @@ ssh_config CanonicalizeHostname yes
 if ! [ -e ~/.ssh/id_ed25519 ]; then
   ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -C "$USER@$(hostname -f)"
 fi
+
+groups=$(for i in $devs; do
+  test -e "$i" && ! test -w "$i" && stat -c '%G' "$i"
+done|grep -v root|sort -u)
+[ -n "$groups" ] && echo "Recommended groups:" $groups || true
 
 if test -z "$ENV"; then
   info "Run \`. ~/.profile; . \$ENV\` or re-login." >&2
