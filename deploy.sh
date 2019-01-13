@@ -42,7 +42,7 @@ dot_ln() (
 )
 
 groups=$(for i in /dev/kvm /dev/snd/pcm* /dev/input/event* /dev/ttyS* /dev/dri*; do
-  test -w "$i" || stat -c '%G' "$i"
+  test -e "$i" && ! test -w "$i" && stat -c '%G' "$i"
 done|grep -v root|sort -u)
 [ -n "$groups" ] && echo "Recommended groups:" $groups || true
 
