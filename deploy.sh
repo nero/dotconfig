@@ -41,7 +41,7 @@ dot_ln() (
   ln -sfn "${XDG_CONFIG_HOME##$HOME/}/$1" "$2"
 )
 
-groups=$(for i in /dev/kvm /dev/snd/pcm* /dev/input/event* /dev/ttyS* /dev/dri*; do
+groups=$(for i in /dev/kvm /dev/snd/pcm* /dev/input/event* /dev/ttyS0 /dev/dri/*; do
   test -e "$i" && ! test -w "$i" && stat -c '%G' "$i"
 done|grep -v root|sort -u)
 [ -n "$groups" ] && echo "Recommended groups:" $groups || true
