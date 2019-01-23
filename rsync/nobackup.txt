@@ -29,4 +29,5 @@
 /Downloads
 /clip
 /opt
+aports/*/*/src/
 tmp
