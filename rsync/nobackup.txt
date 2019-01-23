@@ -24,7 +24,7 @@
 /.purple
 /.run
 /.secrets
-/.ssh
+/.ssh/id_*
 /.thumbnails
 /.w3m
 /.wget-hsts
