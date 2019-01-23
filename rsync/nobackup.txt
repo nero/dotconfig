@@ -9,6 +9,7 @@
 /.ccache
 /.claws-mail
 /.getmail/oldmail-*
+/.gnupg
 /.hedgewars
 /.lesshst
 /.local
@@ -22,6 +23,8 @@
 /.mozilla
 /.purple
 /.run
+/.secrets
+/.ssh
 /.thumbnails
 /.w3m
 /.wget-hsts
