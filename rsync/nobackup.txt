@@ -1,3 +1,6 @@
+*-linux-gnu*/
+*-linux-musl*/
+*.o
 .git/FETCH_HEAD
 .git/logs
 /*_history
@@ -21,8 +24,8 @@
 /.run
 /.thumbnails
 /.w3m
-/.wine
 /.wget-hsts
+/.wine
 /Downloads
 /clip
 /opt
