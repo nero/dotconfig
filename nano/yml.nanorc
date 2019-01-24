@@ -1,0 +1,9 @@
+syntax "yml" "\.yml$" "/(host_vars|group_vars)/"
+
+color brightblue "^\s*-"
+color red "[:{},]"
+color brightyellow ""(\\.|[^"])*"" "'(\\.|[^'])*'"
+
+color cyan "\s*(#|---).*$"
+color ,green "[[:space:]]+$"
+color ,red "\x09"

@@ -1,0 +1,10 @@
+syntax "ssh" "sshd?[/_]+config$"
+
+color brightyellow "^\s*Host "
+color brightgreen "^\s*Match "
+color green "%[a-zA-Z]"
+color red "\$\([^)]+\)"
+
+color cyan "\s*#.*$"
+color ,green "[[:space:]]+$"
+color ,red "\x09"

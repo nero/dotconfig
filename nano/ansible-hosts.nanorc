@@ -1,0 +1,6 @@
+syntax "ansible-hosts" "/hosts$"
+
+color brightyellow "^\[.*\]$"
+color brightblue " \S*=\S*"
+color cyan "#.*$"
+color ,green "[[:space:]]+$"
