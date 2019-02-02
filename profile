@@ -2,7 +2,7 @@
 
 [ -z "$USER" ]     && export USER=$(whoami)
 [ -z "$HOME" ]     && eval "export HOME=~$USER"
-[ -z "$HOSTNAME" ] && export HOSTNAME=$(hostname -f 2>/dev/null || uname -n)
+[ -z "$HOSTNAME" ] && export HOSTNAME=$(uname -n)
 
 if [ -z "$XDG_CONFIG_HOME" ]; then
   profile=$(readlink "$HOME/.profile")
