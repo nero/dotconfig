@@ -16,8 +16,6 @@ dot_ln() (
   ln -sfn "${XDG_CONFIG_HOME##$HOME/}/$1" "$2"
 )
 
-devs="/dev/kvm"
-
 if test -z "$XDG_CONFIG_HOME"; then
   XDG_CONFIG_HOME=$(dirname "$(readlink -f "$0")")
   unset ENV
@@ -35,22 +33,12 @@ case "$SHELL" in
 esac
 
 if command -V i3 >/dev/null || [ -n "$DISPLAY" ]; then
-  devs="$devs $(echo /dev/input/event* /dev/dri/*)"
   dot_ln X/initrc .xinitrc
-fi
-
-if command -V alsamixer >/dev/null; then
-  devs="$devs $(echo /dev/snd/pcm*)"
 fi
 
 dot_ln profile .profile
 
 git config --global user.useConfigOnly true 2>/dev/null
-
-groups=$(for i in $devs; do
-  test -e "$i" && ! test -w "$i" && stat -c '%G' "$i"
-done|grep -v root|sort -u)
-[ -n "$groups" ] && echo "Recommended groups:" $groups || true
 
 if test -z "$ENV"; then
   info "Run \`. ~/.profile; . \$ENV\` or re-login." >&2
