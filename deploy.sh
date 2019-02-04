@@ -3,31 +3,6 @@
 fail() { echo "FAIL: $1" >&2; exit 1; }
 info() { echo "INFO: $1" >&2; }
 
-ssh_config() {
-  config=$HOME/.ssh/config
-  touch "$config"
-  awk -v n="$1" -v v="$2" -v ws="  " '
-/^\s/ { ws=$0;gsub("[^ 	].*", "", ws) }
-/^(Host|Match)/ { area=$0 }
-{
-  if (n && area=="Host *" && $1==n) {
-    printf("%s%s %s\n",ws,n,v)
-    n=""
-  } else {
-    print($0)
-  }
-}
-END {
-  if (n) {
-    if (area!="Host *") {
-      print("Host *")
-    }
-    printf("%s%s %s\n",ws,n,v)
-  }
-}
-' <"$config" >"$config".tmp && mv "$config".tmp "$config"
-}
-
 dot_ln() (
   # $1 is name in $XDG_CONFIG_HOME, $2 is name in $HOME
   cd "$HOME" || exit 1
@@ -71,13 +46,6 @@ fi
 dot_ln profile .profile
 
 git config --global user.useConfigOnly true 2>/dev/null
-
-ssh_config ServerAliveInterval 60
-ssh_config CanonicalizeHostname yes
-
-if ! [ -e ~/.ssh/id_ed25519 ]; then
-  ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -C "$USER@$(hostname -f)"
-fi
 
 groups=$(for i in $devs; do
   test -e "$i" && ! test -w "$i" && stat -c '%G' "$i"
