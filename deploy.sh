@@ -1,45 +1,67 @@
 #!/bin/sh
 
 fail() { echo "FAIL: $1" >&2; exit 1; }
+warn() { echo "WARN: $1" >&2; }
 info() { echo "INFO: $1" >&2; }
 
-dot_ln() (
-  # $1 is name in $XDG_CONFIG_HOME, $2 is name in $HOME
-  cd "$HOME" || exit 1
-  # I dont know why the following works reliably
-  case "$(stat -c "%F" "$2" 2>/dev/null)" in
-  'regular file')
-    mv "$2" "$2.old" && \
-    info "Renamed $2 to $2.old"
+typestat() {
+  stat -c "%F" "$1" 2>/dev/null || echo "none"
+}
+
+maybe() {
+  info "Command: $*"
+  [ "$dry" = 1 ] || "$@"
+}
+
+[ "$1" = "-n" ] && dry=1
+
+cd ~
+
+while read dotname class realm; do
+  tagex=$(printf "%s\n" "$realm"|sed 's/[_=\-]/./g')
+  cfg=${realm:+$realm/}$(printf "%s\n" "$dotname"|sed "s|^\.||;s|^$tagex||;s|^[_\.\-]||")
+
+  case "$class" in
+  data)		loc="${XDG_DATA_DIR:-$HOME/.local/share}";;
+  conf)		loc="${XDG_CONFIG_HOME:-$HOME/.config}";;
+  cache)	loc="${XDG_CACHE_HOME:-$HOME/.cache}";;
+  secret)	continue;;
+  *)		fail "Unknown class $class";;
+  esac
+
+  target="$loc/$cfg"
+  name="$HOME/$dotname"
+
+  # data files wont be touched due to rename() updating
+  [ -f "$name" ] && [ "$class" = "data" ] && continue
+
+  case "$(typestat "$name")-$(typestat "$target")" in
+  'none'-'none'|'symbolic link'-'none') # neither dotfile nor alternative present?
+    continue
+    ;;
+  'none'-*|'symbolic link'-*) # dotfile does not exist or is just a symlink
+    ;;
+  'regular file'-'none'|'directory'-'none') # move dotfile into alternate location, create symlink
+    maybe mv -T "$name" "$target"
+    ;;
+  *-*) # some thing we didn't expect
+    warn "Unsure what do do with $name and $target"
+    continue
     ;;
   esac
-  ln -sfn "${XDG_CONFIG_HOME##$HOME/}/$1" "$2"
-)
 
-if test -z "$XDG_CONFIG_HOME"; then
-  XDG_CONFIG_HOME=$(dirname "$(readlink -f "$0")")
-  unset ENV
-fi
+  case "$name" in
+  "$HOME"/*)
+    case "$target" in
+    "$HOME"/*)
+      up=$(printf "%s\n" "${name##$HOME/}"|sed 's|[^/]*||g;s|/|../|g')
+      target="$up${target##$HOME/}"
+      ;;
+    esac
+    ;;
+  esac
 
-case "$SHELL" in
-*/bash)
-  dot_ln profile .bash_profile
-  dot_ln shellrc .bashrc
-  ;;
-*/zsh)
-  dot_ln profile .zprofile
-  dot_ln shellrc .zshrc
-  ;;
-esac
+  [ "$(readlink "$name")" = "$target" ] && continue
+  maybe ln -sfn "$target" "$name"
 
-if command -V i3 >/dev/null || [ -n "$DISPLAY" ]; then
-  dot_ln X/initrc .xinitrc
-fi
-
-dot_ln profile .profile
-
-git config --global user.useConfigOnly true 2>/dev/null
-
-if test -z "$ENV"; then
-  info "Run \`. ~/.profile; . \$ENV\` or re-login." >&2
-fi
+done <"${XDG_CONFIG_HOME}/dotfiles"
