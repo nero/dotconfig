@@ -42,7 +42,7 @@ while read dotname class realm; do
   'none'-*|'symbolic link'-*) # dotfile does not exist or is just a symlink
     ;;
   'regular file'-'none'|'directory'-'none') # move dotfile into alternate location, create symlink
-    maybe mv -T "$name" "$target"
+    maybe mv "$name" "$target"
     ;;
   *-*) # some thing we didn't expect
     warn "Unsure what do do with $name and $target"
