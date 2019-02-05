@@ -23,10 +23,6 @@ if [ -z "$XDG_RUNTIME_DIR" ]; then
   done
 fi
 
-if [ -e ~/.pam_environment ]; then
-  eval "$(sed '/^$/d;/^#/d;s/\s.*\(DEFAULT\|OVERRIDE\)=/=/g;s/^/export /' <~/.pam_environment)"
-fi
-
 export ENV="$XDG_CONFIG_HOME/shellrc"
 
 for f in "$XDG_CONFIG_HOME"/profile.d/*; do
