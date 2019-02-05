@@ -17,7 +17,7 @@ prompt_quote_none() { :; }
 prompt_string() {
   f=prompt_quote_${1:-raw}
   $f '\033[1;32m'
-  printf '%s' '${USER:+$USER@}${HOSTNAME%%.*}'
+  printf '%s' '${USER:+$USER@}${HOSTNAME}'
   $f '\033[1;31m'
   printf '%s' '${debian_chroot:+/$debian_chroot}'
   $f '\033[0m'
