@@ -33,6 +33,7 @@ PATH=$(
   (
     echo "$HOME"/bin
     echo "$HOME"/.bin
+    echo "$HOME"/.local/bin
     echo "${XDG_CONFIG_HOME:-$HOME/.config}/bin"
     echo "$PATH"|tr ':' '\n'
     echo "/usr/sbin"
