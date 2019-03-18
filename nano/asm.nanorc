@@ -1,0 +1,12 @@
+## Here is an example for assembler.
+
+syntax asm "\.(S|s|asm)$"
+magic "assembler source"
+
+color brightblue "^\S*:"
+color brightred "\s*%\S*"
+color cyan "\s*;.*$" "\s*//.*$"
+color brightyellow ""(\\.|[^"])*"" "'(\\.|[^'])*'"
+
+color ,green "[[:space:]]+$"
+color ,red "\x09"
