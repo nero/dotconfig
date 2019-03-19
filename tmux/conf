@@ -2,7 +2,7 @@ bind r source-file ~/.tmux.conf
 set -g set-titles on
 set -g set-titles-string "[#h/#I] #T"
 set -g status-left-length 40
-set -g status-left '#{?client_prefix,#[fg=yellow]#[bold],}#h#[default]|'
+set -g status-left '#{?client_prefix,#[fg=yellow]#[bold],}#h:#[default] '
 set -g status-right ' %F %H:%M'
 set -g base-index 1
 
