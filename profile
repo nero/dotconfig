@@ -34,7 +34,7 @@ PATH=$(
     echo "$HOME"/bin
     echo "$HOME"/.bin
     echo "$HOME"/.local/bin
-    echo "${XDG_CONFIG_HOME:-$HOME/.config}/bin"
+    echo "${XDG_CONFIG_HOME:-$HOME/.config}/scripts"
     echo "$PATH"|tr ':' '\n'
     echo "/usr/sbin"
     echo "/sbin"
