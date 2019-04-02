@@ -25,6 +25,7 @@ bindsym $mod+c exec --no-startup-id "i3-msg restart; sh $XDG_CONFIG_HOME/X/rc"
 bindsym $mod+i exit
 bindsym $mod+l exec --no-startup-id "i3lock -i $XDG_CONFIG_HOME/wallpaper"
 bindsym $mod+o exec --no-startup-id killall -9 firefox firefox-esr x-www-browser
+bindsym $mod+g exec --no-startup-id "ddg"
 
 # Legacy keybinds
 bindsym Mod1+F4 kill
