@@ -25,11 +25,7 @@ URxvt.perl-ext-common:  default,matcher,selection-to-clipboard
 URxvt.url-launcher:     xdg-open
 URxvt.matcher.button:   1
 
-URxvt.print-pipe:       cat > "$HOME/clip"
-
-URxvt*inheritPixmap:    true
-URxvt*transparent:      true
-URxvt*shading:          20
+URxvt.print-pipe: cat > "$HOME/clip"
 
 *color0: #000000
 *color1: #aa0000
