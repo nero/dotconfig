@@ -31,6 +31,7 @@ bindsym $mod+g exec --no-startup-id "ddg"
 bindsym Mod1+F4 kill
 bindsym Mod1+Tab focus right
 bindsym Mod1+Shift+Tab focus left
+bindsym Print exec --no-startup-id scrot
 
 # Standalone keys
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 5dB+ unmute
