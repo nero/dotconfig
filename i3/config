@@ -7,14 +7,12 @@ set $fgcol #55ffff
 set $ugcol #ffff55
 set $wkcol #333333
 
-set $kbd us
-
 # resize wallpaper with
 #   new="$(xrandr | grep \* | cut -d' ' -f4)"
 #   convert orig -resize "$new^" -gravity center -crop "$new"+0+0 wallpaper
 
 exec_always --no-startup-id "xrdb $XDG_CONFIG_HOME/X/resources"
-exec_always --no-startup-id "setxkbmap $kbd; xmodmap $XDG_CONFIG_HOME/X/modmap"
+exec_always --no-startup-id "xmodmap $XDG_CONFIG_HOME/X/modmap"
 exec_always --no-startup-id "xset b off"
 exec_always --no-startup-id "feh --no-fehbg --bg-fill $XDG_CONFIG_HOME/wallpaper"
 
