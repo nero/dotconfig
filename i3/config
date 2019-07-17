@@ -21,7 +21,7 @@ bindsym $mod+Return exec "exec i3-sensible-terminal"
 bindsym $mod+space exec --no-startup-id i3-dmenu-desktop --entry-type=command
 bindsym $mod+c exec --no-startup-id "i3-msg restart; sh $XDG_CONFIG_HOME/X/rc"
 bindsym $mod+i exit
-bindsym $mod+l exec --no-startup-id "scrot -e 'convert $f -blur 0x08 $$XDG_RUNTIME_DIR/lock.png'; i3lock -i $XDG_RUNTIME_DIR/lock.png"
+bindsym $mod+l exec --no-startup-id "scrot -e 'convert $f -blur 0x08 $$XDG_RUNTIME_DIR/lock.png; rm $f'; i3lock -i $XDG_RUNTIME_DIR/lock.png"
 bindsym $mod+o exec --no-startup-id killall -9 firefox firefox-esr x-www-browser
 bindsym $mod+g exec --no-startup-id "ddg"
 
