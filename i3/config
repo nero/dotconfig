@@ -56,15 +56,21 @@ bindsym $mod+Shift+q move container to workspace 1
 bindsym $mod+Shift+e move container to workspace 2
 
 # resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
 mode "resize" {
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-        bindsym Escape mode "default"
+  bindsym Left resize shrink width 10 px or 10 ppt
+  bindsym Down resize grow height 10 px or 10 ppt
+  bindsym Up resize shrink height 10 px or 10 ppt
+  bindsym Right resize grow width 10 px or 10 ppt
+  bindsym Escape mode "default"
+  bindsym $mod+Escape mode "default"
 }
 
-bindsym $mod+r mode "resize"
+# disable shortcuts, relevant for games making use of the Alt key
+bindsym $mod+Escape mode "off"
+mode "off" {
+  bindsym $mod+Escape mode "default"
+}
 
 new_window pixel 2
 new_float pixel 2
