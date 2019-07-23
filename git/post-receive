@@ -5,7 +5,6 @@
 #  for i in git/*.git; do ln -sfn $XDG_CONFIG_HOME/git/post-receive $i/hooks/post-receive ; done
 
 spawn() {
-	echo "trigger ${1} ${2} >&2
 	s="$PWD/hooks/$1"
 	[ -e "$s" ] || return
 	export NQDIR="$HOME"
