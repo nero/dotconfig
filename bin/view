@@ -1,0 +1,72 @@
+#!/bin/sh
+
+cachefile() {
+  hash=$(printf "%s" "$1"|md5sum|cut -d' ' -f1)
+  name="${XDG_CACHE_HOME:-$HOME/.cache}"/urls/"$hash"
+  mkdir -p "${name%/*}"
+  printf "%s\n" "$name"
+}
+
+open() {
+  printf "\033]0;%s\007" "$2"
+  type="$(file -b -i "$1")"
+  type=${type%%;*}
+  echo "== $type"
+  case "$type" in
+  text/html|image/svg+xml|application/pdf)
+    if [ -n "$DISPLAY" ] && type firefox >/dev/null 2>&1; then
+      setsid firefox "$2" &
+      sleep 1
+    else
+      w3m -T "$type" "$1"
+    fi;;
+  text/*|message/*)
+    less "$1";;
+  image/*)
+    feh -. "$1" ;;
+  audio/*)
+    mpv --no-video --loop-file=inf "$1" ;;
+  video/*)
+    mpv --loop-file=inf "$1" ;;
+  *)
+    (
+      file "$1"
+      hexdump -Cv "$1"
+    ) | less
+  esac
+}
+
+url="$1"
+case "$url" in
+https://pastebin.com/*)
+  url=https://pastebin.com/raw/${1##https://pastebin.com/}
+  ;;
+esac
+
+case "$url" in
+https://www.youtube.com/watch?v=*|https://youtu.be/*|https://hooktube*)
+  mpv --loop=inf "$url"
+  ;;
+http://*.onion/*|https://*.onion/*)
+  tmpfile="$(cachefile "$url")"
+  [ -e "$tmpfile" ] || curl -sLvvv --socks5-hostname 127.0.0.1:9050 "$url" > "$tmpfile" || rm "$tmpfile"
+  open "$tmpfile" "$url"
+  ;;
+http://*|https://*|gopher:*)
+  tmpfile="$(cachefile "$url")"
+  [ -e "$tmpfile" ] || curl -sLvvv "$url" > "$tmpfile" || rm "$tmpfile"
+  open "$tmpfile" "$url"
+  ;;
+file://*)
+  p="${url#file://}"
+  open "$p" "$url"
+  ;;
+/*)
+  open "$url" "file://$url"
+  ;;
+*)
+  open "$PWD/$url" "file://$PWD/$url"
+  ;;
+esac
+
+find "${XDG_CACHE_HOME:-$HOME/.cache}"/urls -mtime +2 -delete

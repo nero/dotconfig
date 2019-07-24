@@ -1,0 +1,9 @@
+#!/bin/sh
+if [ -n "$TMUX" ]; then
+  tmux new-window "$@"
+elif [ -n "$DISPLAY" ]; then
+  i3-sensible-terminal -e "$@" &
+else
+  echo "No multiplexer found"
+  exit 1
+fi
