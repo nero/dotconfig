@@ -1,0 +1,4 @@
+[user]
+	useConfigOnly = true
+[alias]
+	dog = log --all --decorate --oneline --graph

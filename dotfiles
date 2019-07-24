@@ -5,7 +5,6 @@
 .bash_profile		conf	bash
 .bashrc			conf	bash
 .bundle			data
-.gitconfig		conf	git
 .gnupg			secret
 .lesshst		data	less
 .mono			data
