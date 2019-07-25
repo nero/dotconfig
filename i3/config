@@ -26,6 +26,7 @@ bindsym $mod+i exit
 bindsym $mod+l exec --no-startup-id "scrot -e 'convert $f -blur 0x08 $$XDG_RUNTIME_DIR/lock.png; rm $f'; i3lock -i $XDG_RUNTIME_DIR/lock.png"
 bindsym $mod+o exec --no-startup-id killall -9 firefox firefox-esr x-www-browser
 bindsym $mod+g exec --no-startup-id "ddg"
+bindsym $mod+x exec --no-startup-id "setxkbmap $(printf 'us\nde\nru\n'|dmenu -p $(setxkbmap -query|awk '/layout/{print $2}')); xmodmap $XDG_CONFIG_HOME/X/modmap"
 
 # Legacy keybinds
 bindsym Mod1+F4 kill
