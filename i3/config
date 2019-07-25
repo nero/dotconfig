@@ -19,14 +19,14 @@ exec_always --no-startup-id "xset b off"
 exec_always --no-startup-id "feh --no-fehbg --bg-fill $XDG_CONFIG_HOME/wallpaper"
 
 # i3 stuff
-bindsym $mod+Return exec "exec i3-sensible-terminal"
-bindsym $mod+space exec --no-startup-id i3-dmenu-desktop --entry-type=command
-bindsym $mod+c exec --no-startup-id "i3-msg restart; sh $XDG_CONFIG_HOME/X/rc"
-bindsym $mod+i exit
-bindsym $mod+l exec --no-startup-id "scrot -e 'convert $f -blur 0x08 $$XDG_RUNTIME_DIR/lock.png; rm $f'; i3lock -i $XDG_RUNTIME_DIR/lock.png"
-bindsym $mod+o exec --no-startup-id killall -9 firefox firefox-esr x-www-browser
-bindsym $mod+g exec --no-startup-id "ddg"
-bindsym $mod+x exec --no-startup-id "setxkbmap $(printf 'us\nde\nru\n'|dmenu -p $(setxkbmap -query|awk '/layout/{print $2}')); xmodmap $XDG_CONFIG_HOME/X/modmap"
+bindcode $mod+36 exec "exec i3-sensible-terminal"
+bindcode $mod+65 exec --no-startup-id i3-dmenu-desktop --entry-type=command
+bindcode $mod+54 exec --no-startup-id "i3-msg restart; sh $XDG_CONFIG_HOME/X/rc"
+bindcode $mod+31 exit
+bindcode $mod+46 exec --no-startup-id "scrot -e 'convert $f -blur 0x08 $$XDG_RUNTIME_DIR/lock.png; rm $f'; i3lock -i $XDG_RUNTIME_DIR/lock.png"
+bindcode $mod+32 exec --no-startup-id killall -9 firefox firefox-esr x-www-browser
+bindcode $mod+42 exec --no-startup-id "ddg"
+bindcode $mod+53 exec --no-startup-id "setxkbmap $(printf 'us\nde\nru\n'|dmenu -p $(setxkbmap -query|awk '/layout/{print $2}')); xmodmap $XDG_CONFIG_HOME/X/modmap"
 
 # Legacy keybinds
 bindsym Mod1+F4 kill
@@ -40,26 +40,26 @@ bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 5dB- unmu
 bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
 bindsym XF86PowerOff exit
 
-bindsym $mod+f floating toggle
+bindcode $mod+41 floating toggle
 
-# move focus
-bindsym $mod+w focus up
-bindsym $mod+a focus left
-bindsym $mod+s focus down
-bindsym $mod+d focus right
-bindsym $mod+q workspace 1
-bindsym $mod+e workspace 2
+# move focus (qwe/asd)
+bindcode $mod+24 workspace 1
+bindcode $mod+25 focus up
+bindcode $mod+26 workspace 2
+bindcode $mod+38 focus left
+bindcode $mod+39 focus down
+bindcode $mod+40 focus right
 
-# move window
-bindsym $mod+Shift+w move up
-bindsym $mod+Shift+a move left
-bindsym $mod+Shift+s move down
-bindsym $mod+Shift+d move right
-bindsym $mod+Shift+q move container to workspace 1
-bindsym $mod+Shift+e move container to workspace 2
+# move window (QWE/ASD)
+bindcode $mod+Shift+24 move container to workspace 1
+bindcode $mod+Shift+25 move up
+bindcode $mod+Shift+26 move container to workspace 2
+bindcode $mod+Shift+38 move left
+bindcode $mod+Shift+39 move down
+bindcode $mod+Shift+40 move right
 
 # resize window (you can also use the mouse for that)
-bindsym $mod+r mode "resize"
+bindcode $mod+27 mode "resize"
 mode "resize" {
   bindsym Left resize shrink width 10 px or 10 ppt
   bindsym Down resize grow height 10 px or 10 ppt
