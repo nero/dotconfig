@@ -18,7 +18,7 @@ open() {
       setsid firefox "$2" &
       sleep 1
     else
-      w3m -T "$type" "$1"
+      w3m -T "$type" "$2"
     fi;;
   text/*|message/*)
     less "$1";;
