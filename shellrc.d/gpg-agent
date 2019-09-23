@@ -1,2 +1,1 @@
-gpg-connect-agent /bye >/dev/null 2>&1
-export GPG_TTY=$(tty)
+gpg-connect-agent /bye >/dev/null 2>&1 && export GPG_TTY=$(tty)
