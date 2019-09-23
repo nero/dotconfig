@@ -6,4 +6,6 @@ set -g status-left '#{?client_prefix,#[fg=yellow]#[bold],}[#h:#S]#[default] '
 set -g status-right ' %F %H:%M'
 set -g base-index 1
 
+set -g prefix2 F12
+
 bind C-b send-prefix
