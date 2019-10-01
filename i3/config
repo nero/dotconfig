@@ -28,6 +28,10 @@ bindcode $mod+32 exec --no-startup-id killall -9 firefox firefox-esr x-www-brows
 bindcode $mod+42 exec --no-startup-id "ddg"
 bindcode $mod+53 exec --no-startup-id "setxkbmap $(printf 'us\nde\nru\n'|dmenu -p $(setxkbmap -query|awk '/layout/{print $2}')); xmodmap $XDG_CONFIG_HOME/X/modmap"
 
+# screenshots
+bindcode --release $mod+33 exec --no-startup-id scrot -s
+bindcode --release $mod+Shift+33 exec --no-startup-id scrot
+
 # Legacy keybinds
 bindsym Mod1+F4 kill
 bindsym Mod1+Tab focus right
