@@ -1,0 +1,5 @@
+#!/bin/sh
+dir="$HOME"/backup
+mkdir -p "$dir"
+eval "$(secrets get backup-conf)"
+sshfs -p "${BACKUP_PORT}" "${BACKUP_USER}":. "$dir"

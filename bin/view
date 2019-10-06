@@ -49,7 +49,8 @@ https://www.youtube.com/watch?v=*|https://youtu.be/*|https://hooktube*)
   ;;
 http://*.onion/*|https://*.onion/*)
   tmpfile="$(cachefile "$url")"
-  [ -e "$tmpfile" ] || curl -sLvvv --socks5-hostname 127.0.0.1:9050 "$url" > "$tmpfile" || rm "$tmpfile"
+  [ -e "$tmpfile" ] || curl -sLvvv --socks5-hostname 127.0.0.1:9050 "$url" \
+    > "$tmpfile" || rm "$tmpfile"
   open "$tmpfile" "$url"
   ;;
 http://*|https://*|gopher:*)

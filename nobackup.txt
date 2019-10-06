@@ -25,6 +25,7 @@
 /.run
 /.secrets
 /.ssh/id_*
+/.steam
 /.thumbnails
 /.w3m
 /.wget-hsts

@@ -1,0 +1,6 @@
+#!/bin/sh
+eval "$(secrets get backup-conf)"
+rsync -avux -e "ssh -p${BACKUP_PORT}" --delete --modify-window=2 --no-specials \
+  --progress --exclude-from="$XDG_CONFIG_HOME/nobackup.txt" \
+  --delete-excluded \
+  "$HOME/" "${BACKUP_USER}":home/"${HOSTNAME%%.*}"
