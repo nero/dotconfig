@@ -8,6 +8,7 @@
 /.cache
 /.ccache
 /.claws-mail
+/.config/pulse
 /.getmail/oldmail-*
 /.gnupg
 /.hedgewars
