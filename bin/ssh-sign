@@ -3,6 +3,6 @@ comment=$(cut -d' ' -f3- < "$2")
 ca=$(mktemp)
 chmod 0600 "$ca"
 secrets get ca > "$ca"
-ssh-keygen -s "$ca" -n "$1" -V "+26w" -z "$(date +%s)" -I "${comment}" "$2"
+ssh-keygen -s "$ca" -n "$1" -V "${VALID:-+26w}" -z "$(date +%s)" -I "${comment}" "$2"
 dd if=/dev/random bs=512 count=3 of="$ca"
 rm "$ca"
