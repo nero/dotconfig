@@ -1,0 +1,13 @@
+case "$TERM" in
+('')
+  ;;
+(*unicode|screen|tmux|linux)
+  stty iutf8
+  [ -z "$LANG" ] && LANG=en_US.UTF-8
+  ;;
+(vt*)
+  stty -iutf8
+  [ -z "$LANG" ] && LANG=en_US._
+  LANG=${LANG%%.*}.US-ASCII
+  ;;
+esac
