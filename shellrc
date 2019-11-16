@@ -19,4 +19,4 @@ for f in "$ENV".d/*; do
   [ -e "$f" ] && . "$f"
 done
 
-type -t prompt_ps1 >/dev/null 2>&1 && PS1=$(prompt_ps1)
+type prompt_ps1 >/dev/null 2>&1 && PS1=$(prompt_ps1)
