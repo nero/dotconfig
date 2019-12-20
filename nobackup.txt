@@ -28,11 +28,14 @@
 /.ssh/id_*
 /.steam
 /.thumbnails
+/.thunderbird
+/.torcs
 /.w3m
 /.wget-hsts
 /.wine
 /Downloads
 /clip
+/snap
 /opt
 aports/*/*/src/
 tmp
