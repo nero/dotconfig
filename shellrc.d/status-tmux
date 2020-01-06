@@ -1,4 +1,4 @@
 if [ -z "$TMUX" ]; then
-  tmux ls -F 'Open tmux session from #{t:start_time}, use "tmux a -t #S" to attach' 2>/dev/null
+  tmux ls -F 'Open tmux session from #{t:start_time}, use "tmux a -t #S" to attach' 2>/dev/null
   true
 fi
