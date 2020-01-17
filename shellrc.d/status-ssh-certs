@@ -4,5 +4,5 @@ for cert in ~/.ssh/*-cert.pub; do
 	[ -e "$cert" ] || continue
 	strdate=$(ssh-keygen -L -f $cert|awk '/Valid/ {sub(/T/," ",$5);print($5)}')
 	awk -v c=${cert##*/} -v n=$now -v e=$(date -d "$strdate" "+%s") \
-          'BEGIN {d=(e-n) / (60*60*24); if (d<10) {printf("%s expires in %d days\n",c,d)}}'
+          'BEGIN {d=(e-n) / (60*60*24); if (d<30) {printf("%s expires in %d days\n",c,d)}}'
 done
