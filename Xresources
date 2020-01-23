@@ -3,6 +3,7 @@
 *faceSize:              12
 *background:            #000000
 *foreground:            #adaaad
+*internalBorder:        0
 
 UXTerm*metaSendsEscape: true
 UXTerm*bellIsUrgent:    true
