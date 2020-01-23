@@ -1,5 +1,13 @@
 #!/bin/sh
 
+in_xorg() {
+  test -n "$DISPLAY"
+}
+
+cmd_exists() {
+  type "$1" >/dev/null 2>&1
+}
+
 cachefile() {
   hash=$(printf "%s" "$1"|md5sum|cut -d' ' -f1)
   name="${XDG_CACHE_HOME:-$HOME/.cache}"/urls/"$hash"
@@ -9,12 +17,12 @@ cachefile() {
 
 open() {
   printf "\033]0;%s\007" "$2"
-  type="$(file -b -i "$1")"
+  type=$(file -b -i "$1")
   type=${type%%;*}
   echo "== $type"
   case "$type" in
   text/html|image/svg+xml|application/pdf)
-    if [ -n "$DISPLAY" ] && type firefox >/dev/null 2>&1; then
+    if in_xorg && cmd_exists firefox; then
       setsid firefox "$2" &
       sleep 1
     else
@@ -23,7 +31,11 @@ open() {
   text/*|message/*)
     less "$1";;
   image/*)
-    feh -. "$1" ;;
+    if in_xorg && cmd_exists feh; then
+      feh -. "$1"
+    else
+      cacaview "$1"
+    fi;;
   audio/*)
     mpv --no-video --loop-file=inf "$1" ;;
   video/*)
