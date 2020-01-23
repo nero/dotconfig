@@ -35,7 +35,7 @@ if test -e "$XDG_CONFIG_HOME"/wallpaper; then
   fi
 fi
 
-test -n "$DESKTOP_STARTUP_ID" && fail "Not starting another window manager"
+test -n "$WINDOWID" && fail "Not starting another window manager"
 
 # Try around until we got something
 for session in i3 xfce4-session "$TERMINAL"; do
