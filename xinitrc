@@ -6,7 +6,7 @@ fail() {
 }
 
 cmd_exists() {
-  type "$1" >/dev/null 2>&1
+  command -v "$1" >/dev/null 2>&1
 }
 
 test -z "$DISPLAY" && fail "No xorg found"
@@ -30,7 +30,7 @@ if test -e "$XDG_CONFIG_HOME"/wallpaper; then
   if cmd_exists feh; then
     feh --no-fehbg --bg-fill "$XDG_CONFIG_HOME"/wallpaper
   elif cmd_exists display && cmd_exists xdpyinfo; then
-    display -resize $(xdpyinfo | awk '/dimensions:/ { print $2; exit }')'!' \
+    display -resize "$(xdpyinfo | awk '/dimensions:/ { print $2; exit }')!" \
       -window root "$XDG_CONFIG_HOME"/wallpaper
   fi
 fi
