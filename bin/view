@@ -17,7 +17,7 @@ cachefile() {
 
 open() {
   printf "\033]0;%s\007" "$2"
-  type=$(file -b -i "$1")
+  type=$(file -L -b -i "$1")
   type=${type%%;*}
   echo "== $type"
   case "$type" in
@@ -42,7 +42,7 @@ open() {
     mpv --loop-file=inf "$1" ;;
   *)
     (
-      file "$1"
+      file -k "$1"
       hexdump -Cv "$1"
     ) | less
   esac
