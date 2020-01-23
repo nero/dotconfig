@@ -26,7 +26,14 @@ EOF
 xset b off
 
 # Set wallpaper
-feh --no-fehbg --bg-fill "$XDG_CONFIG_HOME"/wallpaper
+if test -e "$XDG_CONFIG_HOME"/wallpaper; then
+  if cmd_exists feh; then
+    feh --no-fehbg --bg-fill "$XDG_CONFIG_HOME"/wallpaper
+  elif cmd_exists display && cmd_exists xdpyinfo; then
+    display -resize $(xdpyinfo | awk '/dimensions:/ { print $2; exit }')'!' \
+      -window root "$XDG_CONFIG_HOME"/wallpaper
+  fi
+fi
 
 test -n "$DESKTOP_STARTUP_ID" && fail "Not starting another window manager"
 
