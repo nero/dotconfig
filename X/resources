@@ -11,7 +11,7 @@ UXTerm.vt100.translations: #override \n\
 
 URxvt*scrollBar:        false
 URxvt*urgentOnBell:     true
-URxvt.font:             xft:Monospace:size=11
+URxvt.font:             xft:Monospace:size=12
 URxvt*termName:         rxvt-unicode
 URxvt.secondaryScreen:  1
 URxvt.secondaryScroll:  0
