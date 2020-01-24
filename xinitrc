@@ -11,6 +11,11 @@ cmd_exists() {
 
 test -z "$DISPLAY" && fail "No xorg found"
 
+# Restore default xrandr settings
+if test -x "$HOME/.screenlayout/default.sh"; then
+  . "$HOME/.screenlayout/default.sh"
+fi
+
 # Themeing
 xrdb "$XDG_CONFIG_HOME"/Xresources
 
