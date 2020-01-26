@@ -9,7 +9,7 @@ cmd_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
-test -z "$DISPLAY" && fail "No xorg found"
+test -z "$DISPLAY" && fail "No display found"
 
 # Restore default xrandr settings
 if test -x "$HOME/.screenlayout/default.sh"; then
@@ -40,6 +40,7 @@ if test -e "$XDG_CONFIG_HOME"/wallpaper; then
   fi
 fi
 
+# If being run from inside i3, restart i3
 case "$DESKTOP_STARTUP_ID" in
 (i3/*) i3-msg restart; exit 0;;
 esac
