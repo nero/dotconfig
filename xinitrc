@@ -40,6 +40,10 @@ if test -e "$XDG_CONFIG_HOME"/wallpaper; then
   fi
 fi
 
+case "$DESKTOP_STARTUP_ID" in
+(i3/*) i3-msg restart; exit 0;;
+esac
+
 test -n "$WINDOWID" && fail "Not starting another window manager"
 
 # Try around until we got something
