@@ -48,7 +48,7 @@ esac
 test -n "$WINDOWID" && fail "Not starting another window manager"
 
 # Try around until we got something
-for session in i3 xfce4-session "$TERMINAL"; do
+for session in i3 xfce4-session rxvt-unicode x-terminal-emulator xterm; do
   cmd_exists "$session" && exec "$session"
 done
 
