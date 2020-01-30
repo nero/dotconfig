@@ -24,7 +24,7 @@ URxvt.perl-ext-common:  default,matcher,selection-to-clipboard
 URxvt.url-launcher:     xdg-open
 URxvt.matcher.button:   1
 
-URxvt.print-pipe: cat > "$HOME/clip"
+URxvt.print-pipe:       cat > "$HOME/$(date +'%Y-%m-%d-%H%M%S_rxvt.txt')"
 
 ! VGA colors
 *background:            #000000

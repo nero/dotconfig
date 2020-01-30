@@ -19,15 +19,10 @@ bindcode $mod+31 exit
 bindcode $mod+46 exec --no-startup-id i3lock
 bindcode $mod+32 exec --no-startup-id killall -9 firefox firefox-esr x-www-browser
 
-# screenshots
-bindcode --release $mod+33 exec --no-startup-id scrot -s
-bindcode --release $mod+Shift+33 exec --no-startup-id scrot
-
 # compat keybinds
 bindsym Mod1+F4 kill
 bindsym Mod1+Tab focus right
 bindsym Mod1+Shift+Tab focus left
-bindsym Print exec --no-startup-id scrot
 
 # gimmick keys
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 5dB+ unmute
