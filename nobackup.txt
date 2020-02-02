@@ -36,6 +36,6 @@
 /Downloads
 /clip
 /snap
+/src
 /opt
-aports/*/*/src/
 tmp
