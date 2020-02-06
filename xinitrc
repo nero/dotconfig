@@ -31,14 +31,14 @@ EOF
 xset b off
 
 # Set wallpaper
-if test -e "$XDG_CONFIG_HOME"/wallpaper; then
-  if cmd_exists feh; then
-    feh --no-fehbg --bg-fill "$XDG_CONFIG_HOME"/wallpaper
-  elif cmd_exists display && cmd_exists xdpyinfo; then
-    display -resize "$(xdpyinfo | awk '/dimensions:/ { print $2; exit }')!" \
-      -window root "$XDG_CONFIG_HOME"/wallpaper
-  fi
-fi
+xsetroot -bg '#d2738a' -bitmap /dev/stdin <<EOF
+#define grey11_width 16
+#define grey11_height 16
+static char grey11_bits[] = {
+0xee,0xee,0x55,0x55,0xfb,0xfb,0x55,0x55,0xee,0xee,0x55,0x55,
+0xbf,0xbf,0x55,0x55,0xee,0xee,0x55,0x55,0xfb,0xfb,0x55,0x55,
+0xee,0xee,0x55,0x55,0xbf,0xbf,0x55,0x55};
+EOF
 
 # If being run from inside i3, restart i3
 case "$DESKTOP_STARTUP_ID" in
