@@ -23,7 +23,7 @@ prompt_string() {
   $f '\033[0m'
   printf '%s' ':'
   $f '\033[1;36m'
-  printf '%s' '${PWD##*/}'
+  printf '%s' '${PWD##$HOME/}'
   $f '\033[0m'
   printf '%s' '[$?]'
   printf '%s' ': '
@@ -35,7 +35,7 @@ prompt_ps1() {
   prompt_string $sh
   case "$TERM" in
   (xterm*|rxvt*|st*|screen*|tmux*)
-    prompt_quote_$sh '\033]0;%s\007' '${PWD##*/}'
+    prompt_quote_$sh '\033]0;%s\007' "$(prompt_string none)"
     ;;
   esac
 }

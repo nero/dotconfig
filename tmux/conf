@@ -5,8 +5,6 @@ set -g set-titles-string "[#h:#S] #T"
 set -g status-left-length 40
 set -g status-left '#{?client_prefix,#[fg=yellow]#[bold],}[#h:#S]#[default] '
 set -g status-right ' %F %H:%M'
-set -g window-status-format '#I:#T#F'
-set -g window-status-current-format '#I:#T#F'
 set -g base-index 1
 
 set -g prefix C-b
