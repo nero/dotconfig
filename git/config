@@ -3,3 +3,5 @@
 [alias]
 	dog = log --all --decorate --oneline --graph
 	root = rev-parse --show-toplevel
+	ffpull = pull --ff-only
+	ffmerge = merge --ff-only
