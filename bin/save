@@ -1,0 +1,15 @@
+#!/bin/sh
+url="$1"
+name=$(date +'%Y-%m-%d-%H%M%S')_$(printf '%s\n' "$url"|sed 's/^.*\/\///;s/[^a-zA-Z0-9\%\-\@\^\.]/_/g;s/__+/_/g')
+wget -O "$name" "$1" || exit 1
+
+exts=$(file -b --extension "$name")
+
+case "$exts" in
+('') exit 0;;
+('???') exit 0;;
+esac
+
+if ! printf '%s\n' "$name" | egrep -q "$(printf '\.(%s)$\n' "$exts"|sed 's|/|\||g')"; then
+  mv "$name" "$name.${exts%%/*}"
+fi
