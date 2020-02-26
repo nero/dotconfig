@@ -1,2 +1,4 @@
 #!/bin/sh
+# Run 'view' in a new tab, this script exists to override the distro-default
+# xdg-open. This catches clicks on urls in many GUI applications and urxvt.
 newtab view "$1"

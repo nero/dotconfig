@@ -1,4 +1,7 @@
 #!/bin/sh
+# Syntax: ssh-sign $USER id_rsa.pub
+# Sign a ssh public key, so machines can trust it without needing it in authorized_keys
+# if they already trust my ssh ca.
 comment=$(cut -d' ' -f3- < "$2")
 ca=$(mktemp)
 chmod 0600 "$ca"

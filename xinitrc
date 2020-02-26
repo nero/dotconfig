@@ -11,7 +11,7 @@ cmd_exists() {
 
 test -z "$DISPLAY" && fail "No display found"
 
-# Restore default xrandr settings
+# Restore default xrandr settings (for multi-monitor setups)
 if test -x "$HOME/.screenlayout/default.sh"; then
   . "$HOME/.screenlayout/default.sh"
 fi
@@ -19,7 +19,7 @@ fi
 # Themeing
 xrdb "$XDG_CONFIG_HOME"/Xresources
 
-# Keyboard setup
+# Keyboard setup: disable caps lock
 setxkbmap us
 xmodmap - <<EOF
 clear Lock
@@ -30,7 +30,7 @@ EOF
 # Disable that annoying bell
 xset b off
 
-# Set wallpaper
+# Set wallpaper (yes, XPM images are actually C code)
 xsetroot -bg '#d2738a' -bitmap /dev/stdin <<EOF
 #define grey11_width 16
 #define grey11_height 16
@@ -45,9 +45,12 @@ case "$DESKTOP_STARTUP_ID" in
 (i3/*) i3-msg restart; exit 0;;
 esac
 
+# Bail out if window manager already running
+# This is required because i use this script to reload my settings
 test -n "$WINDOWID" && fail "Not starting another window manager"
 
 # Try around until we got something
+# If no sane WM found, run xorg with bare terminal.
 for session in i3 xfce4-session rxvt-unicode x-terminal-emulator xterm; do
   cmd_exists "$session" && exec "$session"
 done

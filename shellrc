@@ -1,10 +1,18 @@
 # Config for interactive shells
+# If bash is the login shell, .bashrc is a symlink to this file
+# If zsh is the login shell, .zshrc is a symlink to this file
+# Otherwise its invoked via $ENV, without symlinks, as defined in POSIX
 
+# If bash is your login shell, and you run rsync or git push onto this machine,
+# bash will see the $SSH_* variables and will load bashrc despite not being
+# an interactive shell. The startup messages then fuck up the git transfer.
+# This code bails out if shell is not interactive.
 case "$-" in
  (*i*) ;;
  (*) return;;
 esac
 
+# Fixes to make bash and zsh behave somewhat similar
 if [ -n "$BASH_VERSION" ]; then
   shopt -s checkwinsize
 elif [ -n "$ZSH_VERSION" ]; then
@@ -15,8 +23,10 @@ elif [ -n "$ZSH_VERSION" ]; then
   }
 fi
 
+# load drop-ins
 for f in "$ENV".d/*; do
   [ -e "$f" ] && . "$f"
 done
 
+# calculate prompt after drop-ins are run. they might overwrite some functions.
 type prompt_ps1 >/dev/null 2>&1 && PS1=$(prompt_ps1)

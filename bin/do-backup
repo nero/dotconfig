@@ -1,4 +1,7 @@
 #!/bin/sh
+# host, port and path come from the secrets store.
+# nobackup.txt declares files that i dont wish to be upgraded
+# if they exist on the remote, they are deleted there.
 eval "$(secrets get backup-conf)"
 rsync -avux -e "ssh -p${BACKUP_PORT}" --delete --modify-window=2 --no-specials \
   --progress --exclude-from="$XDG_CONFIG_HOME/nobackup.txt" \

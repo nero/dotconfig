@@ -24,6 +24,8 @@ URxvt.perl-ext-common:  default,matcher,selection-to-clipboard
 URxvt.url-launcher:     xdg-open
 URxvt.matcher.button:   1
 
+! "PrintScreen" key causes screendump as monochrome txt file
+! file name is similar to ./bin/save and scrot format
 URxvt.print-pipe:       cat > "$HOME/$(date +'%Y-%m-%d-%H%M%S_rxvt.txt')"
 
 ! VGA colors

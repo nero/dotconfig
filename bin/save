@@ -1,20 +1,29 @@
 #!/bin/sh
+# This downloads a file from the web, gives it a FAT-friendly name including the
+# current date plus a sane extension
+
 cd "$HOME" || exit 1
 
 url="$1"
 name=$(date +'%Y-%m-%d-%H%M%S')_$(printf '%s\n' "$url"|sed 's/^.*\/\///;s/[^a-zA-Z0-9\%\-\@\^\.]/_/g;s/__+/_/g')
 if ! wget -O "$name" "$1"; then
+  # download failed, because wget already opened it, its now an empty file
+  # remove it
   rm "$name"
   exit 1
 fi
 
+# returns ??? or a slash-separated list of extensions: jpg/jpeg
 exts=$(file -b --extension "$name")
 
+# dont fix extension if result is not useful
 case "$exts" in
 ('') exit 0;;
 ('???') exit 0;;
 esac
 
+# transform the extension list into a regex that the downloaded file must match
 if ! printf '%s\n' "$name" | egrep -q "$(printf '\.(%s)$\n' "$exts"|sed 's|/|\||g')"; then
+  # if it does not match, append it the first extension in the list
   mv "$name" "$name.${exts%%/*}"
 fi

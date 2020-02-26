@@ -1,4 +1,7 @@
 #!/bin/sh
+# i use both i3 and tmux like tabbed multiplexers, this launches a
+# command in a new 'tab'. This is mostly used by xdg-open.
+# Example: newtab watch lsof -i -n -P
 if [ -n "$TMUX" ]; then
   tmux new-window "$@"
 elif [ -n "$DISPLAY" ]; then

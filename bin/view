@@ -1,4 +1,9 @@
 #!/bin/sh
+# Syntax: view (url | path)
+# Figure out how to display a file.
+# also, downloaded files are caches, so i can view them again for two days
+# without having to re-download them.
+# usually this spawns a window that needs to be manually closed.
 
 in_xorg() {
   test -n "$DISPLAY"
