@@ -3,7 +3,10 @@ cd "$HOME" || exit 1
 
 url="$1"
 name=$(date +'%Y-%m-%d-%H%M%S')_$(printf '%s\n' "$url"|sed 's/^.*\/\///;s/[^a-zA-Z0-9\%\-\@\^\.]/_/g;s/__+/_/g')
-wget -O "$name" "$1" || exit 1
+if ! wget -O "$name" "$1"; then
+  rm "$name"
+  exit 1
+fi
 
 exts=$(file -b --extension "$name")
 
