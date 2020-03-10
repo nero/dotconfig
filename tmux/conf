@@ -1,11 +1,14 @@
 bind r source-file ~/.tmux.conf
 
 set -g set-titles on
-set -g set-titles-string "[#h:#S] #T"
+set -g set-titles-string "#h"
 set -g status-left-length 40
 set -g status-left '#{?client_prefix,#[fg=yellow]#[bold],}[#h:#S]#[default] '
 set -g status-right ' %F %H:%M'
 set -g base-index 1
+
+set -g window-status-format '#I:#T#F'
+set -g window-status-current-format '#I:#T#F'
 
 set -g prefix C-b
 set -g prefix2 F12
