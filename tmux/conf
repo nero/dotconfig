@@ -13,6 +13,8 @@ set -g automatic-rename-format '#T'
 set -g window-status-format '#I:#W#F'
 set -g window-status-current-format '#I:#W#F'
 
+set -g default-terminal tmux
+
 set -g prefix C-b
 set -g prefix2 F12
 bind C-b send-prefix
