@@ -7,8 +7,11 @@ set -g status-left '#{?client_prefix,#[fg=yellow]#[bold],}[#h:#S]#[default] '
 set -g status-right ' %F %H:%M'
 set -g base-index 1
 
-set -g window-status-format '#I:#T#F'
-set -g window-status-current-format '#I:#T#F'
+set -g automatic-rename on
+set -g automatic-rename-format '#T'
+
+set -g window-status-format '#I:#W#F'
+set -g window-status-current-format '#I:#W#F'
 
 set -g prefix C-b
 set -g prefix2 F12
