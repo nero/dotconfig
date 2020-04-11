@@ -36,7 +36,7 @@ case "$TERM" in
   ;;
 (*)
   tag() {
-    if tput tsl; then
+    if tput tsl 2>/dev/null; then
       printf "%s" "${1:-${PWD##*/}}"
       tput fsl
     fi
