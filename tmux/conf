@@ -16,7 +16,7 @@ set -g automatic-rename-format '#T'
 
 set -g window-status-separator ''
 set -g window-status-format '#[underscore]/ #I:#W \  '
-set -g window-status-current-format '#[underscore]#[default,bold]/ #I:#W \#[underscore]  '
+set -g window-status-current-format '#[underscore]#[default,bold]/ #I:#W \#[default,underscore]  '
 
 set -g default-terminal tmux
 
