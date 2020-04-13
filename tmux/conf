@@ -7,7 +7,7 @@ set -g status-style "underscore"
 set -g status-position top
 set -g status-justify left
 set -g status-left '#{?client_prefix,#[bold],}#h #S '
-set -g status-right ' %F %H:%M'
+set -g status-right ''
 
 set -g base-index 1
 
