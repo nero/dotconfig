@@ -16,8 +16,8 @@ set -g automatic-rename-format '#T'
 
 set -g window-status-separator ' '
 set -g window-status-format '/ #I:#W \'
-set -g window-status-current-format '#[none]/ #I:#W#[none] \#[default]'
-set -g window-status-bell-style 'blink'
+set -g window-status-current-style 'none'
+set -g window-status-bell-style 'blink,bold'
 
 set -g default-terminal tmux
 
