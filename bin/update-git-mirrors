@@ -1,0 +1,12 @@
+#!/bin/sh
+for repo in $HOME/git/*.git; do
+  test -e "$repo" || continue
+  name="${repo%/}"
+  name="${name##*/}"
+  name="${name%.git}"
+  (
+    cd "$repo"
+    test "$(git config remote.origin.mirror)" = true || return
+    git fetch -p origin || echo "[exited with code $?]"
+  ) 2>&1 | sed "s|^|$(printf "%16s: " "${name}")|"
+done
