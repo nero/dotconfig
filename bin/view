@@ -5,14 +5,6 @@
 # without having to re-download them.
 # usually this spawns a window that needs to be manually closed.
 
-in_xorg() {
-  test -n "$DISPLAY"
-}
-
-cmd_exists() {
-  command -v "$1" >/dev/null 2>&1
-}
-
 cachefile() {
   hash=$(printf "%s" "$1"|md5sum|cut -d' ' -f1)
   name="${XDG_CACHE_HOME:-$HOME/.cache}"/urls/"$hash"
@@ -20,38 +12,39 @@ cachefile() {
   printf "%s\n" "$name"
 }
 
-open() {
-  printf "\033]0;%s\007" "$2"
-  type=$(file -L -b -i "$1")
-  type=${type%%;*}
-  echo "== $type"
-  case "$type" in
-  text/html|image/svg+xml|application/pdf)
-    if in_xorg && cmd_exists firefox; then
-      setsid firefox "$2" &
-      sleep 1
-    else
-      w3m -T "$type" "$2"
-    fi;;
-  text/*|message/*)
-    less "$1";;
-  image/*)
-    if in_xorg && cmd_exists feh; then
-      feh -. "$1"
-    else
-      cacaview "$1"
-    fi;;
-  audio/*)
-    mpv --no-video --loop-file=inf "$1" ;;
-  video/*)
-    mpv --loop-file=inf "$1" ;;
-  *)
-    (
-      file -k "$1"
-      hexdump -Cv "$1"
-    ) | less
-  esac
+fetch_via() {
+  file=$(cachefile "$url")
+  test -s "$file" && return
+  "$@" > "${file}.$$" && mv "${file}.$$" "${file}"
 }
+
+# long-running commands that require xorg
+gui() {
+  test -n "$DISPLAY" || return
+  cmd "$@"
+}
+
+# long-running commands
+cmd() {
+  printf '%s\n' "$type"|grep -qiE "$1" || return
+  shift
+  command -v "$1" >/dev/null 2>&1 || return
+  exec "$@"
+}
+
+# commands that dump presentation to stdout and exit
+dmp() {
+  printf '%s\n' "$type"|grep -qiE "$1" || return
+  shift
+  command -v "$1" >/dev/null 2>&1 || return
+  (
+    echo "$type"
+    "$@"
+  ) | less
+  exit 0
+}
+
+find "${XDG_CACHE_HOME:-$HOME/.cache}"/urls -mtime +2 -delete
 
 url="$1"
 case "$url" in
@@ -62,29 +55,41 @@ esac
 
 case "$url" in
 https://www.youtube.com/watch?v=*|https://youtu.be/*|https://hooktube*)
-  mpv --loop=inf "$url"
+  exec mpv --loop=inf "$url"
   ;;
 http://*.onion/*|https://*.onion/*)
-  tmpfile="$(cachefile "$url")"
-  [ -e "$tmpfile" ] || curl -sLvvv --socks5-hostname 127.0.0.1:9050 "$url" \
-    > "$tmpfile" || rm "$tmpfile"
-  open "$tmpfile" "$url"
+  fetch_via curl -sLvvv --socks5-hostname 127.0.0.1:9050 "$url"
   ;;
 http://*|https://*|gopher:*)
-  tmpfile="$(cachefile "$url")"
-  [ -e "$tmpfile" ] || curl -sLvvv "$url" > "$tmpfile" || rm "$tmpfile"
-  open "$tmpfile" "$url"
+  fetch_via curl -sLvvv "$url"
   ;;
 file://*)
-  p="${url#file://}"
-  open "$p" "$url"
+  file="${url#file://}"
   ;;
 /*)
-  open "$url" "file://$url"
+  file="$file"
+  url="file://$file"
   ;;
 *)
-  open "$PWD/$url" "file://$PWD/$url"
+  file="$PWD/$url"
+  url="file://$PWD/$url"
   ;;
 esac
 
-find "${XDG_CACHE_HOME:-$HOME/.cache}"/urls -mtime +2 -delete
+if ! test -s "$file" || ! test -f "$file"; then
+  echo "Failed to fetch url" >&1
+  head -n 1
+fi
+
+type=$(file -L -b "$file")
+echo "$type"
+
+gui 'HTML document|PDF document' firefox "$url"
+cmd 'HTML document' w3m "$url"
+cmd 'shell script' nano --view -Y sh "$file"
+gui 'image data' feh -. "$file"
+cmd 'image data' cacaview "$file"
+gui 'video' mpv --loop-file=inf "$file"
+cmd 'audio' mpv --no-video --loop-file=inf "$file"
+cmd 'text' less "$file"
+dmp '.*' hexdump -Cv "$file"
