@@ -12,7 +12,7 @@ set -g status-right ''
 set -g base-index 1
 
 set -g automatic-rename on
-set -g automatic-rename-format '#T'
+#set -g automatic-rename-format '#T'
 
 set -g window-status-separator ' '
 set -g window-status-format '/ #I:#W \'
