@@ -77,8 +77,9 @@ file://*)
 esac
 
 if ! test -s "$file" || ! test -f "$file"; then
-  echo "Failed to fetch url" >&1
+  echo "Failed to access file" >&1
   head -n 1
+  exit 1
 fi
 
 type=$(file -L -b "$file")
