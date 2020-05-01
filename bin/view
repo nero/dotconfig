@@ -38,7 +38,7 @@ dmp() {
   shift
   command -v "$1" >/dev/null 2>&1 || return
   (
-    echo "$type"
+    printf "[%s]\n" "$type"
     "$@"
   ) | less
   exit 0
@@ -94,5 +94,5 @@ gui 'image data' feh -. "$file"
 cmd 'image data' cacaview "$file"
 gui 'video|ISO Media' mpv --loop-file=inf "$file"
 cmd 'audio' mpv --no-video --loop-file=inf "$file"
-cmd 'text' less "$file"
+dmp 'text' cat -v "$file"
 dmp '.*' hexdump -Cv "$file"
