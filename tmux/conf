@@ -6,7 +6,7 @@ set -g set-titles-string "#h"
 set -g status-style "underscore"
 set -g status-position top
 set -g status-justify left
-set -g status-left '#{?client_prefix,#[bold],}#h #S '
+set -g status-left '#{?client_prefix,#[reverse],}#h #S '
 set -g status-right ''
 
 set -g base-index 1
