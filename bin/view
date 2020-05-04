@@ -82,7 +82,7 @@ if ! test -s "$file" || ! test -f "$file"; then
   exit 1
 fi
 
-type=$(file -L -b "$file")
+type=$(file -z -L -b "$file")
 echo "$type"
 
 gui 'HTML document|PDF document' firefox "$url"
@@ -94,5 +94,6 @@ gui 'image data' feh -. "$file"
 cmd 'image data' cacaview "$file"
 gui 'video|ISO Media' mpv --loop-file=inf "$file"
 cmd 'audio' mpv --no-video --loop-file=inf "$file"
+dmp 'tar archive' tar -tf "$file"
 dmp 'text' cat -v "$file"
 dmp '.*' hexdump -Cv "$file"
