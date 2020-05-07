@@ -1,0 +1,20 @@
+#!/bin/sh
+dest=${HOME}/archive/$(date +'%Y/%m')
+mkdir -p "$dest"
+
+if test -z "$1"; then
+  find . Downloads -maxdepth 1 -type f ! -name '.*' -mtime +2 -exec "$0" {} \;
+  exit
+fi
+
+while test -n "$1"; do
+  name=${1##*/}
+  unset num
+
+  while test -e "${dest}/${name}${num:+_$num}"; do
+    num=$(( $num + 1 ))
+  done
+
+  mv -v "$1" "${dest}/${name}${num:+_$num}"
+  shift
+done
