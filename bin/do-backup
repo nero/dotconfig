@@ -2,8 +2,17 @@
 # host, port and path come from the secrets store.
 # nobackup.txt declares files that i dont wish to be upgraded
 # if they exist on the remote, they are deleted there.
+
 eval "$(secrets get backup-conf)"
-rsync -avux -e "ssh -p${BACKUP_PORT}" --delete --modify-window=2 --no-specials \
-  --progress --exclude-from="$XDG_CONFIG_HOME/nobackup.txt" \
-  --delete-excluded \
+
+r() {
+  rsync -avux --modify-window=2 --no-specials --progress \
+    -e "ssh -p${BACKUP_PORT} -o'ControlMaster auto' -o'ControlPath ~/.ssh/%r@%h:%p.sck' -o'ControlPersist 10'" "$@"
+}
+
+# create a shallow copy of the home directory
+r --delete --delete-excluded --exclude-from="$XDG_CONFIG_HOME/nobackup.txt" \
   "$HOME/" "${BACKUP_USER}":home/"${HOSTNAME%%.*}"
+
+# add to the archive
+r "$HOME/archive" "${BACKUP_USER}":.
