@@ -3,7 +3,7 @@ dest=${HOME}/archive/$(date +'%Y/%m')
 mkdir -p "$dest"
 
 if test -z "$1"; then
-  find . Downloads -maxdepth 1 -type f ! -name '.*' -mtime +2 -exec "$0" {} \;
+  find . Downloads -maxdepth 1 -type f ! -name '.*' -exec "$0" {} \;
   exit
 fi
 
