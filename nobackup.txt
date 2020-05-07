@@ -33,6 +33,7 @@
 /.w3m
 /.wget-hsts
 /.wine
+/archive
 /Downloads
 /clip
 /snap
