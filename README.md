@@ -96,5 +96,6 @@ There is a `do-backup` script which does a rsync of `$HOME` to a storage machine
 It uses a long ignore list from `.config/nobackup.txt` to avoid caches, sensitive data and trash.
 The destination directory is host specific with delete propagation.
 This means when i delete a file locally, it is also deleted from the backup on the next `do-backup` run.
-The archive directory is backupped to a directory shared for all machines, files from there are never deleted.
+
+The archive directory special: it is backupped to a directory shared for all machines, files from there are never deleted.
 This is my `data dump` that i go digging in when im looking for things from earlier times.
