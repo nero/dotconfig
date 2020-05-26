@@ -96,6 +96,8 @@ echo "$type"
 # dmp = displayed by converting to text
 # First match wins
 
+gui 'PDF document' mupdf-gl "$file"
+gui 'PDF document' mupdf "$file"
 gui 'HTML document|PDF document' firefox "$url"
 cmd 'HTML document' w3m "$url"
 cmd 'HTML document' lynx "$url"
