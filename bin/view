@@ -64,10 +64,10 @@ https://www.youtube.com/watch?v=*|https://youtu.be/*|https://hooktube*)
   exec mpv --loop=inf "$url"
   ;;
 http://*.onion/*|https://*.onion/*)
-  fetch_via curl -sLvvv --socks5-hostname 127.0.0.1:9050 "$url"
+  fetch_via curl -Lvvv --socks5-hostname 127.0.0.1:9050 "$url"
   ;;
 http://*|https://*|gopher:*)
-  fetch_via curl -sLvvv "$url"
+  fetch_via curl -Lvvv "$url"
   ;;
 file://*)
   file="${url#file://}"
