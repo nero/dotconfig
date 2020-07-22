@@ -32,7 +32,7 @@ slformat() {
       tput tsl || return
       printf '%%s'
       tput fsl
-    ) | sed 's/\x1B/\\033/g;s/\x07/\\007/g'
+    ) 2>/dev/null | sed 's/\x1B/\\033/g;s/\x07/\\007/g'
     ;;
   esac
 }
