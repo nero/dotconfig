@@ -18,4 +18,4 @@ touch "${repo}/git-daemon-export-ok"
   git fetch -p origin
 )
 
-echo "git://$HOSTNAME/$USER/$name.git"
+echo "git://$(hostname -f)/$USER/$name.git"
