@@ -1,4 +1,6 @@
 #!/bin/sh
+cd "$HOME" || exit 1
+
 dest=${HOME}/archive/$(date +'%Y/%m')
 mkdir -p "$dest"
 
