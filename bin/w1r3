@@ -1,0 +1,2 @@
+#!/bin/sh
+curl -F upload=@"${1:--}" https://w1r3.net
