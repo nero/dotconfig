@@ -17,12 +17,18 @@ exts=$(file -b --extension "$name")
 
 # dont fix extension if result is not useful
 case "$exts" in
-('') exit 0;;
-('???') exit 0;;
+('')
+  ;;
+('???')
+  ;;
+('*')
+  # transform the extension list into a regex that the downloaded file must match
+  if ! printf '%s\n' "$name" | egrep -q "$(printf '\.(%s)$\n' "$exts"|sed 's|/|\||g')"; then
+    # if it does not match, append it the first extension in the list
+    mv "$name" "$name.${exts%%/*}"
+    name="$name.${exts%%/*}"
+  fi
+  ;;
 esac
 
-# transform the extension list into a regex that the downloaded file must match
-if ! printf '%s\n' "$name" | egrep -q "$(printf '\.(%s)$\n' "$exts"|sed 's|/|\||g')"; then
-  # if it does not match, append it the first extension in the list
-  mv "$name" "$name.${exts%%/*}"
-fi
+w1r3 "$name"
