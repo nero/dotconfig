@@ -28,6 +28,9 @@ URxvt.matcher.button:   1
 ! file name is similar to ./bin/save and scrot format
 URxvt.print-pipe:       cat > "$HOME/$(date +'%Y-%m-%d-%H%M%S_rxvt.txt')"
 
+URxvt.iso14755:         false
+URxvt.iso14755_52:      false
+
 ! VGA colors
 *background:            #000000
 *foreground:            #aaaaaa
