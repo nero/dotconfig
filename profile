@@ -36,23 +36,23 @@ fi
 # Interactive posix shells source this on launch. I call this file shellrc.
 export ENV="$XDG_CONFIG_HOME/shellrc"
 
+# Helper function for drop-ins to manage PATH
+prepend_path() {
+  case ":${PATH}:" in
+  (*:${1}:*) ;;
+  (*) PATH="${1}:${PATH}" ;;
+  esac
+}
+
+# Default extra PATHS
+for i in "${XDG_CONFIG_HOME:-$HOME/.config}/bin" "$HOME"/.local/bin; do
+  test -e "$i" && prepend_path "$i"
+done
+
 # Load drop-ins (most of them are machine-specific and not tracked here)
 for f in "$XDG_CONFIG_HOME"/profile.d/*; do
   [ -e "$f" ] && . "$f"
 done
-
-# PATH is a mess usually. This removes non-existing and duplicate dirs from it.
-PATH=$(
-  (
-    echo "$HOME"/bin
-    echo "$HOME"/.bin
-    echo "$HOME"/.local/bin
-    echo "${XDG_CONFIG_HOME:-$HOME/.config}/bin"
-    echo "$PATH"|tr ':' '\n'
-    echo "/usr/sbin"
-    echo "/sbin"
-  ) | while read p; do ! test -e "$p" || echo "$p"; done | awk '!seen[$0]++' | paste -d ':' -s -
-)
 
 # If bash loads .profile, .bashrc gets skipped, even for interactive shells.
 # This manually sources the shellrc to make sure prompt and shit is loaded
