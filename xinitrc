@@ -11,48 +11,9 @@ cmd_exists() {
 
 test -z "$DISPLAY" && fail "No display found"
 
-# Restore default xrandr settings (for multi-monitor setups)
-if test -x "$HOME/.screenlayout/default.sh"; then
-  . "$HOME/.screenlayout/default.sh"
-fi
-
-# Themeing
-xrdb "$XDG_CONFIG_HOME"/Xresources
-
-# Keyboard setup: disable caps lock
-setxkbmap us
-xmodmap - <<EOF
-clear Lock
-keycode 65 = space Multi_key space
-keycode 66 = Shift_L NoSymbol Shift_L
-EOF
-
-# Disable that annoying bell
-xset b off
-
-# Set wallpaper (yes, XPM images are actually C code)
-xsetroot -bg '#d2738a' -bitmap /dev/stdin <<EOF
-#define grey11_width 16
-#define grey11_height 16
-static char grey11_bits[] = {
-0xee,0xee,0x55,0x55,0xfb,0xfb,0x55,0x55,0xee,0xee,0x55,0x55,
-0xbf,0xbf,0x55,0x55,0xee,0xee,0x55,0x55,0xfb,0xfb,0x55,0x55,
-0xee,0xee,0x55,0x55,0xbf,0xbf,0x55,0x55};
-EOF
-
-# If being run from inside i3, restart i3
-case "$DESKTOP_STARTUP_ID" in
-(i3/*) i3-msg restart; exit 0;;
-esac
-
-# Bail out if window manager already running
-# This is required because i use this script to reload my settings
-test -n "$WINDOWID" && fail "Not starting another window manager"
-
-# Try around until we got something
-# If no sane WM found, run xorg with bare terminal.
-for session in i3 xfce4-session rxvt-unicode x-terminal-emulator xterm; do
-  cmd_exists "$session" && exec "$session"
+# Load drop-ins (most of them are machine-specific and not tracked here)
+for f in "$XDG_CONFIG_HOME"/xinitrc.d/*; do
+  [ -e "$f" ] && . "$f"
 done
 
-fail "$0 gives up"
+fail "$0 failed to launch graphical session"

@@ -1,0 +1,7 @@
+# Keyboard setup: disable caps lock
+setxkbmap us
+xmodmap - <<EOF
+clear Lock
+keycode 65 = space Multi_key space
+keycode 66 = Shift_L NoSymbol Shift_L
+EOF

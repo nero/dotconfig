@@ -1,0 +1,9 @@
+# Bail out if window manager already running
+# This is required because i use this script to reload my settings
+test -n "$WINDOWID" && fail "Not starting another window manager"
+
+# Try around until we got something
+# If no sane WM found, run xorg with bare terminal.
+for session in i3 xfce4-session rxvt-unicode x-terminal-emulator xterm; do
+  cmd_exists "$session" && exec "$session"
+done
