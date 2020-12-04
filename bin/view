@@ -24,7 +24,12 @@ fetch_via() {
 # long-running commands that require xorg
 gui() {
   test -n "$DISPLAY" || return
-  cmd "$@"
+  printf '%s\n' "$type"|grep -qiE "$1" || return
+  shift
+  command -v "$1" >/dev/null 2>&1 || return
+  setsid -f "$@" &
+  wait
+  exit
 }
 
 # long-running commands
