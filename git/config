@@ -2,6 +2,8 @@
 	defaultBranch = master
 [user]
 	useConfigOnly = true
+[pull]
+	ff = only
 [alias]
 	dog = log --all --decorate --oneline --graph
 	root = rev-parse --show-toplevel
