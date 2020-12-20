@@ -1,6 +1,6 @@
 #!/bin/sh
 # host, port and path come from the secrets store.
-# nobackup.txt declares files that i dont wish to be upgraded
+# nobackup.txt declares files that i dont wish to be backupped
 # if they exist on the remote, they are deleted there.
 
 eval "$(secrets get backup-conf)"
