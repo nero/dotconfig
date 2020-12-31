@@ -20,10 +20,12 @@ elif [ -n "$ZSH_VERSION" ]; then
   unsetopt menucomplete nomatch beep
 fi
 
-# Generate printf format to set terminal status line.
-# For emulators, this is the window title.
-# Empty in error case.
-slformat() {
+# load drop-ins
+for f in "$ENV".d/*; do
+  [ -e "$f" ] && . "$f"
+done
+
+PS1="\${PWD##*/}# \$(printf '$(
   case "$TERM" in
   (screen*|tmux*)
     printf '%s' "\033]0;%s\007"
@@ -35,11 +37,4 @@ slformat() {
     ) 2>/dev/null | sed 's/\x1B/\\033/g;s/\x07/\\007/g'
     ;;
   esac
-}
-
-# load drop-ins
-for f in "$ENV".d/*; do
-  [ -e "$f" ] && . "$f"
-done
-
-PS1="\${PWD##*/}# \$(printf '$(slformat)' \"\${PWD} - \${USER}@\${HOSTNAME}\" >&2)"
+)' \"\${PWD} - \${USER}@\${HOSTNAME}\" >&2)"
