@@ -5,9 +5,9 @@ case "$TERM" in
   stty iutf8
   [ -z "$LANG" ] && LANG=en_US.UTF-8
   ;;
-(vt*)
+(vt*|dumb)
   stty -iutf8
-  [ -z "$LANG" ] && LANG=en_US._
-  LANG=${LANG%%.*}.US-ASCII
+  export LANG=C
+  unset CHARSET
   ;;
 esac
