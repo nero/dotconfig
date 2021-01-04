@@ -1,6 +1,6 @@
 
 *faceName:              Monospace
-*faceSize:              12
+*faceSize:              11
 *internalBorder:        0
 
 UXTerm*metaSendsEscape: true
@@ -10,7 +10,7 @@ UXTerm.vt100.translations: #override \n\
 
 URxvt*scrollBar:        false
 URxvt*urgentOnBell:     true
-URxvt.font:             xft:Monospace:size=12
+URxvt.font:             xft:Monospace:size=11
 URxvt*termName:         rxvt-unicode
 URxvt.secondaryScreen:  1
 URxvt.secondaryScroll:  0
