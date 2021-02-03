@@ -5,7 +5,7 @@ magic "assembler source"
 
 color brightblue "^\S*:"
 color brightred "\s*%\S*"
-color brightgreen "^\s*section\S*"
+color brightgreen "^\s*(section|absolute)\S*"
 color cyan "\s*;.*$" "\s*//.*$"
 color brightyellow ""(\\.|[^"])*"" "'(\\.|[^'])*'"
 
