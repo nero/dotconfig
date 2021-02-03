@@ -9,10 +9,10 @@ set_from_resource $fgcol i3wm.color14 #55aa00
 set_from_resource $ugcol i3wm.color11 #ffff55
 set_from_resource $wkcol i3wm.color8 #333333
 
-exec exec i3-sensible-terminal
+exec exec newtab
 
 # basic keybinds
-bindcode $mod+36 exec exec i3-sensible-terminal
+bindcode $mod+36 exec exec newtab
 bindcode $mod+65 exec --no-startup-id i3-dmenu-desktop --entry-type=command
 bindcode $mod+54 exec --no-startup-id i3-msg restart
 bindcode $mod+31 exit

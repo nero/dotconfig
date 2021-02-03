@@ -27,9 +27,7 @@ gui() {
   printf '%s\n' "$type"|grep -qiE "$1" || return
   shift
   command -v "$1" >/dev/null 2>&1 || return
-  setsid "$@" &
-  sleep 1
-  exit
+  exec newtab "$@"
 }
 
 # long-running commands
