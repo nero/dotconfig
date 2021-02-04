@@ -37,8 +37,9 @@ elif test -n "$TMUX"; then
 	tmux new-window "$@"
 elif test -n "$DISPLAY" && cmd_exists urxvtd; then
 	export RXVT_SOCKET="${XDG_RUNTIME_DIR}/rxvt${DISPLAY}.sck"
-	if ! urxvtc -e "$@"; then
-		urxvtd -q -f -o
+	urxvtc -e "$@"
+	if [ $? -eq 2 ]; then
+		urxvtd -q -o -f
 		urxvtc -e "$@"
 	fi
 elif test -n "$DISPLAY" && cmd_exists urxvt; then
