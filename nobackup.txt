@@ -4,6 +4,7 @@
 .git/FETCH_HEAD
 .git/logs
 /*_history
+/*.history
 /.buildroot-ccache
 /.cache
 /.ccache
