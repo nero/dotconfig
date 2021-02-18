@@ -6,3 +6,4 @@ for cert in ~/.ssh/*-cert.pub; do
 	awk -v c=${cert##*/} -v n=$now -v e=$(date -d "$strdate" "+%s") \
           'BEGIN {d=(e-n) / (60*60*24); if (d<30) {printf("%s expires in %d days\n",c,d)}}'
 done
+unset now cert strdate

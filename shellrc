@@ -42,3 +42,5 @@ slformat="$(
 PS1='${PWD##*/}# '
 
 test -n "$slformat" && PS1="\$(printf '$slformat' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)$PS1"
+
+unset f slformat
