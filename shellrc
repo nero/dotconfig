@@ -25,7 +25,7 @@ for f in "$ENV".d/*; do
   [ -e "$f" ] && . "$f"
 done
 
-PS1="\${PWD##*/}# \$(printf '$(
+slformat="$(
   case "$TERM" in
   (screen*|tmux*)
     printf '%s' "\033]0;%s\007"
@@ -37,4 +37,8 @@ PS1="\${PWD##*/}# \$(printf '$(
     ) 2>/dev/null | sed 's/\x1B/\\033/g;s/\x07/\\007/g'
     ;;
   esac
-)' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)"
+)"
+
+PS1='${PWD##*/}# '
+
+test -n "$slformat" && PS1="\$(printf '$slformat' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)$PS1"
