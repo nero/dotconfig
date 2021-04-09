@@ -99,8 +99,8 @@ echo "$type"
 # dmp = displayed by converting to text
 # First match wins
 
-gui 'PDF document' mupdf-gl "$file"
-gui 'PDF document' mupdf "$file"
+gui 'PDF document' mupdf-gl -I "$file"
+gui 'PDF document' mupdf -I "$file"
 gui 'HTML document|PDF document' firefox "$url"
 gui 'HTML document' qutebrowser "$url"
 cmd 'HTML document' w3m -T text/html "$url"
