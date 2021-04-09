@@ -3,7 +3,7 @@
 syntax "asm" "\.(S|s|asm)$"
 magic "assembler source"
 
-color brightblue "^\S*:"
+color brightblue "^\S*"
 color brightred "\s*%\S*"
 color brightgreen "^\s*(section|absolute)\S*"
 color cyan "\s*;.*$" "\s*//.*$"
