@@ -31,13 +31,13 @@ URxvt.print-pipe:       cat > "$HOME/$(date +'%Y-%m-%d-%H%M%S_rxvt.txt')"
 URxvt.iso14755:         false
 URxvt.iso14755_52:      false
 
-! CGA colors
+! VGA colors
 *background:            #000000
 *foreground:            #aaaaaa
 *color0:                #000000
 *color1:                #aa0000
 *color2:                #00aa00
-*color3:                #aaaa00
+*color3:                #aa5500
 *color4:                #0000aa
 *color5:                #aa00aa
 *color6:                #00aaaa
