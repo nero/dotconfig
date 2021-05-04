@@ -1,0 +1,29 @@
+#!/bin/sh
+die() {
+	echo "$1" >&2
+	exit 1
+}
+
+test -z "$GIT_DIR" && test -d .git && export GIT_DIR=$PWD
+test -z "$GIT_DIR" && die "GIT_DIR not set"
+test -d "$GIT_DIR" || die "GIT_DIR invalid"
+
+sym() {
+	test -f "$HOME/$1" && ! test -L "$HOME/$1" && mv "$HOME/$1" "$HOME/$1.old"
+	ln -sfn "$GIT_DIR"/profile "$HOME/$1"
+	stat "$HOME/$1"
+}
+
+sym .profile profile
+
+case "$SHELL" in
+(*/bash)
+	sym .bashrc shellrc
+	;;
+(*/zsh)
+	sym .zprofile profile
+	sym .zinitrc shellrc
+	;;
+esac
+
+command -v tmux >/dev/null 2>&1 && sym .tmux.conf tmux/tmux.conf
