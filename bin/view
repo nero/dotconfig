@@ -59,6 +59,9 @@ case "$url" in
 https://pastebin.com/*)
   url=https://pastebin.com/raw/${1##https://pastebin.com/}
   ;;
+https://paste.debian.net/*)
+  url=https://paste.debian.net/plain/${1##https://paste.debian.net/}
+  ;;
 esac
 
 # some urls have special handling
