@@ -16,9 +16,10 @@ URxvt.secondaryScreen:  1
 URxvt.secondaryScroll:  0
 URxvt.intensityStyles:  true
 
-URxvt*colorBD:          #ffffff
-URxvt*colorIT:          #cccccc
-URxvt*colorUL:          #cccccc
+*colorBDMode:		true
+*colorBD:		#ffffff
+*colorIT:		#cccccc
+*colorUL:		#cccccc
 
 URxvt.perl-ext-common:  default,matcher,selection-to-clipboard
 URxvt.url-launcher:     xdg-open
