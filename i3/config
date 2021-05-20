@@ -17,7 +17,7 @@ bindcode $mod+65 exec --no-startup-id i3-dmenu-desktop --entry-type=command
 bindcode $mod+54 exec --no-startup-id i3-msg restart
 bindcode $mod+31 exit
 bindcode $mod+46 exec --no-startup-id i3lock
-bindcode $mod+30 exec --no-startup-id xdg-open $(xclip -o)
+bindcode $mod+30 exec --no-startup-id xdg-open "$(xclip -o)"
 bindcode $mod+32 exec --no-startup-id killall -9 firefox firefox-esr x-www-browser
 
 # compat keybinds
