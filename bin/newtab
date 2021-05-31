@@ -35,6 +35,8 @@ if test -n "$xorg"; then
 	setsid "$@" &
 elif test -n "$TMUX"; then
 	tmux new-window "$@"
+elif test -n "$DISPLAY" && cmd_exists xterm; then
+	setsid xterm -e "$@" &
 elif test -n "$DISPLAY" && cmd_exists urxvtd; then
 	export RXVT_SOCKET="${XDG_RUNTIME_DIR}/rxvt${DISPLAY}.sck"
 	urxvtc -e "$@"
@@ -44,8 +46,6 @@ elif test -n "$DISPLAY" && cmd_exists urxvtd; then
 	fi
 elif test -n "$DISPLAY" && cmd_exists urxvt; then
 	setsid urxvt -e "$@" &
-elif test -n "$DISPLAY" && cmd_exists xterm; then
-	setsid xterm -e "$@" &
 elif test -n "$DISPLAY" && cmd_exists i3-sensible-terminal; then
 	setsid i3-sensible-terminal -e "$@" &
 else
