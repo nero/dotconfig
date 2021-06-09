@@ -1,6 +1,6 @@
 
 *faceName:              Monospace
-*faceSize:              11
+*faceSize:              12
 *internalBorder:        0
 
 UXTerm*metaSendsEscape: true
