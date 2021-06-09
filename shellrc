@@ -27,7 +27,7 @@ done
 
 slformat="$(
   case "$TERM" in
-  (screen*|tmux*)
+  (screen*|tmux*|xterm*)
     printf '%s' "\033]0;%s\007"
     ;;
   (*) (
