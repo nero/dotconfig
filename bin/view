@@ -56,6 +56,8 @@ find "${XDG_CACHE_HOME:-$HOME/.cache}"/urls -mtime +2 -delete 2>/dev/null
 url="$1"
 # rewrite for shitty paste services
 case "$url" in
+https://pastebin.com/raw/*)
+  ;;
 https://pastebin.com/*)
   url=https://pastebin.com/raw/${1##https://pastebin.com/}
   ;;
