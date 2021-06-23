@@ -1,38 +1,9 @@
+*.faceName:             Monospace
+*.faceSize:             24
+Rxvt.font:              xft:Monospace:size=24
+*.internalBorder:       0
 
-*faceName:              Monospace
-*faceSize:              12
-*internalBorder:        0
-
-UXTerm*metaSendsEscape: true
-UXTerm*bellIsUrgent:    true
-UXTerm.vt100.translations: #override \n\
-        <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
-
-URxvt*scrollBar:        false
-URxvt*urgentOnBell:     true
-URxvt.font:             xft:Monospace:size=11
-URxvt*termName:         rxvt-unicode
-URxvt.secondaryScreen:  1
-URxvt.secondaryScroll:  0
-URxvt.intensityStyles:  true
-
-*colorBDMode:		true
-*colorBD:		#ffffff
-*colorIT:		#cccccc
-*colorUL:		#cccccc
-
-URxvt.perl-ext-common:  default,matcher,selection-to-clipboard
-URxvt.url-launcher:     xdg-open
-URxvt.matcher.button:   1
-
-! "PrintScreen" key causes screendump as monochrome txt file
-! file name is similar to ./bin/save and scrot format
-URxvt.print-pipe:       cat > "$HOME/$(date +'%Y-%m-%d-%H%M%S_rxvt.txt')"
-
-URxvt.iso14755:         false
-URxvt.iso14755_52:      false
-
-! VGA colors
+! EGA colors
 *background:            #000000
 *foreground:            #aaaaaa
 *color0:                #000000
@@ -51,3 +22,43 @@ URxvt.iso14755_52:      false
 *color13:               #ff55ff
 *color14:               #55ffff
 *color15:               #ffffff
+
+! hilight window on BEL char
+*.vt100.bellIsUrgent:   true
+Rxvt.urgentOnBell:      true
+
+! xterm specific
+*.vt100.metaSendsEscape: true
+*.vt100.translations: \
+    ~Meta Shift <KeyPress> Insert:insert-selection(PRIMARY, CUT_BUFFER0) \n\
+          ~Meta Ctrl Shift <Key>C:copy-selection(CLIPBOARD) \n\
+          ~Meta Ctrl Shift <Key>V:insert-selection(CLIPBOARD) \n\
+                 ~Meta <KeyPress>:insert() \n\
+                  Meta <KeyPress>:insert-eight-bit() \n\
+                  Ctrl <Btn1Down>:popup-menu(mainMenu) \n\
+                  Ctrl <Btn2Down>:popup-menu(vtMenu) \n\
+                  Ctrl <Btn3Down>:popup-menu(fontMenu) \n\
+                 ~Meta <Btn1Down>:select-start() \n\
+               ~Meta <Btn1Motion>:select-extend() \n\
+                   ~Meta <Btn1Up>:select-end(PRIMARY, CUT_BUFFER0) \n\
+           ~Ctrl ~Meta <Btn2Down>:ignore() \n\
+             ~Ctrl ~Meta <Btn2Up>:insert-selection(PRIMARY, CUT_BUFFER0) \n\
+                  Ctrl <Btn4Down>:larger-vt-font() \n\
+                       <Btn4Down>:scroll-back(5,line,m)     \n\
+                  Ctrl <Btn5Down>:smaller-vt-font() \n\
+                       <Btn5Down>:scroll-forw(5,line,m)
+
+! disable scrolling when using less or tmux
+Rxvt.secondaryScroll:   0
+Rxvt.scrollBar:         false
+
+! default letter spacing is larger than xterm
+Rxvt.letterSpace:       -1
+
+! disable all plugins
+Rxvt.perl-common:
+Rxvt.perl-ext-common:
+
+! disable character input by hexcode
+Rxvt.iso14755:          false
+Rxvt.iso14755_52:       false
