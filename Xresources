@@ -1,6 +1,6 @@
 *.faceName:             Monospace
-*.faceSize:             24
-Rxvt.font:              xft:Monospace:size=24
+*.faceSize:             12
+Rxvt.font:              xft:Monospace:size=12
 *.internalBorder:       0
 
 ! EGA colors
