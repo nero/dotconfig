@@ -1,6 +1,0 @@
-if cmd_exists i3; then
-  case "$DESKTOP_STARTUP_ID" in
-  (i3/*) i3-msg restart; exit 0;;
-  esac
-  exec i3
-fi
