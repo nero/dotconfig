@@ -13,7 +13,7 @@ exec exec newtab
 
 # basic keybinds
 bindcode $mod+36 exec exec newtab
-bindcode $mod+65 exec --no-startup-id i3-dmenu-desktop --entry-type=command
+bindcode $mod+65 exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn xft:$fname:size=$fsize" --entry-type=command
 bindcode $mod+54 exec --no-startup-id i3-msg restart
 bindcode $mod+31 exit
 bindcode $mod+46 exec --no-startup-id i3lock
