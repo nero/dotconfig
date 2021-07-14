@@ -1,6 +1,6 @@
 ## Syntax highlighting for PHP.
 
-syntax php "\.(php[23457s~]?|phtml|ctp)$"
+syntax "php" "\.(php[23457s~]?|phtml|ctp)$"
 magic "PHP script"
 comment "//"
 
