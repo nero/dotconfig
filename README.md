@@ -9,8 +9,9 @@ The profile defines `$ENV`, which defines which file will by sourced by interact
 Bash ignores `$ENV` in general and requires a `~/.bashrc` symlink to shellrc.
 In addition to that, bash also calls the `~/.bashrc` for non-interactive shells under certain circumstances, thats why the shellrc tests for -i.
 
-For xinit, a `~/.xinitrc` symlink needs to be created to point to `X/initrc`.
+For xinit, a `~/.xinitrc` symlink needs to be created to point to `xinitrc`.
 For tmux, the same needs to be done with `tmux.conf`.
+There is an `install` script in the root of this project to set up these symlinks automatically.
 
 ## Goals
 
@@ -53,23 +54,23 @@ Depending on the setup, i either create `.xinitrc` as a symlink to `.config/xini
 - apply monitor configuration as saved by arandr
 - load xresources from the repo
 - set keyboard layout + xmodmap fixes
-- fill background with pixel lattice
+- fill background with a pixel lattice
 - start i3 or fall back to xfce or plain terminal emulator
 
 The i3 setup shows o spaces and no window decorations.
 All windows are maximized, a single row on top of the screen displays the window titles in a browser-like tabbed fashion.
 
-Most of my activity happens in a rxvt-unicode terminal, but depending on the setup, i might use other emulators as well.
+Most of my activity happens in xterm, but depending on the setup, i might use other emulators as well.
 
 ## IRC
 
 I use mosh or plain ssh to connect to the machine which is hosting irssi in a tmux session.
 Notifications happen via the terminal bell, which propagates from irssi up to my window manager and causes the terminal title to turn to a bright color.
 
-## Clicking links
+## Opening links
 
-rxvt is configured to hilight links with a underscore and run `xdg-open` on them.
-`xdg-open` is a script from the repo in this case.
+I select links with the mouse curser and use a keyboard shortcut to feed them into `xdg-open`.
+`xdg-open` is a script from the repo.
 The name was intentionally chosen to override the systems default handler with the same name.
 
 `xdg-open` runs the `view` script in a new terminal window / tmux pane.
@@ -98,4 +99,4 @@ The destination directory is host specific with delete propagation.
 This means when i delete a file locally, it is also deleted from the backup on the next `do-backup` run.
 
 The archive directory special: it is backupped to a directory shared for all machines, files from there are never deleted.
-This is my `data dump` that i go digging in when im looking for things from earlier times.
+This is my "data dump" that i go digging in when im looking for things from earlier times.
