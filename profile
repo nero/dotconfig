@@ -12,7 +12,7 @@ export HOSTNAME=$(uname -n)
 
 # If $XDG_CONFIG_HOME is not set, read where the ~/.profile symlink points to
 # and guess directory from that. This is relevant if the etc repos is checked
-# in a place different from ~/.config.
+# out in a place different from ~/.config.
 if [ -z "$XDG_CONFIG_HOME" ]; then
   profile=$(readlink "$HOME/.profile")
   case "$profile" in
@@ -33,7 +33,7 @@ if [ -z "$XDG_RUNTIME_DIR" ]; then
   done
 fi
 
-# Interactive posix shells source this on launch. I call this file shellrc.
+# Interactive posix shells source $ENV on launch. I call this file shellrc.
 export ENV="$XDG_CONFIG_HOME/shellrc"
 
 # Helper function for drop-ins to manage PATH
@@ -44,10 +44,9 @@ prepend_path() {
   esac
 }
 
-# Default extra PATHS
-for i in "${XDG_CONFIG_HOME:-$HOME/.config}/bin" "$HOME"/.local/bin; do
-  test -e "$i" && prepend_path "$i"
-done
+# Default extra PATHs
+prepend_path "${XDG_CONFIG_HOME:-$HOME/.config}/bin"
+prepend_path "${HOME}/.local/bin"
 
 # Load drop-ins (most of them are machine-specific and not tracked here)
 for f in "$XDG_CONFIG_HOME"/profile.d/*; do
