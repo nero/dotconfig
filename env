@@ -1,0 +1,97 @@
+# Config for setting up the environment across all sessions/applications
+
+prepend_path() {
+  case ":${PATH}:" in
+  (*:${1}:*) ;;
+  (*) PATH="${1}:${PATH}" ;;
+  esac
+}
+
+is_interactive() {
+  case "$-" in
+    (*i*) return 0;;
+    (*) return 1;;
+  esac
+}
+
+# This is for like, really crappy environments
+[ -z "$USER" ]     && export USER=$(whoami)
+[ -z "$HOME" ]     && eval "export HOME=~$USER"
+[ -z "$LANG" ]     && export LANG=en.US.UTF-8
+
+# HOSTNAME is not in POSIX, but we will make it globally available
+export HOSTNAME=$(uname -n)
+
+# If $XDG_CONFIG_HOME is not set, read where the ~/.profile symlink points to
+# and guess directory from that. This is relevant if the etc repo is checked
+# out in a place different from ~/.config.
+if [ -z "$XDG_CONFIG_HOME" ]; then
+  profile=$(readlink "$HOME/.profile")
+  case "$profile" in
+    ('') ;;
+    (/*) export XDG_CONFIG_HOME="${profile%/*}" ;;
+    (*)  export XDG_CONFIG_HOME="$HOME/${profile%/*}" ;;
+  esac
+  unset profile
+fi
+
+# Guess some directory where i can store sockets and pid files
+# Like for ssh agent and connection multiplexing
+if [ -z "$XDG_RUNTIME_DIR" ]; then
+  for i in "/run/user/$(id -u)" "$HOME/.run/$HOSTNAME" "/tmp/$USER-run"; do
+    if mkdir -m 0700 -p "$i" 2>/dev/null && test -w "$i"; then
+      export XDG_RUNTIME_DIR=$i
+      break
+    fi
+  done
+fi
+
+# Make interactive shells source this file again
+test -z "$ENV" && export ENV="${XDG_CONFIG_HOME}/env"
+
+# Default extra PATHs
+prepend_path "${XDG_CONFIG_HOME}/bin"
+prepend_path "${HOME}/.local/bin"
+
+if is_interactive; then
+  if [ -n "$BASH_VERSION" ]; then
+    shopt -s checkwinsize
+  elif [ -n "$ZSH_VERSION" ]; then
+    setopt PROMPT_SUBST autolist noautomenu
+    unsetopt menucomplete nomatch beep
+  fi
+
+  export VISUAL=$(
+    for e in nano mcedit vi vim ed; do
+      hash "$e" >/dev/null 2>&1 && echo "$e" && break
+    done
+  )
+
+  case "$(ls --help 2>&1)" in
+  (*--color*) alias ls='ls --color=auto';;
+  esac
+
+  case "$(grep --help 2>&1)" in
+  (*--color*) alias grep='grep --color=auto';;
+  esac
+
+  case "$(feh --help 2>&1)" in
+  (*"man feh"*) alias feh='feh --output-dir "$HOME"';;
+  esac
+fi
+
+# load drop-ins
+for f in "$ENV".d/*; do
+  [ -e "$f" ] && . "$f"
+done
+unset f
+
+if is_interactive; then
+  PS1='${PWD##*/}# '
+  case "$TERM" in
+  (screen*|tmux*|xterm*|rxvt-*) PS1="\$(printf '\033]0;%s\007' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)$PS1";;
+  esac
+fi
+
+# clear out shit
+unset HUSHLOGIN WINDOWPATH XDG_SEAT XDG_SESSION_ID XDG_VTNR XTERM_LOCALE XTERM_SHELL XTERM_VERSION

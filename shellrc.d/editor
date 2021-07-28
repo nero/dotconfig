@@ -1,5 +1,0 @@
-export VISUAL=$(
-  for e in nano mcedit vi vim; do
-    hash "$e" >/dev/null 2>&1 && echo "$e" && break
-  done
-)

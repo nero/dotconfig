@@ -2,12 +2,7 @@
 
 This repository is for synchronizing my shell and i3 settings across machines.
 The checkout location is `$XDG_CONFIG_HOME`, which is usually equal to `$HOME/.config`.
-`~/.profile` is made a symlink to the checkout location.
-That also defines the value of `$XDG_CONFIG_HOME`.
-
-The profile defines `$ENV`, which defines which file will by sourced by interactive shells.
-Bash ignores `$ENV` in general and requires a `~/.bashrc` symlink to shellrc.
-In addition to that, bash also calls the `~/.bashrc` for non-interactive shells under certain circumstances, thats why the shellrc tests for -i.
+The `env` file is used both as .profile and rc file for interactive shells.
 
 For xinit, a `~/.xinitrc` symlink needs to be created to point to `xinitrc`.
 For tmux, the same needs to be done with `tmux.conf`.
@@ -36,13 +31,12 @@ There is an `install` script in the root of this project to set up these symlink
 
 ## Per-machine overrides
 
-Machine-specific fixes are placed in `profile.d/` and `shellrc.d/`.
-These directories are optional.
+Machine-specific fixes are placed in `env.d/`.
 
 ## Use in shell scripts
 
 Shell scripts started from background daemons like cron or init won't have the environment variables resulting from the login process and `profile`.
-Appending `-l` to the end of their shebang line will cause the executing shell to undergo this process and, in turn, also load the settings from `profile`.
+Appending `-l` to the end of their shebang line will cause the executing shell to undergo this process and, in turn, also load the settings from `env`.
 
 ## Xorg sessions
 

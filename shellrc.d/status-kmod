@@ -1,3 +1,0 @@
-if [ -n "$(ls /lib/modules 2>/dev/null)" ] && ! [ -d /lib/modules/$(uname -r) ]; then
-  echo "Kernel module disparity detected, reboot required"
-fi
