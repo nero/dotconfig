@@ -75,9 +75,7 @@ if is_interactive; then
   (*--color*) alias grep='grep --color=auto';;
   esac
 
-  case "$(feh --help 2>&1)" in
-  (*"man feh"*) alias feh='feh --output-dir "$HOME"';;
-  esac
+  alias feh='feh --output-dir "$HOME"';;
 fi
 
 # load drop-ins
