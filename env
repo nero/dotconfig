@@ -87,6 +87,7 @@ done
 unset f
 
 if is_interactive; then
+  unset PS1
   PS1='${PWD##*/}# '
   case "$TERM" in
   (screen*|tmux*|xterm*|rxvt-*) PS1="\$(printf '\033]0;%s\007' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)$PS1";;
