@@ -17,7 +17,7 @@ is_interactive() {
 # This is for like, really crappy environments
 [ -z "$USER" ]     && export USER=$(whoami)
 [ -z "$HOME" ]     && eval "export HOME=~$USER"
-[ -z "$LANG" ]     && export LANG=en.US.UTF-8
+[ -z "$LANG" ]     && export LANG=en_US.UTF-8
 
 # HOSTNAME is not in POSIX, but we will make it globally available
 export HOSTNAME=$(uname -n)
