@@ -117,6 +117,8 @@ cmd 'image data' cacaview "$file"
 gui 'video|ISO Media|WebM|Matroska' mpv --loop-file=inf "$file"
 cmd 'audio|layer III' mpv --no-video --loop-file=inf "$file"
 dmp 'tar archive' tar -tf "$file"
+dmp 'PEM certificate request' openssl req -in "$file" -text -noout -verify
+dmp 'PEM certificate' openssl x509 -in "$file" -text -noout
 gui 'PEM certificate' gcr-viewer "$file"
 dmp 'text' cat -v "$file"
 dmp '.*' hexdump -Cv "$file"
