@@ -78,19 +78,22 @@ if is_interactive; then
   alias feh='feh --output-dir "$HOME"'
 fi
 
+# short prompt with basename of PWD
+if is_interactive; then
+  unset PS1
+  PS1='${PWD##*/}# '
+  # window title is written via stderr, so its not included in the output of the evaluation
+  # this avoids confusing shells about where the cursor currently is
+  case "$TERM" in
+  (screen*|tmux*|xterm*|rxvt-*) PS1="\$(printf '\033]0;%s\007' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)$PS1";;
+  esac
+fi
+
 # load drop-ins
 for f in "$ENV".d/*; do
   [ -e "$f" ] && . "$f"
 done
 unset f
-
-if is_interactive; then
-  unset PS1
-  PS1='${PWD##*/}# '
-  case "$TERM" in
-  (screen*|tmux*|xterm*|rxvt-*) PS1="\$(printf '\033]0;%s\007' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)$PS1";;
-  esac
-fi
 
 # clear out shit
 unset \
