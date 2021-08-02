@@ -18,7 +18,7 @@ cachefile() {
 fetch_via() {
   file=$(cachefile "$url")
   test -s "$file" && return
-  "$@" > "${file}.$$" && mv "${file}.$$" "${file}"
+  "$@" > "${file}.$$" && mv "${file}.$$" "${file}" || rm "${file}.$$"
 }
 
 # long-running commands that require xorg
