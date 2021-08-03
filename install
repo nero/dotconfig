@@ -14,15 +14,15 @@ sym() {
 	ls -l "$HOME/$1"
 }
 
-sym .profile env
+sym .profile profile
 
 case "$SHELL" in
 (*/bash)
-	sym .bash_profile env
+	sym .bash_profile profile
 	sym .bashrc env
 	;;
 (*/zsh)
-	sym .zprofile env
+	sym .zprofile profile
 	sym .zinitrc env
 	;;
 esac
