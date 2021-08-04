@@ -18,11 +18,15 @@ sym() {
 	ls -l "$HOME/$1"
 }
 
+del() {
+	test -e "$HOME/$1" && mv "$HOME/$1" "$HOME/$1.old"
+}
+
 sym .profile profile
 
 case "$SHELL" in
 (*/bash)
-	sym .bash_profile profile
+	del .bash_profile
 	sym .bashrc env
 	;;
 (*/zsh)
