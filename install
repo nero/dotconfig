@@ -4,6 +4,10 @@ die() {
 	exit 1
 }
 
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
 test -z "$GIT_DIR" && test -d .git && export GIT_DIR=$PWD
 test -z "$GIT_DIR" && die "GIT_DIR not set"
 test -d "$GIT_DIR" || die "GIT_DIR invalid"
@@ -27,4 +31,8 @@ case "$SHELL" in
 	;;
 esac
 
-command -v tmux >/dev/null 2>&1 && sym .tmux.conf tmux/tmux.conf
+command_exists tmux && sym .tmux.conf tmux/tmux.conf
+
+if command_exists ssh && ! test -f ~/.ssh/id_ed25519; then
+  ssh-keygen -t ed25519
+fi
