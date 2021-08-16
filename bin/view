@@ -53,7 +53,12 @@ dmp() {
 # delete older files so they dont pile up
 find "${XDG_CACHE_HOME:-$HOME/.cache}"/urls -mtime +2 -delete 2>/dev/null
 
-url="$1"
+if test "$1" == "-"; then
+  url=$(head -n 1)
+else
+  url="$1"
+fi
+
 # rewrite for shitty paste services
 case "$url" in
 https://pastebin.com/raw/*)
