@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# graphical selection
+if command -v dmenu >/dev/null 2>&1 && test -n "$DISPLAY"; then
+  exec dmenu -i -l 25 -b ${WINDOWID:+-w $WINDOWID}
+fi
+
+# fzf is terminal-only
+if command -v fzf >/dev/null 2>&1; then
+  exec fzf --prompt='? '
+fi
+
+file=$(mktemp)
+cat >"$file"
+(
+  cat -n "$file"
+  printf '? ' >/dev/tty
+  read ans </dev/tty
+  sed "${ans}q;d" "$file"
+)
+rm "$file"
