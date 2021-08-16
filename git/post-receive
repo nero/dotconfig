@@ -1,0 +1,14 @@
+#!/bin/sh
+name=${PWD##*/}
+
+if test -e git-daemon-export-ok; then
+  for upstream in $(git config --get-all receive.mirror); do
+    url=$(printf "$upstream" "$name")
+    git push --all -f "${url}" &
+    git push --tags -f "${url}" &
+  done
+fi
+
+git update-server-info &
+
+wait
