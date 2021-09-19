@@ -33,7 +33,7 @@ if [ -z "$XDG_RUNTIME_DIR" ]; then
   unset i
 fi
 
-# Make interactive shells source this file again
+# Register config for interactive shells
 test -z "$ENV" && export ENV="${XDG_CONFIG_HOME}/env"
 test -e "$ENV" || unset ENV
 
