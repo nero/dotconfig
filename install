@@ -8,19 +8,23 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+sym() {
+	test -f "$1" && ! test -L "$1" && mv "$1" "$1.old"
+	ln -sfn "$GIT_DIR"/"$2" "$1"
+}
+
+del() {
+	test -e "$1" && mv "$1" "$1.old"
+}
+
 test -z "$GIT_DIR" && test -d .git && export GIT_DIR=$PWD
 test -z "$GIT_DIR" && die "GIT_DIR not set"
 test -d "$GIT_DIR" || die "GIT_DIR invalid"
 
-sym() {
-	test -f "$HOME/$1" && ! test -L "$HOME/$1" && mv "$HOME/$1" "$HOME/$1.old"
-	ln -sfn "$GIT_DIR"/"$2" "$HOME/$1"
-	ls -l "$HOME/$1"
-}
+cd "$HOME"
+GIT_DIR=${GIT_DIR#$HOME/}
 
-del() {
-	test -e "$HOME/$1" && mv "$HOME/$1" "$HOME/$1.old"
-}
+ln -sfn ../../install "$GIT_DIR"/.git/hooks/post-checkout
 
 sym .profile profile
 
