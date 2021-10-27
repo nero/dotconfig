@@ -2,7 +2,7 @@
 
 # graphical selection
 if command -v dmenu >/dev/null 2>&1 && test -n "$DISPLAY"; then
-  exec dmenu -i -l 25 -b ${WINDOWID:+-w $WINDOWID}
+  exec dmenu -i -l 25 -b
 fi
 
 # fzf is terminal-only
