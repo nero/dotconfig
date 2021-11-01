@@ -1,4 +1,2 @@
 #!/bin/sh
-# Run 'view' in a new tab, this script exists to override the distro-default
-# xdg-open. This catches clicks on urls in many GUI applications and urxvt.
-newtab -t view "$1"
+x-terminal-emulator -e "view \"$1\""

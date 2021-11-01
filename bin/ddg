@@ -1,4 +1,0 @@
-#!/bin/sh
-url="https://duckduckgo.com"
-test -n "$1" && url="${url}?q=$*"
-exec view "$url"

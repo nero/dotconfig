@@ -9,10 +9,10 @@ set $fgcol #d2738a
 set $ugcol #ffff55
 set $wkcol #333333
 
-exec exec newtab
+exec exec x-terminal-emulator
 
 # basic keybinds
-bindcode $mod+36 exec exec newtab
+bindcode $mod+36 exec exec x-terminal-emulator
 bindcode $mod+65 exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn xft:$fname:size=$fsize" --entry-type=command
 bindcode $mod+54 exec --no-startup-id i3-msg restart
 bindcode $mod+31 exit
