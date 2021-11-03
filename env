@@ -31,6 +31,9 @@ esac
 # feh stores 's' captures in $PWD per default, which i dont like
 alias feh='feh --output-dir "$HOME"'
 
+# usecase: fchanges; do make...; done
+fchanges='while inotifywait -e close_write .'
+
 # short prompt with basename of PWD
 unset PS1
 PS1='${PWD##*/}# '
