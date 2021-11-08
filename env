@@ -32,7 +32,7 @@ esac
 alias feh='feh --output-dir "$HOME"'
 
 # usecase: fchanges; do make...; done
-fchanges='while inotifywait -e close_write .'
+alias fchanges='while inotifywait -e close_write .'
 
 # short prompt with basename of PWD
 unset PS1
