@@ -41,7 +41,7 @@ for f in "$XDG_CONFIG_HOME"/xinitrc.d/*; do
 done
 unset f
 
-# Handle reload wiith i3
+# Handle reload with i3
 case "$DESKTOP_STARTUP_ID" in
 (i3/*) i3-msg restart && exit 0;;
 esac
