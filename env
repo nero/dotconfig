@@ -34,6 +34,9 @@ alias feh='feh --output-dir "$HOME"'
 # usecase: fchanges; do make...; done
 alias fchanges='while inotifywait -e close_write .'
 
+# disable .lesshst file
+alias less='LESSHISTFILE=- less'
+
 # short prompt with basename of PWD
 unset PS1
 PS1='${PWD##*/}# '
