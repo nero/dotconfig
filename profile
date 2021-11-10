@@ -47,6 +47,11 @@ prepend_path() {
 prepend_path "${XDG_CONFIG_HOME}/bin"
 prepend_path "${HOME}/.local/bin"
 
+# clear terminal on logout
+case "$-" in
+(*i*) trap clear EXIT;;
+esac
+
 # If bash loads .profile, .bashrc gets skipped, even for interactive shells.
 # This manually sources the shellrc to make sure prompt and such is loaded
 [ -n "$BASH_VERSION" ] && . "$ENV"
