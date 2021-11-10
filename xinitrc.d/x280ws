@@ -6,4 +6,8 @@ case "$(xrandr)" in
     --output VGA-2 --off \
     --output VGA-3 --off
   ;;
+(*'rdp0 connected 1920x1056'*)
+  xrandr \
+    --output rdp0 --mode 1920x1056 --pos 0x0 --fbmm 279x153
+  ;;
 esac
