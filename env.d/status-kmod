@@ -1,3 +1,10 @@
-if [ -n "$(ls /lib/modules 2>/dev/null)" ] && ! [ -d /lib/modules/$(uname -r) ]; then
-  echo "Kernel module disparity detected, reboot required"
-fi
+case "$(uname -s)" in
+(Linux)
+  kver=$(uname -r)
+  kmods="/lib/modules/$kver"
+  # in containers, dir '/' wont have inode 2
+  if test x$(stat -c %i /) = x2 && ! test -d "$kmods"; then
+    printf "Kernel %s running, but %s does not exist\n" "$kver" "$kmods"
+  fi
+  ;;
+esac
