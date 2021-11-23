@@ -42,8 +42,8 @@ done
 unset f
 
 # Handle reload with i3
-case "$DESKTOP_STARTUP_ID" in
-(i3/*) i3-msg restart && exit 0;;
+case "$I3SOCK/$DESKTOP_STARTUP_ID" in
+(*/i3/*) i3-msg restart && exit 0;;
 esac
 
 # Bail out if window manager already running
