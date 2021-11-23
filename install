@@ -40,7 +40,3 @@ case "$SHELL" in
 esac
 
 command_exists tmux && sym .tmux.conf tmux/tmux.conf
-
-if command_exists ssh-keygen && ! test -f ~/.ssh/id_ed25519; then
-  ssh-keygen -t ed25519
-fi
