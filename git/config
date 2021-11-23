@@ -9,3 +9,4 @@
 	root = rev-parse --show-toplevel
 	ffpull = pull --ff-only
 	ffmerge = merge --ff-only
+	whoami = var GIT_AUTHOR_IDENT
