@@ -1,0 +1,28 @@
+#!/bin/sh
+cd "$HOME"
+cmd='echo rm'
+test "$1" == '-f' && cmd='rm'
+
+for obj in $(cat <<EOF
+.*cache
+.thumbnails
+.local/share/Trash
+.local/share/*/*history*
+.local/share/gvfs-metadata
+.local/share/mc/filepos
+.local/share/mc/history
+.local/share/mc/mcedit/mcedit.clip
+.local/share/recently-used*
+.*history
+.lesshst
+.wget-hsts
+.w3m
+clip
+EOF
+); do
+  if test -d "$obj"; then
+    $cmd -rf "$obj"
+  elif test -f "$obj"; then
+    $cmd "$obj"
+  fi
+done
