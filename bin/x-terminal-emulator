@@ -9,7 +9,7 @@ cmd_exists() {
 }
 
 if cmd_exists xterm; then
-  exec xterm "$@"
+  exec xterm -maximized "$@"
 elif cmd_exists urxvtd; then
   export RXVT_SOCKET="${XDG_RUNTIME_DIR}/rxvt${DISPLAY}.sck"
   urxvtc "$@"
