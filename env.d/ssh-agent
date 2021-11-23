@@ -1,0 +1,18 @@
+# if im coming in via ssh+agent forwarding, use forwarded agent instead
+if [ -n "$SSH_CONNECTION" ] && [ -e "$SSH_AUTH_SOCK" ] && [ "$SSH_AUTH_SOCK" != "$XDG_RUNTIME_DIR/ssh-agent.sck" ]; then
+  ln -sfn "$SSH_AUTH_SOCK" "$XDG_RUNTIME_DIR/ssh-agent.sck"
+fi
+
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.sck"
+
+if grep -qr 'PRIVATE KEY' ~/.ssh; then
+  ssh-add -L >/dev/null 2>&1
+  case "$?" in
+  (2)
+    rm -f "$SSH_AUTH_SOCK"
+    eval $(ssh-agent -a "$SSH_AUTH_SOCK") >/dev/null
+    echo "$SSH_AGENT_PID" > "$XDG_RUNTIME_DIR"/ssh-agent.pid
+    ;;
+  esac
+  unset SSH_AGENT_PID
+fi
