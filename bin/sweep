@@ -1,7 +1,7 @@
 #!/bin/sh
 cd "$HOME"
 cmd='echo rm'
-test "$1" == '-f' && cmd='rm'
+test "$1" = '-f' && cmd='rm'
 
 for obj in $(cat <<EOF
 .*cache
