@@ -47,9 +47,14 @@ prepend_path() {
 prepend_path "${XDG_CONFIG_HOME}/bin"
 prepend_path "${HOME}/.local/bin"
 
-# clear terminal on logout
+# extra stuff if its both login & interactive
 case "$-" in
-(*i*) trap clear EXIT;;
+(*i*)
+  # print some kind of machine-identifying banner
+  uname -a
+  # clear screen upon exit
+  trap clear EXIT
+  ;;
 esac
 
 # If bash loads .profile, .bashrc gets skipped, even for interactive shells.
