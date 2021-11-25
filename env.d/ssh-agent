@@ -9,9 +9,11 @@ if grep -qr 'PRIVATE KEY' ~/.ssh; then
   ssh-add -L >/dev/null 2>&1
   case "$?" in
   (2)
+    # assume all old ssh agents to be dysfunctional, clear up
+    for pid in $(pgrep -U $USER ssh-agent); do kill $pid; done
     rm -f "$SSH_AUTH_SOCK"
+    # spawn a new one
     eval $(ssh-agent -a "$SSH_AUTH_SOCK") >/dev/null
-    echo "$SSH_AGENT_PID" > "$XDG_RUNTIME_DIR"/ssh-agent.pid
     ;;
   esac
   unset SSH_AGENT_PID
