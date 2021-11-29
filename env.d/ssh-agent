@@ -5,7 +5,7 @@ fi
 
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.sck"
 
-if grep -qr 'PRIVATE KEY' ~/.ssh; then
+if grep -qr 'PRIVATE KEY' ~/.ssh 2>/dev/null; then
   ssh-add -L >/dev/null 2>&1
   case "$?" in
   (2)
