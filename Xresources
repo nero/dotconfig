@@ -62,3 +62,6 @@ Rxvt.perl-ext-common:
 ! disable character input by hexcode
 Rxvt.iso14755:          false
 Rxvt.iso14755_52:       false
+
+! trim trailing spaces when using the clipboard
+*.trimSelection:	true
