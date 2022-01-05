@@ -20,6 +20,8 @@ elif cmd_exists urxvtd; then
   exit
 elif cmd_exists urxvt; then
   exec urxvt "$@"
+elif test -x /usr/bin/x-terminal-emulator; then
+  exec /usr/bin/x-terminal-emulator "@"
 else
   fail "No emulator found"
 fi
