@@ -35,6 +35,9 @@ EOF
 # Load Xresources
 xrdb "$XDG_CONFIG_HOME"/Xresources
 
+# Experimentally find a useful font size
+guess-fontsize
+
 # Load drop-ins (most of them are machine-specific and not tracked here)
 for f in "$XDG_CONFIG_HOME"/xinitrc.d/*; do
   [ -e "$f" ] && . "$f"
