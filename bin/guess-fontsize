@@ -3,14 +3,15 @@ set_font() {
   (
     printf "*.faceSize: %d\n" "$1"
     printf "Rxvt.font: xft:Monospace:size=%d\n" "$1"
-  ) | xrdb -merge
+  ) | xrdb -merge || fail "xrdb failed"
 }
 
 fail() {
-  echo "$1" >&2
+  printf "%s: %s\n" "$selfname" "$1" >&2
   exit 1
 }
 
+selfname=${0##*/}
 reference_fontsize=12
 target_cols=100
 
