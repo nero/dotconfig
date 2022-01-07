@@ -28,6 +28,7 @@
 /.w3m
 /.wget-hsts
 /.wine
+/.X*
 /archive
 /Downloads
 /clip
