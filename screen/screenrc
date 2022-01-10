@@ -1,13 +1,15 @@
 hardstatus on
 hardstatus alwayslastline
-hardstatus string "%{.bW}%-w%n:%t%+w %= %h %0C %d-%M-%y"
+hardstatus string "%{.g}screen %-w%n:%t%+w %= %H"
 
 windowlist string "%3n %t %h%=%f"
 altscreen on
 vbell off
 
-bind c screen 1
-bind ^c screen 1
-bind 0 select 10
+#bind c screen 1
+#bind ^c screen 1
+#bind 0 select 10
 
 startup_message off
+
+escape ^Bb
