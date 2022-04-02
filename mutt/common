@@ -1,0 +1,24 @@
+set ssl_starttls=yes
+set ssl_force_tls=yes
+
+set charset = "utf-8"
+set send_charset = "us-ascii:utf-8"
+set envelope_from=yes
+
+set index_format="%4C%Z %-15.15L %s"
+
+alternative_order text/plain text/html
+auto_view text/html
+
+ignore *
+unignore From
+unignore To
+unignore Subject
+unignore Cc
+unignore Date
+
+set sort="threads"
+set strict_threads="yes"
+
+set edit_headers=yes
+my_hdr Bcc: $from
