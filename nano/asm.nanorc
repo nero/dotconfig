@@ -1,6 +1,6 @@
 ## Here is an example for assembler.
 
-syntax "asm" "\.(S|s|asm|inc)$"
+syntax "asm" "\.(S|s|ASM|asm|INC|inc)$"
 magic "assembler source"
 
 color brightblue "^\S*"
