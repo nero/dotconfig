@@ -1,0 +1,8 @@
+#!/bin/sh
+target="${HOME}/storage"
+if test -e "${target}/.storage"; then
+  printf "storage already mounted\n"
+  exit 0
+fi
+mkdir -p "${target}"
+sshfs -o auto_unmount storage:. "${target}"

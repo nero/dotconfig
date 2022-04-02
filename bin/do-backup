@@ -1,13 +1,10 @@
 #!/bin/sh
-# host, port and path come from the secrets store.
 # filecat/ folder is used to classify files for not being backupped
 # if they exist on the remote, they are deleted there.
 
-eval "$(secrets get backup-conf)"
-
 r() {
   rsync -avux --modify-window=2 --no-specials --progress \
-    -e "ssh -p${BACKUP_PORT} -o'ControlMaster auto' -o'ControlPath ~/.ssh/%r@%h:%p.sck' -o'ControlPersist 10'" "$@"
+    -e "ssh -o'ControlMaster auto' -o'ControlPath ~/.ssh/%r@%h:%p.sck' -o'ControlPersist 10'" "$@"
 }
 
 # create a shallow copy of the home directory
@@ -15,7 +12,8 @@ r --delete --delete-excluded \
   --exclude-from="$XDG_CONFIG_HOME/filecat/ephemeral" \
   --exclude-from="$XDG_CONFIG_HOME/filecat/sensitive" \
   --exclude=/archive \
-  "$HOME/" "${BACKUP_USER}":home/"${HOSTNAME%%.*}"
+  --exclude=/storage \
+  "$HOME/" storage:home/"${HOSTNAME%%.*}"
 
 # add to the archive
-r "$HOME/archive" "${BACKUP_USER}":.
+r "$HOME/archive" storage:.

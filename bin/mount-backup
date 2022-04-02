@@ -1,7 +1,0 @@
-#!/bin/sh
-# the do-backup tool uses rsync to write the backup, this uses
-# sshfs to make it locally accessible.
-dir="$HOME"/backup
-mkdir -p "$dir"
-eval "$(secrets get backup-conf)"
-sshfs -p "${BACKUP_PORT}" "${BACKUP_USER}":. "$dir"
