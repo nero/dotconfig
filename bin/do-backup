@@ -1,6 +1,6 @@
 #!/bin/sh
 # host, port and path come from the secrets store.
-# nobackup.txt declares files that i dont wish to be backupped
+# filecat/ folder is used to classify files for not being backupped
 # if they exist on the remote, they are deleted there.
 
 eval "$(secrets get backup-conf)"
@@ -11,7 +11,10 @@ r() {
 }
 
 # create a shallow copy of the home directory
-r --delete --delete-excluded --exclude-from="$XDG_CONFIG_HOME/nobackup.txt" \
+r --delete --delete-excluded \
+  --exclude-from="$XDG_CONFIG_HOME/filecat/ephemeral" \
+  --exclude-from="$XDG_CONFIG_HOME/filecat/sensitive" \
+  --exclude=/archive \
   "$HOME/" "${BACKUP_USER}":home/"${HOSTNAME%%.*}"
 
 # add to the archive
