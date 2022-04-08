@@ -2,7 +2,7 @@
 
 This repository is for synchronizing my shell and i3 settings across machines.
 The checkout location is `$XDG_CONFIG_HOME`, which is usually equal to `$HOME/.config`.
-The `env` file is used both as .profile and rc file for interactive shells.
+The `env` file is used as environment for interactive shells.
 
 For xinit, a `~/.xinitrc` symlink needs to be created to point to `xinitrc`.
 For tmux, the same needs to be done with `tmux.conf`.
@@ -31,7 +31,7 @@ There is an `install` script in the root of this project to set up these symlink
 
 ## Per-machine overrides
 
-Machine-specific fixes are placed in `env.d/`.
+Machine-specific fixes are placed in `env.d/` or `profile.d/`.
 
 ## Use in shell scripts
 
@@ -47,6 +47,7 @@ Depending on the setup, i either create `.xinitrc` as a symlink to `.config/xini
 
 - load xresources
 - set keyboard layout + xmodmap fixes
+- start a sample terminal window to guess an appropiate font size
 - fill background with a pixel lattice
 - start i3 or fall back to xfce or plain terminal emulator
 
