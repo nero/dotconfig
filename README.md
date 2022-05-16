@@ -2,21 +2,20 @@
 
 This repository is for synchronizing my shell and i3 settings across machines.
 The checkout location is `$XDG_CONFIG_HOME`, which is usually equal to `$HOME/.config`.
-The `env` file is used as environment for interactive shells.
 
-For xinit, a `~/.xinitrc` symlink needs to be created to point to `xinitrc`.
-For tmux, the same needs to be done with `tmux.conf`.
-There is an `install` script in the root of this project to set up these symlinks automatically.
+There is an `./install` script that sets up some symlinks.
+For programs that look into `$XDG_CONFIG_HOME` on their own, no symlink is needed.
 
-## Goals
+# POSIX-compatible shells
 
-- Quick setup on new machines
-- Portable across bourne-like shells
-- Portable between terminal emulators
-- Consistent DE behavior across machines
-- Informative, but short prompt
+The `~/.profile` symlink serves as entry point during any login operation.
+It is pointing to the `profile` file of this repo.
+And login shell is supposed to source it.
 
-## Environment variable made available
+The `env` file serves as config file for interactive shells.
+Its function is to ensure a consistent setup across bourne shell variants.
+
+It makes sure the following environment variables have sensible values:
 
 - USER
 - HOME
@@ -27,21 +26,24 @@ There is an `install` script in the root of this project to set up these symlink
 - XDG_RUNTIME_DIR:
   Location for sockets, fifo's and pid files.
 - ENV:
-  Location of the rc file for interactive POSIX shells.
+  Location of the env file for interactive shells.
 
-## Per-machine overrides
+The PATH variable is updated to contain the `bin` directory.
 
-Machine-specific fixes are placed in `env.d/` or `profile.d/`.
+Bash and Zsh have own entrypoints, they are automatically set up as symlinks by the `./install` script if the respective shell is configured as login shell.
 
-## Use in shell scripts
+### Per-machine overrides
+
+Machine-specific fixes can be placed in `env.d/` or `profile.d/`.
+
+### Use in shell scripts
 
 Shell scripts started from background daemons like cron or init won't have the environment variables resulting from the login process and `profile`.
 Appending `-l` to the end of their shebang line will cause the executing shell to undergo this process and, in turn, also load the settings from `profile`.
 
-## Xorg sessions
+## Xorg with startx
 
-Depending on the setup, i either create `.xinitrc` as a symlink to `.config/xinitrc`, or create a custom `.xsession` file.
-`xsession` implements whatever is necessary to load my environment and chains to `xinitrc`.
+For this to work, a symlink `~/.xinitrc` pointing to the `xinitrc` file needs to be created.
 
 `xinitrc` does alot of things:
 
@@ -51,18 +53,30 @@ Depending on the setup, i either create `.xinitrc` as a symlink to `.config/xini
 - fill background with a pixel lattice
 - start i3 or fall back to xfce or plain terminal emulator
 
-The i3 setup shows no spaces and no window decorations.
-All windows are maximized, a single row on top of the screen displays the window titles in a browser-like tabbed fashion.
+## Xorg with Display Manager
 
-Most of my activity happens in xterm, but depending on the setup, i might use other emulators as well.
+This requires manual scripting.
+A custom `~/.xsession` or `~/.xsessionrc` chains to `xinitrc`, possibly after sourcing the `profile` to load the environment variables.
 
-## Opening links
+## i3
 
-I select links with the mouse curser and use a keyboard shortcut to feed them into `xdg-open`.
-`xdg-open` is a script from the repo.
-The name was intentionally chosen to override the systems default handler with the same name.
+i3 respects `$XDG_CONFIG_HOME` on its own and reads its config from `i3/config`.
 
-`xdg-open` runs the `view` script in a new terminal window / tmux pane.
+The setup is simple.
+All windows run maximized, only one bar at the top displays the titles of all windows.
+Windows are switched between by using the left Alt-Key and WASD, moved by additionally holding shift.
+A new terminal is launched using Alt+Enter.
+
+## x-terminal-emulator
+
+The repo overrides the system `x-terminal-emulator` with its own.
+Depending on whats available, xterm or urxvt is launched, with a fallback to the system-wide script if none was found.
+Both of these terminal emulators are configured with the same Xresources and are configured to behave similar.
+
+## xdg-open
+
+This repo ships an own `xdg-open` overriding the system one.
+It runs the `view` script in a new terminal window / tmux pane.
 `view` itself contains complex logic to display the contents of the url to me, usually via feh, mpv or by chaining to firefox.
 This includes displaying files of unknown type via hexdump, or showing text files via `less`.
-It also degrades nicely in functionality when there is no Xorg available.
+It also degrades nicely in functionality when there is no Xorg available, by resorting to command line programs.
