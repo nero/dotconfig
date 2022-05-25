@@ -1,0 +1,8 @@
+#!/bin/bash
+exec script -ec "$(
+  while test -n "$1"; do
+    printf "%s" "$1"|sed "s/'/'\\''/g;s/.*/'&'/"
+    printf " "
+    shift
+  done
+)" ~/$(date +%Y-%m-%d-%H%M%S_$$_script.txt)
