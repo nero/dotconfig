@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 test -n "$1" || set -- "$SHELL"
 exec script -ec "$(
   while test -n "$1"; do
