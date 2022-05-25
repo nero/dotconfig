@@ -1,4 +1,5 @@
 #!/bin/bash
+test -n "$1" || set -- "$SHELL"
 exec script -ec "$(
   while test -n "$1"; do
     printf "%s" "$1"|sed "s/'/'\\''/g;s/.*/'&'/"
