@@ -31,6 +31,7 @@ sym .profile profile
 case "$SHELL" in
 (*/bash)
 	del .bash_profile
+	del .bash_logout
 	sym .bashrc env
 	;;
 (*/zsh)
