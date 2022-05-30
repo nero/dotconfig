@@ -40,4 +40,10 @@ case "$SHELL" in
 	;;
 esac
 
+if command_exists tic; then
+  for i in "${GIT_DIR}"/terminfo/*.info; do
+    tic "$i"
+  done
+fi
+
 command_exists tmux && sym .tmux.conf tmux/tmux.conf
