@@ -1,9 +1,3 @@
 #!/bin/sh
 test -n "$1" || set -- "$SHELL"
-exec script -ec "$(
-  while test -n "$1"; do
-    printf "%s" "$1"|sed "s/'/'\\''/g;s/.*/'&'/"
-    printf " "
-    shift
-  done
-)" ~/$(date +%Y-%m-%d-%H%M%S_$$_script.txt)
+exec script -ec "$(argv "$@")" ~/$(date +%Y-%m-%d-%H%M%S_$$_script.txt)

@@ -1,0 +1,11 @@
+#!/bin/sh
+# does the reverse of the argument splitting done by the shell
+# takes a number of arguments and outputs them as a single string
+# example usecase: su -c "$(argv "$@")"
+# can also be used to diagnose quoting problems
+test $# -eq 0 && exit 0
+printf '%s\0' "$@" | tr '\n\0' '\0\n' | sed \
+  -e "s/'/'\\\\''/g" \
+  -e "s/^/'/" \
+  -e "s/\$/'/" | tr '\0\n' '\n '
+printf "\n"
