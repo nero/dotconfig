@@ -22,7 +22,7 @@ done
 set_font "$reference_fontsize"
 
 tmpfile=$(mktemp)
-x-terminal-emulator -e "tput cols > $tmpfile"
+x-terminal-emulator -e sh -c "tput cols > $tmpfile"
 reference_cols=$(cat "$tmpfile")
 rm "$tmpfile"
 
