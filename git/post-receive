@@ -1,5 +1,6 @@
 #!/bin/sh
 name=${PWD##*/}
+name=${name%.git}
 
 if test -e git-daemon-export-ok; then
   for upstream in $(git config --get-all receive.mirror); do
