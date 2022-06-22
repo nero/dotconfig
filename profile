@@ -51,7 +51,7 @@ prepend_path "${HOME}/.local/bin"
 case "$-" in
 (*i*)
   # print some kind of machine-identifying banner
-  uname -a
+  printf "%s %s\n" "$HOSTNAME" "$(busybox uptime)"
   # clear screen upon exit
   trap clear EXIT
   ;;
