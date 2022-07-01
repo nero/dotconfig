@@ -9,7 +9,7 @@ fi
 while test -n "$1"; do
   name=${1##*/}
 
-  folder=$(printf "%s\n" "$name"|awk -v d="$folder" -F- '/^[0-9]{4}-[01][0-9]-[0-3][0-9]-/ {print("/"$1"/"$2)}')
+  folder=$(printf "%s\n" "$name"|awk -v d="$folder" -F- '/^[0-9]+-[01][0-9]-[0-3][0-9]-/ {print("/"$1"/"$2)}')
   test -n "$folder" || folder=$(date +'/%Y/%m')
 
   unset num
