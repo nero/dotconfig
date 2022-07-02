@@ -6,7 +6,7 @@ The checkout location is `$XDG_CONFIG_HOME`, which is usually equal to `$HOME/.c
 There is an `./install` script that sets up some symlinks.
 For programs that look into `$XDG_CONFIG_HOME` on their own, no symlink is needed.
 
-# POSIX-compatible shells
+## POSIX-compatible shells
 
 The `~/.profile` symlink serves as entry point during any login operation.
 It is pointing to the `profile` file of this repo.
