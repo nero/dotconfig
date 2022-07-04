@@ -1,3 +1,7 @@
+---
+tag: $Format:%h$
+---
+
 # Personal dotconfig
 
 This repository is for synchronizing my shell and i3 settings across machines.
