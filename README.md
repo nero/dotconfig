@@ -7,8 +7,6 @@ tag: $Format:%h$
 This repository is for synchronizing my shell and i3 settings across machines.
 The checkout location is `$XDG_CONFIG_HOME`, which is usually equal to `$HOME/.config`.
 
-On systems with no git installed, the checkout is done via [tarball](archive/refs/heads/master.tar.gz).
-
 There is an `./install` script that sets up some symlinks.
 For programs that look into `$XDG_CONFIG_HOME` on their own, no symlink is needed.
 
