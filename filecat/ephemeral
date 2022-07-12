@@ -12,6 +12,7 @@
 /.buildroot-ccache
 /.cache
 /.ccache
+/.config/chromium
 /.getmail/oldmail-*
 /.lesshst
 /.local/cache
