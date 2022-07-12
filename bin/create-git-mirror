@@ -6,16 +6,21 @@ name="${name%.git}"
 
 repo="${HOME}/git/${name}.git"
 
+# create as bare repo
 git init --bare "$repo" || exit $?
 touch "${repo}/git-daemon-export-ok"
 
 (
   cd "$repo"
   git config remote.origin.url "$upstream"
+  # fetch heads and tags only
   git config --replace-all remote.origin.fetch "+refs/heads/*:refs/heads/*"
   git config --add remote.origin.fetch "+refs/tags/*:refs/tags/*"
+  # mark this remote to be fetched via update-git-mirrors
   git config remote.origin.mirror true
   git fetch -p origin
 )
 
+# suggest possible urls to use as remote
+echo "$USER@$(hostname -f):git/$name.git"
 echo "git://$(hostname -f)/$USER/$name.git"

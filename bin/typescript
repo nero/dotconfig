@@ -1,3 +1,5 @@
 #!/bin/sh
+# record a shell session or the output of a command
+# invocation: typescript [cmd] {args}
 test -n "$1" || set -- "$SHELL"
 exec script -ec "$(argv "$@")" ~/$(date +%Y-%m-%d-%H%M%S_$$_script.txt)

@@ -1,4 +1,6 @@
 #!/bin/sh
+# i keep a tiny collection of mirrored repositories on some hosts
+# this script updates them
 for repo in $HOME/git/*.git; do
   test -e "$repo" || continue
   name="${repo%/}"

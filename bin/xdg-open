@@ -1,2 +1,3 @@
 #!/bin/sh
-x-terminal-emulator -e "view \"$1\""
+# this script overwrites the systems xdg-open by showing up earlier in PATH
+x-terminal-emulator -e view "$1"
