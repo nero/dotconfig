@@ -3,6 +3,7 @@
 *.o
 .git/FETCH_HEAD
 .git/logs
+.venv
 /*.history
 /*_history
 /.*cache
