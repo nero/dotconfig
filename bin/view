@@ -81,7 +81,7 @@ https://www.youtube.com/watch?v=*|https://youtu.be/*|https://hooktube*)
 http://*.onion/*|https://*.onion/*)
   fetch_via curl -Lvvv --socks5-hostname 127.0.0.1:9050 "$url"
   ;;
-http://*|https://*|gopher:*)
+http://*|https://*|gopher:*|gophers:*)
   fetch_via curl -Lvvv "$url"
   ;;
 file://*)
