@@ -1,0 +1,5 @@
+#!/bin/sh
+# trigger the ci without having to write a commit message
+branch=$1
+test -n "$branch" || branch=ci$(stat -c %i $(git root))
+echo git push origin "$(git commit-tree -m "ci $(date)" $(git write-tree)):refs/heads/$branch"
