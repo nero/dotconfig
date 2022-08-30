@@ -47,6 +47,12 @@ case "$TERM" in
 (screen*|tmux*|xterm*|rxvt-*) PS1="\$(printf '\033]0;%s\007' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)$PS1";;
 esac
 
+# FreeBSD Almquist shell does not do parameter expansion in PS1
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=46441
+case "$0:$(uname -s)" in
+(sh:FreeBSD|-sh:FreeBSD) PS1='\W# '
+esac
+
 # load drop-ins
 for f in "$ENV".d/*; do
   [ -e "$f" ] && . "$f"
