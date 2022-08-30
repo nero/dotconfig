@@ -52,7 +52,7 @@ test -n "$WINDOWID" && fail "Not starting another window manager"
 
 # Try around until we got something
 # If no sane WM found, run xorg with bare terminal.
-for session in i3 xfce4-session xterm x-terminal-emulator rxvt-unicode; do
+for session in i3 xfce4-session x-terminal-emulator; do
   cmd_exists "$session" && exec "$session"
 done
 
