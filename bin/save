@@ -5,7 +5,7 @@ cd "$HOME" || exit 1
 
 url="$1"
 name=$(printf '%s\n' "$url"|sed 's/^.*\/\///;s/[^a-zA-Z0-9\%\-\@\^\.]/_/g;s/__+/_/g')
-if ! wget -O "$name" "$1"; then
+if ! nfetch "$1" > "$name"; then
   # download failed, because wget already opened it, its now an empty file
   # remove it
   rm "$name"
@@ -21,7 +21,7 @@ case "$exts" in
   ;;
 ('???')
   ;;
-('*')
+(*)
   # transform the extension list into a regex that the downloaded file must match
   if ! printf '%s\n' "$name" | egrep -q "$(printf '\.(%s)$\n' "$exts"|sed 's|/|\||g')"; then
     # if it does not match, append it the first extension in the list
