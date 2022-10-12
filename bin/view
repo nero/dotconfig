@@ -7,18 +7,10 @@
 
 # create a temporary file to store contents in
 cachefile() {
-  hash=$(printf "%s" "$1"|md5sum|cut -d' ' -f1)
+  hash=$(printf "%s" "$1"|sed 's/^.*\/\///;s/[^a-zA-Z0-9\%\-\@\^\.]/_/g;s/__+/_/g')
   name="${XDG_CACHE_HOME:-$HOME/.cache}"/urls/"$hash"
   mkdir -p "${name%/*}"
   printf "%s\n" "$name"
-}
-
-# load url via command
-# contents are transferred via stdout
-fetch_via() {
-  file=$(cachefile "$url")
-  test -s "$file" && return
-  "$@" > "${file}.$$" && mv "${file}.$$" "${file}" || rm "${file}.$$"
 }
 
 # long-running commands that require xorg
@@ -61,15 +53,12 @@ else
   url="$1"
 fi
 
-# rewrite for shitty paste services
 case "$url" in
-https://pastebin.com/raw/*)
+(ISBN*)
+  url="isbn:$(printf "%s" "$url"|grep -o -E "[0-9\-]{10,}")"
   ;;
-https://pastebin.com/*)
-  url=https://pastebin.com/raw/${1##https://pastebin.com/}
-  ;;
-https://paste.debian.net/*)
-  url=https://paste.debian.net/plain/${1##https://paste.debian.net/}
+(10.1*/*-*|10.1*/*.*)
+  url="doi:${url}"
   ;;
 esac
 
@@ -78,18 +67,18 @@ case "$url" in
 https://www.youtube.com/watch?v=*|https://youtu.be/*|https://hooktube*)
   exec mpv --loop=inf "$url"
   ;;
-http://*.onion/*|https://*.onion/*)
-  fetch_via curl -Lvvv --socks5-hostname 127.0.0.1:9050 "$url"
-  ;;
-*://*)
-  fetch_via curl -Lvvv "$url"
-  ;;
 file://*)
   file="${url#file://}"
   ;;
 /*)
   file="$url"
   url="file://$url"
+  ;;
+*://*|doi:*|isbn:*)
+  file=$(cachefile "$url")
+  if ! test -s "$file"; then
+    nfetch "$url" > "${file}.$$" && mv "${file}.$$" "${file}" || rm "${file}.$$"
+  fi
   ;;
 *)
   file="$PWD/$url"
@@ -98,7 +87,7 @@ file://*)
 esac
 
 if ! test -s "$file" || ! test -f "$file"; then
-  echo "Failed to access file" >&1
+  echo "Failed to access file: ${url}" >&1
   head -n 1
   exit 1
 fi
