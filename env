@@ -7,10 +7,12 @@ case "$-" in
   (*) return;;
 esac
 
+# instruct whacky shells to follow POSIX expansion rules for PS1
 if [ -n "$BASH_VERSION" ]; then
-  shopt -s checkwinsize
+  set -o posix
 elif [ -n "$ZSH_VERSION" ]; then
-  setopt PROMPT_SUBST autolist noautomenu
+  setopt PROMPT_SUBST PROMPT_BANG autolist noautomenu
+  # also unset the whacky autocompletion shit
   unsetopt menucomplete nomatch beep
 fi
 
@@ -39,7 +41,7 @@ alias less='LESSHISTFILE=- less'
 
 # short prompt with basename of PWD
 unset PS1
-PS1='${PWD##*/}# '
+PS1='! ${PWD##*/}# '
 
 # window title is written via stderr, so its not included in the output of the evaluation
 # this avoids confusing shells about where the cursor currently is
