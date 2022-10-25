@@ -41,7 +41,7 @@ alias less='LESSHISTFILE=- less'
 
 # short prompt with basename of PWD
 unset PS1
-PS1='! ${PWD##*/}# '
+PS1='${PWD##*/}# '
 
 # window title is written via stderr, so its not included in the output of the evaluation
 # this avoids confusing shells about where the cursor currently is
