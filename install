@@ -18,7 +18,7 @@ del() {
   test -e "$1" && mv "$1" "$1.old"
 }
 
-test -z "$GIT_DIR" && GIT_DIR=$(dirname "$(readlink -f "$PWD/$0")")
+test -z "$GIT_DIR" && GIT_DIR="$(dirname "$PWD/$0")"
 test -z "$GIT_DIR" && die "GIT_DIR not set"
 test -d "$GIT_DIR" || die "GIT_DIR invalid"
 
