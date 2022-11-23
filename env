@@ -7,15 +7,6 @@ case "$-" in
   (*) return;;
 esac
 
-# instruct whacky shells to follow POSIX expansion rules for PS1
-if [ -n "$BASH_VERSION" ]; then
-  set -o posix
-elif [ -n "$ZSH_VERSION" ]; then
-  setopt PROMPT_SUBST PROMPT_BANG autolist noautomenu
-  # also unset the whacky autocompletion shit
-  unsetopt menucomplete nomatch beep
-fi
-
 export VISUAL=$(
   for e in nano mcedit vi vim ed; do
     hash "$e" >/dev/null 2>&1 && echo "$e" && break
@@ -43,16 +34,28 @@ alias less='LESSHISTFILE=- less'
 unset PS1
 PS1='${PWD##*/}# '
 
-# window title is written via stderr, so its not included in the output of the evaluation
-# this avoids confusing shells about where the cursor currently is
-case "$TERM" in
-(screen*|tmux*|xterm*|rxvt-*) PS1="\$(printf '\033]0;%s\007' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)$PS1";;
-esac
-
 # FreeBSD Almquist shell does not do parameter expansion in PS1
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=46441
 case "$0:$(uname -s)" in
 (sh:FreeBSD|-sh:FreeBSD) PS1='\W# '
+esac
+
+# bash needs to be instructed to follow POSIX
+if [ -n "$BASH_VERSION" ]; then
+  set -o posix
+fi
+
+# zsh ditto, except more retarded
+if [ -n "$ZSH_VERSION" ]; then
+  setopt PROMPT_SUBST PROMPT_BANG autolist noautomenu
+  # also unset the whacky autocompletion shit
+  unsetopt menucomplete nomatch beep
+fi
+
+# window title is written via stderr, so its not included in the output of the evaluation
+# this avoids confusing shells about where the cursor currently is
+case "$TERM" in
+(screen*|tmux*|xterm*|rxvt-*) PS1="\$(printf '\033]0;%s\007' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)$PS1";;
 esac
 
 # load drop-ins
