@@ -34,28 +34,38 @@ alias less='LESSHISTFILE=- less'
 unset PS1
 PS1='${PWD##*/}# '
 
+# PROMPT_COMMAND is normally bash-specific, but we make other shells also eval it
+unset PROMPT_COMMAND
+PROMPT_COMMAND="case \$? in (0) ;; (*) echo [\$?];; esac;"
+
+# some emulators support changing the window title via escape sequence
+case "$TERM" in
+(screen*|tmux*|xterm*|rxvt-*) PROMPT_COMMAND=${PROMPT_COMMAND}'printf "\033]0;%s\007" "${PWD##*/} - ${USER}@${HOSTNAME}";';;
+esac
+
+if test -n "$COLUMNS"; then
+  PROMPT_COMMAND=${PROMPT_COMMAND}'printf "%${COLUMNS}s\\r" "";'
+elif command -v tput >/dev/null 2>&1; then
+  PROMPT_COMMAND=${PROMPT_COMMAND}'printf "%$(tput cols)s\\r" "";'
+fi
+
+if [ -n "$BASH_VERSION" ]; then
+  set -o posix
+elif [ -n "$ZSH_VERSION" ]; then
+  setopt PROMPT_SUBST PROMPT_BANG autolist noautomenu
+  # also unset the whacky autocompletion shit
+  unsetopt menucomplete nomatch beep
+  precmd() {
+    eval "$PROMPT_COMMAND"
+  }
+else
+  PS1="\$(eval \"\$PROMPT_COMMAND\" >&2)$PS1"
+fi
+
 # FreeBSD Almquist shell does not do parameter expansion in PS1
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=46441
 case "$0:$(uname -s)" in
 (sh:FreeBSD|-sh:FreeBSD) PS1='\W# '
-esac
-
-# bash needs to be instructed to follow POSIX
-if [ -n "$BASH_VERSION" ]; then
-  set -o posix
-fi
-
-# zsh ditto, except more retarded
-if [ -n "$ZSH_VERSION" ]; then
-  setopt PROMPT_SUBST PROMPT_BANG autolist noautomenu
-  # also unset the whacky autocompletion shit
-  unsetopt menucomplete nomatch beep
-fi
-
-# window title is written via stderr, so its not included in the output of the evaluation
-# this avoids confusing shells about where the cursor currently is
-case "$TERM" in
-(screen*|tmux*|xterm*|rxvt-*) PS1="\$(printf '\033]0;%s\007' \"\${PWD##*/} - \${USER}@\${HOSTNAME}\" >&2)$PS1";;
 esac
 
 # load drop-ins
