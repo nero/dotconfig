@@ -57,6 +57,12 @@ case "$-" in
   ;;
 esac
 
+# load drop-ins
+for f in "$XDG_CONFIG_HOME"/profile.d/*; do
+  [ -e "$f" ] && . "$f"
+done
+unset f
+
 # If bash loads .profile, .bashrc gets skipped, even for interactive shells.
 # This manually sources the shellrc to make sure prompt and such is loaded
 [ -n "$BASH_VERSION" ] && . "$ENV"
