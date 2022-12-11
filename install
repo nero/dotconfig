@@ -9,21 +9,21 @@ command_exists() {
 }
 
 sym() {
-  test -e "$GIT_DIR"/"$2"
+  test -e "$GIT_WORK_TREE"/"$2"
   test -f "$1" && ! test -L "$1" && mv "$1" "$1.old"
-  ln -sfn "$GIT_DIR"/"$2" "$1"
+  ln -sfn "$GIT_WORK_TREE"/"$2" "$1"
 }
 
 del() {
   test -e "$1" && mv "$1" "$1.old"
 }
 
-test -z "$GIT_DIR" && GIT_DIR="$(dirname "$PWD/$0")"
-test -z "$GIT_DIR" && die "GIT_DIR not set"
-test -d "$GIT_DIR" || die "GIT_DIR invalid"
+test -z "$GIT_WORK_TREE" && GIT_WORK_TREE="$(dirname "$PWD/$0")"
+test -z "$GIT_WORK_TREE" && die "GIT_WORK_TREE not set"
+test -d "$GIT_WORK_TREE" || die "GIT_WORK_TREE invalid"
 
 cd "$HOME"
-GIT_DIR=${GIT_DIR#$HOME/}
+GIT_WORK_TREE=${GIT_WORK_TREE#$HOME/}
 
 # startup files for shells
 sym .profile profile
@@ -40,14 +40,14 @@ case "$SHELL" in
 esac
 
 # automatic invocation of this script on git checkout
-if test -d "$GIT_DIR"/.git; then
-  ln -sfn ../../install "$GIT_DIR"/.git/hooks/post-checkout
+if test -d "$GIT_WORK_TREE"/.git; then
+  ln -sfn ../../install "$GIT_WORK_TREE"/.git/hooks/post-checkout
 fi
 
 # compile & install my own terminal types
 # tic is part of ncurses
 if command_exists tic; then
-  for i in "$GIT_DIR"/terminfo/*.info; do
+  for i in "$GIT_WORK_TREE"/terminfo/*.info; do
     tic "$i"
   done
 fi
