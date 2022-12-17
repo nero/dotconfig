@@ -44,13 +44,5 @@ if test -d "$GIT_WORK_TREE"/.git; then
   ln -sfn ../../install "$GIT_WORK_TREE"/.git/hooks/post-checkout
 fi
 
-# compile & install my own terminal types
-# tic is part of ncurses
-if command_exists tic; then
-  for i in "$GIT_WORK_TREE"/terminfo/*.info; do
-    tic "$i"
-  done
-fi
-
 # tmux config
 command_exists tmux && sym .tmux.conf tmux/tmux.conf
