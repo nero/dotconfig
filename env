@@ -56,7 +56,7 @@ elif [ -n "$ZSH_VERSION" ]; then
     eval "$PROMPT_COMMAND"
   }
 else
-  PS1="\$(eval \"\$PROMPT_COMMAND\" >&2)$PS1"
+  PS1='$(eval "$PROMPT_COMMAND" >&2)'$PS1
 fi
 
 # FreeBSD Almquist shell does not do parameter expansion in PS1
