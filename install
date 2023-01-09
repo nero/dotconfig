@@ -4,42 +4,6 @@ die() {
   exit 1
 }
 
-command_exists() {
-  command -v "$1" >/dev/null 2>&1
-}
-
-sym() {
-  test -e "$GIT_WORK_TREE"/"$2"
-  test -f "$1" && ! test -L "$1" && mv "$1" "$1.old"
-  ln -sfn "$GIT_WORK_TREE"/"$2" "$1"
-}
-
-del() {
-  test -e "$1" && mv "$1" "$1.old"
-}
-
-test -z "$GIT_WORK_TREE" && GIT_WORK_TREE="$(dirname "$PWD/$0")"
-test -z "$GIT_WORK_TREE" && die "GIT_WORK_TREE not set"
-test -d "$GIT_WORK_TREE" || die "GIT_WORK_TREE invalid"
-
-cd "$HOME"
-GIT_WORK_TREE=${GIT_WORK_TREE#$HOME/}
-
-# startup files for shells
-sym .profile profile
-case "$SHELL" in
-(*/bash)
-  del .bash_profile
-  del .bash_logout
-  sym .bashrc env
-  ;;
-(*/zsh)
-  sym .zprofile profile
-  sym .zshrc env
-  ;;
-esac
-
-# automatic invocation of this script on git checkout
-if test -d "$GIT_WORK_TREE"/.git; then
-  ln -sfn ../../install "$GIT_WORK_TREE"/.git/hooks/post-checkout
-fi
+cfg="$(dirname "$PWD/${0#./}")"
+cfg=${cfg#$HOME/}
+cd "${HOME}" && ln -sfn "${cfg}"/profile "${HOME}"/.profile

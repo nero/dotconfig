@@ -35,7 +35,16 @@ fi
 
 # Register config for interactive shells
 test -z "$ENV" && export ENV="${XDG_CONFIG_HOME}/env"
-test -e "$ENV" || unset ENV
+
+# These shells cant be arsed to look in $ENV
+if [ -n "$BASH_VERSION" ]; then
+  # Make this shell look after $ENV
+  set -o posix
+  # For later, non-login shells
+  test -e "$HOME/.bashrc" || ln -sn "$ENV" "$HOME/.bashrc"
+elif [ -n "$ZSH_VERSION" ]; then
+  test -e "$HOME/.zshrc" || ln -sn "$ENV" "$HOME/.zshrc"
+fi
 
 # Default extra PATHs
 prepend_path() {
@@ -62,7 +71,3 @@ for f in "$XDG_CONFIG_HOME"/profile.d/*; do
   [ -e "$f" ] && . "$f"
 done
 unset f
-
-# If bash loads .profile, .bashrc gets skipped, even for interactive shells.
-# This manually sources the shellrc to make sure prompt and such is loaded
-[ -n "$BASH_VERSION" ] && . "$ENV"
