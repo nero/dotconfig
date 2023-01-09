@@ -27,6 +27,9 @@ alias feh='feh --output-dir "$HOME"'
 # disable .lesshst file
 alias less='LESSHISTFILE=- less'
 
+# bend over tmux so the symlink in $HOME is not required anymore
+alias tmux='tmux -f "${XDG_CONFIG_HOMES:-$HOME/.config}/tmux/tmux.conf"'
+
 # short prompt with basename of PWD
 unset PS1
 PS1='${PWD##*/}# '

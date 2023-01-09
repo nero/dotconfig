@@ -43,6 +43,3 @@ esac
 if test -d "$GIT_WORK_TREE"/.git; then
   ln -sfn ../../install "$GIT_WORK_TREE"/.git/hooks/post-checkout
 fi
-
-# tmux config
-command_exists tmux && sym .tmux.conf tmux/tmux.conf
