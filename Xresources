@@ -25,8 +25,8 @@
 *color14:               #55ffff
 *color15:               #ffffff
 
-! if ttf supported, use first ttf monospace font
-xterm*faceName:         mono
+! if this font is not found, xterm falls back to the next best monospace ttf
+xterm*faceName:         xft:PxPlus IBM VGA 8x16
 
 ! padding between window border and buffer
 xterm*internalBorder:   0
