@@ -1,9 +1,11 @@
-*.faceName:             Monospace
-*.faceSize:             12
-Rxvt.font:              xft:Monospace:size=12
-*.internalBorder:       0
+! these Xresources are used by:
+! i3wm, as configured in i3/config
+! xterm, see xterm(1)
+! urxvt, see urxvt(1), sharing some settings with xterm
 
-! EGA colors
+*.faceSize:             12
+
+! EGA colors (yellow is brown plus intensity bit)
 *background:            #000000
 *foreground:            #aaaaaa
 *color0:                #000000
@@ -23,13 +25,27 @@ Rxvt.font:              xft:Monospace:size=12
 *color14:               #55ffff
 *color15:               #ffffff
 
-! hilight window on BEL char
-*.vt100.bellIsUrgent:   true
-Rxvt.urgentOnBell:      true
+! if ttf supported, use first ttf monospace font
+xterm*faceName:         mono
 
-! xterm specific
-*.vt100.metaSendsEscape: true
-*.vt100.translations: \
+! padding between window border and buffer
+xterm*internalBorder:   0
+
+! Show bold attribute as color, not font weight
+xterm*colorBDMode:      true
+xterm*colorBD:          #ffffff
+
+! hilight window on ascii bell
+xterm*bellIsUrgent:     true
+
+! programs need to see the alt key
+xterm*metaSendsEscape:  true
+
+! trim trailing spaces when using the clipboard
+xterm*trimSelection:    true
+
+! re-do the keybinds with conventional values from other terms
+xterm*vt100.translations: \
     ~Meta Shift <KeyPress> Insert:insert-selection(PRIMARY, CUT_BUFFER0) \n\
           ~Meta Ctrl Shift <Key>C:copy-selection(CLIPBOARD) \n\
           ~Meta Ctrl Shift <Key>V:insert-selection(CLIPBOARD) \n\
@@ -48,6 +64,11 @@ Rxvt.urgentOnBell:      true
                   Ctrl <Btn5Down>:smaller-vt-font() \n\
                        <Btn5Down>:scroll-forw(5,line,m)
 
+Rxvt.font:              xft:Monospace:size=12
+
+! hilight window on BEL char
+Rxvt.urgentOnBell:      true
+
 ! disable scrolling when using less or tmux
 Rxvt.secondaryScroll:   0
 Rxvt.scrollBar:         false
@@ -62,6 +83,3 @@ Rxvt.perl-ext-common:
 ! disable character input by hexcode
 Rxvt.iso14755:          false
 Rxvt.iso14755_52:       false
-
-! trim trailing spaces when using the clipboard
-*.trimSelection:	true
