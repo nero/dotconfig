@@ -3,6 +3,8 @@
 ! xterm, see xterm(1)
 ! urxvt, see urxvt(1), sharing some settings with xterm
 
+! if this font is not found, xterm falls back to the next best monospace ttf
+*.faceName:             Monospace
 *.faceSize:             12
 
 ! EGA colors (yellow is brown plus intensity bit)
@@ -24,9 +26,6 @@
 *color13:               #ff55ff
 *color14:               #55ffff
 *color15:               #ffffff
-
-! if this font is not found, xterm falls back to the next best monospace ttf
-xterm*faceName:         xft:PxPlus IBM VGA 8x16
 
 ! padding between window border and buffer
 xterm*internalBorder:   0
