@@ -14,8 +14,19 @@ cachefile() {
 }
 
 # long-running commands that require xorg
-gui() {
+x11() {
   test -n "$DISPLAY" || return
+  printf '%s\n' "$type"|grep -qiE "$1" || return
+  shift
+  command -v "$1" >/dev/null 2>&1 || return
+  setsid "$@" &
+  sleep 1
+  exit
+}
+
+# long-running commands that require wayland
+way() {
+  test -n "$WAYLAND_DISPLAY" || return
   printf '%s\n' "$type"|grep -qiE "$1" || return
   shift
   command -v "$1" >/dev/null 2>&1 || return
@@ -95,26 +106,30 @@ fi
 type=$(file -z -L -b "$file")
 echo "$type"
 
-# gui = requires xorg
+# x11 = requires xorg
+# way = requires wayland
 # cmd = tui application
-# dmp = displayed by converting to text
+# dmp = displayed by converting to text, piped into less
 # First match wins
 
-gui 'PDF document' mupdf-gl -I "$file"
-gui 'PDF document' mupdf -I "$file"
-gui 'HTML document|PDF document' firefox "$url"
-gui 'HTML document' qutebrowser "$url"
+x11 'PDF document' mupdf-gl -I "$file"
+x11 'PDF document' mupdf -I "$file"
+way 'HTML document|PDF document' firefox "$url"
+x11 'HTML document|PDF document' firefox "$url"
+x11 'HTML document' qutebrowser "$url"
 cmd 'HTML document' w3m -T text/html "$url"
 cmd 'HTML document' lynx "$url"
 dmp 'HTML document' sed -e 's/<[^>]*\(>\|$\)//g;/^\s*$/d' "$file"
 cmd 'shell script' nano --view -Y sh "$file"
-gui 'video|ISO Media|WebM|Matroska|GIF image data' mpv --loop-file=inf "$file"
+way 'image data' imv "$file"
+way 'video|ISO Media|WebM|Matroska|GIF image data' mpv --loop-file=inf "$file"
+x11 'video|ISO Media|WebM|Matroska|GIF image data' mpv --loop-file=inf "$file"
 cmd 'audio|layer III' mpv --no-video --loop-file=inf "$file"
-gui 'image data' feh --output-dir "$HOME" "$file"
+x11 'image data' feh --output-dir "$HOME" "$file"
 cmd 'image data' cacaview "$file"
 dmp 'tar archive' tar -tf "$file"
 dmp 'PEM certificate request' openssl req -in "$file" -text -noout -verify
 dmp 'PEM certificate' openssl x509 -in "$file" -text -noout
-gui 'PEM certificate' gcr-viewer "$file"
+x11 'PEM certificate' gcr-viewer "$file"
 dmp 'text' cat -v "$file"
 dmp '.*' hexdump -Cv "$file"
