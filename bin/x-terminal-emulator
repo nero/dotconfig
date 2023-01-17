@@ -9,7 +9,9 @@ cmd_exists() {
         command -v "$1" >/dev/null 2>&1
 }
 
-if cmd_exists xterm; then
+if test -n "$WAYLAND_DISPLAY" && cmd_exists foot; then
+  exec foot "$@"
+elif cmd_exists xterm; then
   exec xterm -maximized "$@"
 elif cmd_exists urxvtd; then
   export RXVT_SOCKET="${XDG_RUNTIME_DIR}/rxvt${DISPLAY}.sck"

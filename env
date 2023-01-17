@@ -23,7 +23,7 @@ PROMPT_COMMAND="case \$? in (0) ;; (*) echo [\$?];; esac;"
 
 # some emulators support changing the window title via escape sequence
 case "$TERM" in
-(screen*|tmux*|xterm*|rxvt-*) PROMPT_COMMAND=${PROMPT_COMMAND}'printf "\033]0;%s\007" "${PWD##*/} - ${USER}@${HOSTNAME}";';;
+(screen*|tmux*|xterm*|rxvt-*|foot) PROMPT_COMMAND=${PROMPT_COMMAND}'printf "\033]0;%s\007" "${PWD##*/} - ${USER}@${HOSTNAME}";';;
 esac
 
 if test -n "$COLUMNS"; then
@@ -31,6 +31,11 @@ if test -n "$COLUMNS"; then
 elif command -v tput >/dev/null 2>&1; then
   PROMPT_COMMAND=${PROMPT_COMMAND}'printf "%$(tput cols)s\\r" "";'
 fi
+
+# Notify term of prompt position
+case "$TERM" in
+(foot) PROMPT_COMMAND=${PROMPT_COMMAND}'printf "\e]133;A\e\\";';;
+esac
 
 if [ -n "$BASH_VERSION" ]; then
   set -o posix
