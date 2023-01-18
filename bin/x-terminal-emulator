@@ -10,7 +10,11 @@ cmd_exists() {
 }
 
 if test -n "$WAYLAND_DISPLAY" && cmd_exists foot; then
-  exec foot "$@"
+  cfg="${XDG_CONFIG_HOME}"/foot/foot.ini
+  if ! foot -c "$cfg" --check-config; then
+    cfg="${XDG_CONFIG_HOME}"/foot/foot-$(foot -v|cut -d' ' -f3|cut -d'.' -f1-2).ini
+  fi
+  exec foot -c "$cfg" "$@"
 elif cmd_exists xterm; then
   exec xterm -maximized "$@"
 elif cmd_exists urxvtd; then
