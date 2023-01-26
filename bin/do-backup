@@ -13,7 +13,7 @@ r --delete --delete-excluded \
   --exclude-from="$XDG_CONFIG_HOME/filecat/sensitive" \
   --exclude=/archive \
   --exclude=/storage \
-  "$HOME/" storage:home/"${HOSTNAME%%.*}"
+  "$HOME/" storage:home/"$(uname -n)"
 
 # add to the archive
 r "$HOME/archive" storage:.

@@ -10,7 +10,7 @@ if grep -qr 'PRIVATE KEY' ~/.ssh 2>/dev/null; then
   case "$?" in
   (2)
     # assume all old ssh agents to be dysfunctional, clear up
-    for pid in $(pgrep -U $USER ssh-agent); do kill $pid; done
+    for pid in $(pgrep -U "$(id -u)" ssh-agent); do kill $pid; done
     rm -f "$SSH_AUTH_SOCK"
     # spawn a new one
     eval $(ssh-agent -a "$SSH_AUTH_SOCK") >/dev/null

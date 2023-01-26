@@ -22,5 +22,5 @@ touch "${repo}/git-daemon-export-ok"
 )
 
 # suggest possible urls to use as remote
-echo "$USER@$(hostname -f):git/$name.git"
-echo "git://$(hostname -f)/$USER/$name.git"
+echo "$(id -un)@$(hostname -f):git/$name.git"
+echo "git://$(hostname -f)/$(id -un)/$name.git"

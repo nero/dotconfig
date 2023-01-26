@@ -21,9 +21,6 @@ Its function is to ensure a consistent setup across bourne shell variants.
 
 It makes sure the following environment variables have sensible values:
 
-- USER
-- HOME
-- HOSTNAME
 - XDG_CONFIG_HOME:
   Points to the checkout location of this repository.
   The `profile` detects this by following the `~/.profile` symlink if not present.

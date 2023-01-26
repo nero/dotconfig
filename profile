@@ -1,12 +1,9 @@
 # .profile for POSIX-conformant shells
 
 # This is for really crappy environments
-[ -z "$USER" ]     && export USER=$(whoami)
-[ -z "$HOME" ]     && eval "export HOME=~$USER"
+[ -z "$LOGNAME" ]  && export LOGNAME=$(id -un)
+[ -z "$HOME" ]     && eval "export HOME=~$LOGNAME"
 [ -z "$LANG" ]     && export LANG=en_US.UTF-8
-
-# HOSTNAME is not in POSIX, but we will make it globally available
-export HOSTNAME=$(uname -n)
 
 # If $XDG_CONFIG_HOME is not set, read where the ~/.profile symlink points to
 # and guess directory from that. This is relevant if the etc repo is checked
@@ -24,7 +21,7 @@ fi
 # Guess some directory where i can store sockets and pid files
 # Like for ssh agent and connection multiplexing
 if [ -z "$XDG_RUNTIME_DIR" ]; then
-  for i in "/run/user/$(id -u)" "$HOME/.run/$HOSTNAME" "/tmp/$USER-run"; do
+  for i in "/run/user/$(id -u)" "$HOME/.run/$(uname -n)" "/tmp/$(id -un)-run"; do
     if mkdir -m 0700 -p "$i" 2>/dev/null && test -w "$i"; then
       export XDG_RUNTIME_DIR=$i
       break
@@ -60,7 +57,7 @@ prepend_path "${HOME}/.local/bin"
 case "$-" in
 (*i*)
   # print some kind of machine-identifying banner
-  printf "%s %s\n" "$HOSTNAME" "$(uptime)"
+  printf "%s %s\n" "$(uname -n)" "$(uptime)"
   # clear screen upon exit
   trap clear EXIT
   ;;
