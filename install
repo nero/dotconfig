@@ -1,9 +1,4 @@
 #!/bin/sh
-die() {
-  echo "$1" >&2
-  exit 1
-}
-
 cfg="$(dirname "$PWD/${0#./}")"
-cfg=${cfg#$HOME/}
+cfg="${cfg#$HOME/}"
 cd "${HOME}" && ln -sfn "${cfg}"/profile "${HOME}"/.profile
