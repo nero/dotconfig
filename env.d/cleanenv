@@ -1,0 +1,3 @@
+for f in $(env|cut -d= -f1|grep -xvf "$XDG_CONFIG_HOME/env_allowed"); do
+  unset "$f"
+done
