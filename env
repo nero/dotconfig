@@ -27,7 +27,7 @@ PROMPT_COMMAND="case \$? in (0) ;; (*) echo [\$?];; esac;"
 
 # some emulators support changing the window title via escape sequence
 case "$TERM" in
-(screen*|tmux*|xterm*|rxvt-*|foot) PROMPT_COMMAND=${PROMPT_COMMAND}'printf "\033]0;%s\007" "${PWD##*/} - $(id -un)@$(uname -n)";';;
+(screen*|tmux*|xterm*|rxvt-*|foot) PROMPT_COMMAND=${PROMPT_COMMAND}"printf \"\033]0;%s\007\" \"\${PWD##*/} - $(id -un)@$(uname -n)\";";;
 esac
 
 # Make sure prompt always starts in column 0
