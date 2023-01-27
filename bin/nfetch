@@ -47,13 +47,4 @@ case "$url" in
   ;;
 esac
 
-# fetch pdf's via scihub
-case "$url" in
-(doi:*|isbn:*)
-  doi="${url#doi:}"
-  doi="${doi#isbn:}"
-  newurl=$(httpget "https://sci-hub.se/${doi}"|grep -o -E '(src|href)="?[^" ]*'|sed 's/^[^=]*=//;s/["'"\'"']//g'|grep '\.pdf'|head -n 1)
-  test -n "${newurl}" && url="${newurl}" && apply_base https sci-hub.se
-esac
-
 httpget "$url"
