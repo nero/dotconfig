@@ -18,5 +18,5 @@ alias tmux='tmux -f "${XDG_CONFIG_HOMES:-$HOME/.config}/tmux/tmux.conf"'
 # FreeBSD Almquist shell does not do parameter expansion in PS1
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=46441
 case "$0:$(uname -s)" in
-(sh:FreeBSD|-sh:FreeBSD) PS1='\W# '
+(sh:FreeBSD|-sh:FreeBSD) PS1='\W\$ '
 esac

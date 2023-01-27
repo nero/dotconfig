@@ -15,7 +15,11 @@ export VISUAL=$(
 
 # short prompt with basename of PWD
 unset PS1
-PS1='${PWD##*/}# '
+if test "$(id -u)" -eq 0; then
+  PS1='${PWD##*/}# '
+else
+  PS1='${PWD##*/}$ '
+fi
 
 # PROMPT_COMMAND is normally bash-specific, but we make other shells also eval it
 unset PROMPT_COMMAND
