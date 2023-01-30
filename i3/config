@@ -2,8 +2,8 @@ set $mod mod1
 floating_modifier $mod
 
 # fetch settings from xresources
-set_from_resource $fname faceName Monospace
-set_from_resource $fsize faceSize 12
+set $fname Monospace
+set $fsize 12
 set $bgcol #000000
 set $fgcol #d2738a
 set $ugcol #ffff55
@@ -14,7 +14,7 @@ exec exec x-terminal-emulator
 # basic keybinds
 bindcode $mod+36 exec exec x-terminal-emulator
 bindcode $mod+65 exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn xft:$fname:size=$fsize" --entry-type=command
-bindcode $mod+54 exec --no-startup-id i3-msg restart
+bindcode $mod+54 exec --no-startup-id restart
 bindcode $mod+31 exit
 bindcode $mod+46 exec --no-startup-id i3lock
 bindcode $mod+30 exec --no-startup-id xdg-open "$(xclip -o)"
@@ -66,8 +66,8 @@ mode "off" {
   bindsym $mod+Escape mode "default"
 }
 
-new_window pixel 2
-new_float pixel 2
+default_border pixel 2
+default_floating_border pixel 2
 hide_edge_borders both
 workspace_layout tabbed
 
