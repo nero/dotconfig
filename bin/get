@@ -1,0 +1,31 @@
+#!/bin/sh
+# Usage: get [url]
+#
+# Fetch a file from the internet to stdout
+
+url="$1"
+agent="Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
+
+#we need an url/urn to operate
+case "$#:$url" in
+(1:*:*) ;;
+(*) sed -n "s/^# //p" "$0" >&2; exit 1;;
+esac
+
+opts=""
+
+if command -v curl >/dev/null 2>&1; then
+  case "$1" in
+  (http://*.onion/*|https://*.onion/*)
+    opts="${opts} --socks5-hostname 127.0.0.1:9050"
+  esac
+  curl -v -f -L --output - -A "$agent" $opts "$1"
+elif command -v wget >/dev/null 2>&1; then
+  case "$(wget --help 2>&1)" in
+  (BusyBox*) opts="$opts -Y on";;
+  esac
+  wget -O - -U "$agent" $opts "$1"
+else
+  echo "No http program found" >&2
+  exit 1
+fi

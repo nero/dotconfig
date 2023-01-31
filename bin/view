@@ -88,7 +88,7 @@ file://*)
 *://*|doi:*|isbn:*)
   file=$(cachefile "$url")
   if ! test -s "$file"; then
-    nfetch "$url" > "${file}.$$" && mv "${file}.$$" "${file}" || rm "${file}.$$"
+    get "$url" > "${file}.$$" && mv "${file}.$$" "${file}" || rm "${file}.$$"
   fi
   ;;
 *)
