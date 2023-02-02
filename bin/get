@@ -19,7 +19,7 @@ if command -v curl >/dev/null 2>&1; then
   (http://*.onion/*|https://*.onion/*)
     opts="${opts} --socks5-hostname 127.0.0.1:9050"
   esac
-  curl -f -L --output - -A "$agent" $opts "$1"
+  curl --netrc-optional -f -L --output - -A "$agent" $opts "$1"
 elif command -v wget >/dev/null 2>&1; then
   case "$(wget --help 2>&1)" in
   (BusyBox*) opts="$opts -Y on";;
