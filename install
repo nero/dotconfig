@@ -1,4 +1,3 @@
 #!/bin/sh
 cfg="$(dirname "$PWD/${0#./}")"
-cfg="${cfg#$HOME/}"
-cd "${HOME}" && ln -sfn "${cfg}"/profile "${HOME}"/.profile
+ln -sfn "${cfg#$HOME/}"/profile "${HOME}"/.profile
