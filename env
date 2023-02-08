@@ -7,12 +7,6 @@ case "$-" in
   (*) return;;
 esac
 
-export VISUAL=$(
-  for e in nano mcedit vi vim ed; do
-    hash "$e" >/dev/null 2>&1 && echo "$e" && break
-  done
-)
-
 # short prompt with basename of PWD
 unset PS1
 if test "$(id -u)" -eq 0; then
@@ -56,7 +50,8 @@ else
 fi
 
 # load drop-ins
-for f in "$ENV".d/*; do
-  [ -e "$f" ] && . "$f"
+for f in "$XDG_CONFIG_HOME"/*/env; do
+  c=${f%/*}
+  command -v "${c##*/}" >/dev/null 2>&1 && . "$f"
 done
-unset f
+unset c f

@@ -1,3 +1,8 @@
 #!/bin/sh
-cfg="$(dirname "$PWD/${0#./}")"
-ln -sfn "${cfg#$HOME/}"/profile "${HOME}"/.profile
+XDG_CONFIG_HOME="$(dirname "$PWD/${0#./}")"
+ln -sfn "${XDG_CONFIG_HOME#$HOME/}"/profile "${HOME}"/.profile
+
+for f in "$XDG_CONFIG_HOME"/*/install; do
+  c=${f%/*}
+  command -v "${c##*/}" >/dev/null 2>&1 && . "$f"
+done

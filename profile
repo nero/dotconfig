@@ -64,7 +64,8 @@ case "$-" in
 esac
 
 # load drop-ins
-for f in "$XDG_CONFIG_HOME"/profile.d/*; do
-  [ -e "$f" ] && . "$f"
+for f in "$XDG_CONFIG_HOME"/*/profile; do
+  c=${f%/*}
+  command -v "${c##*/}" >/dev/null 2>&1 && . "$f"
 done
-unset f
+unset c f

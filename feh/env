@@ -1,0 +1,2 @@
+# feh stores 's' captures in $PWD per default, which i dont like
+alias feh='feh --output-dir "$HOME"'
