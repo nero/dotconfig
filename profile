@@ -21,7 +21,7 @@ fi
 # Guess some directory where i can store sockets and pid files
 # Like for ssh agent and connection multiplexing
 if [ -z "$XDG_RUNTIME_DIR" ]; then
-  for i in "/run/user/$(id -u)" "$HOME/.run/$(uname -n)" "/tmp/$(id -un)-run"; do
+  for i in "/run/user/$(id -u)" "$HOME/.local/run/$(uname -n)" "/tmp/$(id -un)-run"; do
     if mkdir -m 0700 -p "$i" 2>/dev/null && test -w "$i"; then
       export XDG_RUNTIME_DIR=$i
       break
