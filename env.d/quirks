@@ -13,7 +13,7 @@ alias feh='feh --output-dir "$HOME"'
 alias less='LESSHISTFILE=- less'
 
 # bend over tmux so the symlink in $HOME is not required anymore
-alias tmux='tmux -f "${XDG_CONFIG_HOMES:-$HOME/.config}/tmux/tmux.conf"'
+alias tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf"'
 
 # FreeBSD Almquist shell does not do parameter expansion in PS1
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=46441
