@@ -15,6 +15,11 @@ else
   PS1='${PWD##*/}$ '
 fi
 
+# move history file out of homedir
+c=${0##*/}
+c=${c#-}
+HISTFILE=${XDG_DATA_HOME:-$HOME/.local/share}/${c}_history
+
 # PROMPT_COMMAND is normally bash-specific, but we make other shells also eval it
 unset PROMPT_COMMAND
 PROMPT_COMMAND="case \$? in (0) ;; (*) echo [\$?];; esac;"
