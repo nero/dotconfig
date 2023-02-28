@@ -19,11 +19,6 @@ if grep -qr 'PRIVATE KEY' ~/.ssh 2>/dev/null; then
   unset SSH_AGENT_PID
 fi
 
-now="$(date +%s)"
-for cert in ~/.ssh/*-cert.pub; do
-	[ -e "$cert" ] || continue
-	strdate=$(ssh-keygen -L -f $cert|awk '/Valid/ {sub(/T/," ",$5);print($5)}')
-	awk -v c=${cert##*/} -v n=$now -v e=$(date -d "$strdate" "+%s") \
-	'BEGIN {d=(e-n) / (60*60*24); if (d<30) {printf("%s expires in %d days\n",c,d)}}'
-done
-unset now cert strdate
+for c in ~/.ssh/*-certa.pub; do
+  test -f "$c" && printf "%s %s\n" "${c##*/}" "$(date -d "$(ssh-keygen -L -f "$c"|awk '/Valid: / {gsub(/T/, " ", $5);print($5)}')" +%s)"
+done | awk -v n="$(date +%s)" '{ d=($2-n) / (60*60*24); if (d<30) {printf("%s expires in %d days\n",$1,d)} }'
