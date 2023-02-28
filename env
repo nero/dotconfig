@@ -7,26 +7,41 @@ case "$-" in
   (*) return;;
 esac
 
+sh=${0##*/}
+sh=${sh#-}
+
+case "$BASH_VERSION" in
+('') ;;
+(*) sh=bash
+esac
+
+case "$ZSH_VERSION" in
+('') ;;
+(*) sh=zsh
+esac
+
+id=$(id -un)
+
+hostname=$(uname -n)
+
+# unset to unexport
+unset PS1 PROMPT_COMMAND HISTFILE
+
 # short prompt with basename of PWD
-unset PS1
-if test "$(id -u)" -eq 0; then
-  PS1='${PWD##*/}# '
-else
-  PS1='${PWD##*/}$ '
-fi
+case "${id}" in
+(root) PS1='${PWD##*/}# ';;
+(*)    PS1='${PWD##*/}$ ';;
+esac
 
 # move history file out of homedir
-c=${0##*/}
-c=${c#-}
-HISTFILE=${XDG_DATA_HOME:-$HOME/.local/share}/${c}_history
+HISTFILE=${XDG_DATA_HOME:-$HOME/.local/share}/${sh}_history
 
 # PROMPT_COMMAND is normally bash-specific, but we make other shells also eval it
-unset PROMPT_COMMAND
 PROMPT_COMMAND="case \$? in (0) ;; (*) echo [\$?];; esac;"
 
 # some emulators support changing the window title via escape sequence
 case "$TERM" in
-(screen*|tmux*|xterm*|rxvt-*|foot) PROMPT_COMMAND=${PROMPT_COMMAND}"printf \"\033]0;%s\007\" \"\${PWD##*/} - $(id -un)@$(uname -n)\";";;
+(screen*|tmux*|xterm*|rxvt-*|foot) PROMPT_COMMAND=${PROMPT_COMMAND}"printf \"\033]0;%s\007\" \"\${PWD##*/} - ${id}@${hostname}\";";;
 esac
 
 # Make sure prompt always starts in column 0
@@ -41,18 +56,19 @@ case "$TERM" in
 (foot) PROMPT_COMMAND=${PROMPT_COMMAND}'printf "\e]133;A\e\\";';;
 esac
 
-if [ -n "$BASH_VERSION" ]; then
-  set -o posix
-elif [ -n "$ZSH_VERSION" ]; then
+case "$sh" in
+(bash)
+  set -o posix ;;
+(zsh)
   setopt PROMPT_SUBST PROMPT_BANG autolist noautomenu
   # also unset the whacky autocompletion shit
   unsetopt menucomplete nomatch beep
   precmd() {
     eval "$PROMPT_COMMAND"
-  }
-else
-  PS1='$(eval "$PROMPT_COMMAND" >&2)'$PS1
-fi
+  } ;;
+(*)
+  PS1='$(eval "$PROMPT_COMMAND" >&2)'$PS1 ;;
+esac
 
 # load drop-ins
 for f in "$XDG_CONFIG_HOME"/*/env; do
