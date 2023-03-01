@@ -1,19 +1,17 @@
 #!/bin/sh
-# filecat/ folder is used to classify files for not being backupped
-# if they exist on the remote, they are deleted there.
-
 r() {
   rsync -avux --modify-window=2 --no-specials --progress \
     -e "ssh -o'ControlMaster auto' -o'ControlPath ~/.ssh/%r@%h:%p.sck' -o'ControlPersist 10'" "$@"
 }
 
-# create a shallow copy of the home directory
+# step 1: create a copy of the home directory
+# storage will have one copy per local host
 r --delete --delete-excluded \
-  --exclude-from="$XDG_CONFIG_HOME/filecat/ephemeral" \
-  --exclude-from="$XDG_CONFIG_HOME/filecat/sensitive" \
-  --exclude=/archive \
-  --exclude=/storage \
+  --exclude="/.*" \ # no dotfiles (especially not .cache and .local)
+  --exclude=/archive \ # archive/ has separate mechanism
+  --exclude=/storage \ # -x (same filesystem) doesnt work when its not mounted rn
   "$HOME/" storage:home/"$(uname -n)"
 
-# add to the archive
+# step 2: dump archive files
+# archive is a write-only store that all hosts dump into
 r "$HOME/archive" storage:.
