@@ -7,9 +7,9 @@ r() {
 # step 1: create a copy of the home directory
 # storage will have one copy per local host
 r --delete --delete-excluded \
-  --exclude="/.*" \ # no dotfiles (especially not .cache and .local)
-  --exclude=/archive \ # archive/ has separate mechanism
-  --exclude=/storage \ # -x (same filesystem) doesnt work when its not mounted rn
+  --exclude="/.*" \
+  --exclude=/archive \
+  --exclude=/storage \
   "$HOME/" storage:home/"$(uname -n)"
 
 # step 2: dump archive files
