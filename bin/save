@@ -5,7 +5,7 @@ cd "$HOME" || exit 1
 
 url="$1"
 name=$(printf '%s\n' "$url"|sed 's/^.*\/\///;s/[^a-zA-Z0-9\%\-\@\^\.]/_/g;s/__+/_/g')
-if ! get "$1" > "$name"; then
+if ! wget -O "$name" "$1"; then
   # download failed, because wget already opened it, its now an empty file
   # remove it
   rm "$name"

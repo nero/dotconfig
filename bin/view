@@ -88,7 +88,7 @@ file://*)
 *://*|doi:*|isbn:*)
   file=$(cachefile "$url")
   if ! test -s "$file"; then
-    get "$url" > "${file}.$$" && mv "${file}.$$" "${file}" || rm "${file}.$$"
+    wget -O "${file}.$$" "$url" && mv "${file}.$$" "${file}" || rm "${file}.$$"
   fi
   ;;
 *)
