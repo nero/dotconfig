@@ -1,2 +1,2 @@
 # Tell sway to use i3 config
-alias sway='sway -c $XDG_CONFIG_HOME/i3/config'
+alias sway='sway -c ${XDG_CONFIG_HOME:-$HOME/.config}/i3/config'

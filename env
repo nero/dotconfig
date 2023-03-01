@@ -71,7 +71,7 @@ case "$sh" in
 esac
 
 # load drop-ins
-for f in "$XDG_CONFIG_HOME"/*/env; do
+for f in "${XDG_CONFIG_HOME:-$HOME/.config}"/*/env; do
   c=${f%/*}
   command -v "${c##*/}" >/dev/null 2>&1 && . "$f"
 done

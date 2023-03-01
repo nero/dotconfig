@@ -33,10 +33,10 @@ static char grey11_bits[] = {
 EOF
 
 # Load Xresources
-xrdb "$XDG_CONFIG_HOME"/Xresources
+xrdb "${XDG_CONFIG_HOME:-$HOME/.config}"/Xresources
 
 # Load drop-ins (most of them are machine-specific and not tracked here)
-for f in "$XDG_CONFIG_HOME"/xinitrc.d/*; do
+for f in "${XDG_CONFIG_HOME:-$HOME/.config}"/xinitrc.d/*; do
   [ -e "$f" ] && . "$f"
 done
 unset f

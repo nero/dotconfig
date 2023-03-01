@@ -5,19 +5,6 @@
 [ -z "$HOME" ]     && eval "export HOME=~$LOGNAME"
 [ -z "$LANG" ]     && export LANG=en_US.UTF-8
 
-# If $XDG_CONFIG_HOME is not set, read where the ~/.profile symlink points to
-# and guess directory from that. This is relevant if the etc repo is checked
-# out in a place different from ~/.config.
-if [ -z "$XDG_CONFIG_HOME" ]; then
-  profile=$(readlink "$HOME/.profile")
-  case "$profile" in
-    ('') ;;
-    (/*) export XDG_CONFIG_HOME="${profile%/*}" ;;
-    (*)  export XDG_CONFIG_HOME="$HOME/${profile%/*}" ;;
-  esac
-  unset profile
-fi
-
 # Guess some directory where i can store sockets and pid files
 # Like for ssh agent and connection multiplexing
 if [ -z "$XDG_RUNTIME_DIR" ]; then
@@ -31,7 +18,7 @@ if [ -z "$XDG_RUNTIME_DIR" ]; then
 fi
 
 # Register config for interactive shells
-test -z "$ENV" && export ENV="${XDG_CONFIG_HOME}/env"
+test -z "$ENV" && export ENV="${XDG_CONFIG_HOME:-$HOME/.config}/env"
 
 # These shells cant be arsed to look in $ENV
 if [ -n "$BASH_VERSION" ]; then
@@ -50,7 +37,7 @@ prepend_path() {
   (*) PATH="${1}:${PATH}" ;;
   esac
 }
-prepend_path "${XDG_CONFIG_HOME}/bin"
+prepend_path "${XDG_CONFIG_HOME:-$HOME/.config}/bin"
 prepend_path "${HOME}/.local/bin"
 
 # extra stuff if its both login & interactive
@@ -64,7 +51,7 @@ case "$-" in
 esac
 
 # load drop-ins
-for f in "$XDG_CONFIG_HOME"/*/profile; do
+for f in "${XDG_CONFIG_HOME:-$HOME/.config}"/*/profile; do
   c=${f%/*}
   command -v "${c##*/}" >/dev/null 2>&1 && . "$f"
 done
