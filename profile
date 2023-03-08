@@ -30,16 +30,6 @@ prepend_path() {
 prepend_path "${XDG_CONFIG_HOME:-$HOME/.config}/bin"
 prepend_path "${HOME}/.local/bin"
 
-# extra stuff if its both login & interactive
-case "$-" in
-(*i*)
-  # print some kind of machine-identifying banner
-  printf "%s %s\n" "$(uname -n)" "$(uptime)"
-  # clear screen upon exit
-  trap clear EXIT
-  ;;
-esac
-
 # load drop-ins
 for f in "${XDG_CONFIG_HOME:-$HOME/.config}"/*/profile; do
   c=${f%/*}
