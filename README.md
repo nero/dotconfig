@@ -6,6 +6,8 @@ It does not use any dotfile manager, its only that directory tracked in git.
 
 There is an `./install` script that sets up some symlinks.
 
+Supported shells are `dash`, `mksh`, `bash` and `zsh`.
+
 ## Topical directories
 
 Most directories in this repo are related to some specific software.

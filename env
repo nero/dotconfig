@@ -7,21 +7,11 @@ case "$-" in
   (*) return;;
 esac
 
+# POSIX says $0 is "normally a pathname used to execute the sh utility."
+# Should be enough to keep history files of different shells interfering each other
 sh=${0##*/}
 sh=${sh#-}
-
-case "$BASH_VERSION" in
-('') ;;
-(*) sh=bash
-esac
-
-case "$ZSH_VERSION" in
-('') ;;
-(*) sh=zsh
-esac
-
 id=$(id -un)
-
 hostname=$(uname -n)
 
 # unset to unexport
