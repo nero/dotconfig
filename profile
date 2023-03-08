@@ -20,13 +20,6 @@ fi
 # Register config for interactive shells
 test -z "$ENV" && export ENV="${XDG_CONFIG_HOME:-$HOME/.config}/env"
 
-# These shells cant be arsed to look in $ENV
-if [ -n "$BASH_VERSION" ]; then
-  test -e "$HOME/.bashrc" || ln -sn "$ENV" "$HOME/.bashrc"
-elif [ -n "$ZSH_VERSION" ]; then
-  test -e "$HOME/.zshrc" || ln -sn "$ENV" "$HOME/.zshrc"
-fi
-
 # Default extra PATHs
 prepend_path() {
   case ":${PATH}:" in
