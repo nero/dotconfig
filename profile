@@ -22,9 +22,6 @@ test -z "$ENV" && export ENV="${XDG_CONFIG_HOME:-$HOME/.config}/env"
 
 # These shells cant be arsed to look in $ENV
 if [ -n "$BASH_VERSION" ]; then
-  # Make this shell look after $ENV
-  set -o posix
-  # For later, non-login shells
   test -e "$HOME/.bashrc" || ln -sn "$ENV" "$HOME/.bashrc"
 elif [ -n "$ZSH_VERSION" ]; then
   test -e "$HOME/.zshrc" || ln -sn "$ENV" "$HOME/.zshrc"
