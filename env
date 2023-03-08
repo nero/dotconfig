@@ -47,6 +47,7 @@ case "$TERM" in
 esac
 
 case "$sh" in
+(bash) ;;
 (zsh)
   setopt PROMPT_SUBST PROMPT_BANG autolist noautomenu
   # also unset the whacky autocompletion shit
