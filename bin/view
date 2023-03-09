@@ -64,15 +64,6 @@ else
   url="$1"
 fi
 
-case "$url" in
-(ISBN*)
-  url="isbn:$(printf "%s" "$url"|grep -o -E "[0-9\-]{10,}")"
-  ;;
-(10.1*/*-*|10.1*/*.*)
-  url="doi:${url}"
-  ;;
-esac
-
 # some urls have special handling
 case "$url" in
 https://www.youtube.com/watch?v=*|https://youtu.be/*|https://hooktube*)
