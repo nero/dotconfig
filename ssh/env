@@ -6,20 +6,18 @@ fi
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.sck"
 unset SSH_AGENT_PID
 
-( { # save 30ms due to ssh-add call
-  if grep -qr 'PRIVATE KEY' ~/.ssh 2>/dev/null; then
-    ssh-add -L >/dev/null 2>&1
-    case "$?" in
-    (2)
-      # assume all old ssh agents to be dysfunctional, clear up
-      for pid in $(pgrep -U "$(id -u)" ssh-agent); do kill $pid; done
-      rm -f "$SSH_AUTH_SOCK"
-      # spawn a new one
-      eval $(ssh-agent -a "$SSH_AUTH_SOCK") >/dev/null
-      ;;
-    esac
-  fi
-} & )
+if grep -qr 'PRIVATE KEY' ~/.ssh 2>/dev/null; then
+  ssh-add -L >/dev/null 2>&1
+  case "$?" in
+  (2)
+    # assume all old ssh agents to be dysfunctional, clear up
+    for pid in $(pgrep -U "$(id -u)" ssh-agent); do kill $pid; done
+    rm -f "$SSH_AUTH_SOCK"
+    # spawn a new one
+    eval $(ssh-agent -a "$SSH_AUTH_SOCK") >/dev/null
+    ;;
+  esac
+fi
 
 # Show expiring certificates before making a connection
 alias ssh=ssh_wrapped
