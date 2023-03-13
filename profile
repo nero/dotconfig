@@ -36,3 +36,7 @@ for f in "${XDG_CONFIG_HOME:-$HOME/.config}"/*/profile; do
   command -v "${c##*/}" >/dev/null 2>&1 && . "$f"
 done
 unset c f
+
+# When bash is started as interactive login shell, it sources the profile
+# like any other shell and then fails to load its own bashrc.
+[ -n "$BASH_VERSION" ] && . "$ENV"
