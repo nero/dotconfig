@@ -105,8 +105,6 @@ echo "$type"
 
 x11 'PDF document' mupdf-gl -I "$file"
 x11 'PDF document' mupdf -I "$file"
-way 'HTML document|PDF document' firefox "$url"
-x11 'HTML document|PDF document' firefox "$url"
 x11 'HTML document' qutebrowser "$url"
 cmd 'HTML document' w3m -T text/html "$url"
 cmd 'HTML document' lynx "$url"
