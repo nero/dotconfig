@@ -1,3 +1,0 @@
-#!/bin/sh
-# this script overwrites the systems xdg-open by showing up earlier in PATH
-x-terminal-emulator -e view "$1"

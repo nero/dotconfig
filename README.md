@@ -44,11 +44,3 @@ If xterm is not installed, rxvt-unicode is tried.
 Sway can be started from the tty. Both `sway` and `foot` look into `~/.config` on their own.
 
 Sway is using the same config as i3.
-
-## xdg-open
-
-This repo ships an own `xdg-open` overriding the system one.
-It runs the `view` script in a new terminal window.
-`view` itself contains complex logic to display the contents of the url to me, usually via feh, mpv or by chaining to firefox.
-This includes displaying files of unknown type via hexdump, or showing text files via `less`.
-It also degrades nicely in functionality when there is no Xorg or Wayland available, by resorting to command line programs.

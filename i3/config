@@ -15,7 +15,6 @@ exec exec x-terminal-emulator
 bindcode $mod+36 exec exec x-terminal-emulator
 bindcode $mod+31 exit
 bindcode $mod+46 exec --no-startup-id i3lock
-bindcode $mod+30 exec --no-startup-id xdg-open "$(xclip -o)"
 
 # compat keybinds
 bindsym Mod1+F4 kill
