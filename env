@@ -20,7 +20,7 @@ unset PS1 PROMPT_COMMAND HISTFILE
 # short prompt resembling rsync or git remote
 case "${id}" in
 (root) PS1=$hostname:'${PWD#$HOME/}# ';;
-(*)    PS1=$hostname:'${PWD#$HOME/}$ ';;
+(*)    PS1=$hostname:'${PWD#$HOME/}\$ ';;
 esac
 
 # move history file out of homedir
