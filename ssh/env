@@ -24,6 +24,6 @@ alias ssh=ssh_wrapped
 ssh_wrapped() {
   for c in ~/.ssh/*-cert.pub; do
     test -f "$c" && printf "%s %s\n" "${c##*/}" "$(date -d "$(ssh-keygen -L -f "$c"|awk '/Valid: / {gsub(/T/, " ", $5);print($5)}')" +%s)"
-  done | awk -v n="$(date +%s)" '{ d=($2-n) / (60*60*24); if (d<30) {printf("%s expires in %d days\n",$1,d)} }'
+  done | awk -v n="$(date +%s)" '{ d=($2-n) / (60*60*24); if (d<30) {printf("%s expires in %d days\n",$1,d)} }' >&2
   \ssh "$@"
 }
