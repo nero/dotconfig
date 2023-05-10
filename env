@@ -14,9 +14,9 @@ sh=${sh#-}
 id=$(id -un)
 hostname=$(uname -n)
 
-# Standard terminal control
-csi() { printf '\033[%s' "$1"; }
-osc() { printf '\033]%s\033\' "$1"; }
+# popular ECMA-48 terminal control sequences
+csi() ( IFS=';'; printf '\033[%s' "$*"; )
+osc() ( IFS=';'; printf '\033]%s\033\' "$*"; )
 bel() { printf '\007'; }
 
 # unset to unexport
@@ -36,7 +36,7 @@ PROMPT_COMMAND="case \$? in (0) ;; (*) echo [\$?];; esac;"
 
 # some emulators support changing the window title via escape sequence
 case "$TERM" in
-(screen*|tmux*|xterm*|rxvt-*|foot) PROMPT_COMMAND=${PROMPT_COMMAND}'osc "0;${PWD##*/} - ${id}@${hostname}";';;
+(screen*|tmux*|xterm*|rxvt-*|foot) PROMPT_COMMAND=${PROMPT_COMMAND}'osc 0 "${PWD##*/} - ${id}@${hostname}";';;
 esac
 
 # Make sure prompt always starts in column 0
@@ -48,7 +48,7 @@ fi
 
 # Notify term of prompt position
 case "$TERM" in
-(foot) PROMPT_COMMAND=${PROMPT_COMMAND}'osc "133;A";';;
+(foot) PROMPT_COMMAND=${PROMPT_COMMAND}'osc 133 A;';;
 esac
 
 case "$sh" in
