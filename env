@@ -7,62 +7,28 @@ case "$-" in
   (*) return;;
 esac
 
-# POSIX says $0 is "normally a pathname used to execute the sh utility."
-# Should be enough to keep history files of different shells interfering each other
-sh=${0##*/}
-sh=${sh#-}
-id=$(id -un)
-hostname=$(uname -n)
-
-# popular ECMA-48 terminal control sequences
-csi() ( IFS=';'; printf '\033[%s' "$*"; )
-osc() ( IFS=';'; printf '\033]%s\033\' "$*"; )
-bel() { printf '\007'; }
-
 # unset to unexport
 unset PS1 PROMPT_COMMAND HISTFILE
 
-# short prompt resembling rsync or git remote
-case "${id}" in
-(root) PS1=$hostname:'${PWD#$HOME/}# ';;
-(*)    PS1=$hostname:'${PWD#$HOME/}\$ ';;
-esac
+PS1=$(
+  base='${HOSTNAME:=$(uname -n)}:${PWD#$HOME/}'
 
-# move history file out of homedir
-HISTFILE=${XDG_DATA_HOME:-$HOME/.local/share}/${sh}_history
+  case "$(id -un)" in
+  (0) base=$base'# ';;
+  (*) base=$base'\$ ';;
+  esac
 
-# PROMPT_COMMAND is normally bash-specific, but we make other shells also eval it
-PROMPT_COMMAND="case \$? in (0) ;; (*) echo [\$?];; esac;"
+  # OSC for terminal: window title and prompt position
+  osc='\033]2;%s\033\\\\\033]133;A\033\\\\'
+  test -n "$KSH_VERSION" && printf '\001\r\001'$osc'\001' "$base"
+  test -n "$BASH_VERSION" && printf '\['$osc'\]' "$base"
+  test -n "$ZSH_VERSION" && printf '%%{'$osc'%%}' "$base"
 
-# some emulators support changing the window title via escape sequence
-case "$TERM" in
-(screen*|tmux*|xterm*|rxvt-*|foot) PROMPT_COMMAND=${PROMPT_COMMAND}'osc 0 "${PWD##*/} - ${id}@${hostname}";';;
-esac
+  printf "%s" "$base"
+)
 
-# Make sure prompt always starts in column 0
-if test -n "$COLUMNS"; then
-  PROMPT_COMMAND=${PROMPT_COMMAND}'printf "%${COLUMNS}s\\r" "";'
-elif command -v tput >/dev/null 2>&1; then
-  PROMPT_COMMAND=${PROMPT_COMMAND}'printf "%$(tput cols)s\\r" "";'
-fi
-
-# Notify term of prompt position
-case "$TERM" in
-(foot) PROMPT_COMMAND=${PROMPT_COMMAND}'osc 133 A;';;
-esac
-
-case "$sh" in
-(bash) ;;
-(zsh)
-  setopt PROMPT_SUBST PROMPT_BANG autolist noautomenu
-  # also unset the whacky autocompletion shit
-  unsetopt menucomplete nomatch beep
-  precmd() {
-    eval "$PROMPT_COMMAND"
-  } ;;
-(*)
-  PS1='$(eval "$PROMPT_COMMAND" >&2)'$PS1 ;;
-esac
+# zsh needs to be told to do parameter expansion in PS1
+test -n "$ZSH_VERSION" && setopt PROMPT_SUBST
 
 # load drop-ins
 for f in "${XDG_CONFIG_HOME:-$HOME/.config}"/*/env; do
