@@ -1,34 +1,28 @@
 # .profile for POSIX-conformant shells
 
 # This is for really crappy environments
-[ -z "$LOGNAME" ]  && export LOGNAME=$(id -un)
-[ -z "$HOME" ]     && eval "export HOME=~$LOGNAME"
-[ -z "$LANG" ]     && export LANG=en_US.UTF-8
+: ${LOGNAME:=$(id -un)}
+: ${HOME:=~}
 
-# Guess some directory where i can store sockets and pid files
-# Like for ssh agent and connection multiplexing
-if [ -z "$XDG_RUNTIME_DIR" ]; then
-  for i in "/run/user/$(id -u)" "$HOME/.local/run/$(uname -n)" "/tmp/$(id -un)-run"; do
-    if mkdir -m 0700 -p "$i" 2>/dev/null && test -w "$i"; then
-      export XDG_RUNTIME_DIR=$i
-      break
-    fi
+# Systems without locales dont set it while some programs require it
+: ${LANG:=en_US.UTF-8}
+
+# Path to config for interactive shells
+: ${ENV:=${XDG_CONFIG_HOME:-$HOME/.config}/env}
+
+# Directory for sockets and pid files
+: ${XDG_RUNTIME_DIR:=$(
+  for i in "/run/user/$(id -u)" "$HOME/.local/run/$(uname -n)" "/tmp/${LOGNAME}-run"; do
+    mkdir -m 0700 -p "$i" 2>/dev/null \
+      && test -w "$i" \
+      && printf "%s\n" "$i" \
+      && break
   done
-  unset i
-fi
+)}
 
-# Register config for interactive shells
-test -z "$ENV" && export ENV="${XDG_CONFIG_HOME:-$HOME/.config}/env"
+PATH=${HOME}/.local/bin:${XDG_CONFIG_HOME:-$HOME/.config}/bin:$PATH
 
-# Default extra PATHs
-prepend_path() {
-  case ":${PATH}:" in
-  (*:${1}:*) ;;
-  (*) PATH="${1}:${PATH}" ;;
-  esac
-}
-prepend_path "${XDG_CONFIG_HOME:-$HOME/.config}/bin"
-prepend_path "${HOME}/.local/bin"
+export LOGNAME HOME LANG ENV XDG_RUNTIME_DIR PATH
 
 # load drop-ins
 for f in "${XDG_CONFIG_HOME:-$HOME/.config}"/*/profile; do
