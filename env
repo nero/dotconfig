@@ -18,8 +18,8 @@ PS1=$(
   (*) base=$base'\$ ';;
   esac
 
-  # OSC for terminal: window title and prompt position
-  osc='\033]2;%s\033\\\\\033]133;A\033\\\\'
+  # OSC for terminal: window title
+  osc='\033]2;%s\033\\\\'
   test -n "$KSH_VERSION" && printf '\001\r\001'$osc'\001' "$base"
   test -n "$BASH_VERSION" && printf '\['$osc'\]' "$base"
   test -n "$ZSH_VERSION" && printf '%%{'$osc'%%}' "$base"
