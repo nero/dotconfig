@@ -3,7 +3,7 @@ export SSH_AUTH_SOCK=$(
   umask 0077
   : ${TMPDIR:=/tmp}
   mkdir -p "$TMPDIR"
-  p=${TMPDIR}/${LOGNAME}.ssh-agent.sck
+  p=${TMPDIR}/${LOGNAME:?}.ssh-agent.sck
 
   # if im coming in via ssh+agent forwarding, use forwarded agent instead
   if [ -n "$SSH_CONNECTION" ] && [ -e "$SSH_AUTH_SOCK" ] && [ "$SSH_AUTH_SOCK" != "$p" ]; then
@@ -14,7 +14,7 @@ export SSH_AUTH_SOCK=$(
   case "$?" in
   (2)
     # assume all old ssh agents to be dysfunctional, clear up
-    for pid in $(pgrep -U "$(id -u)" ssh-agent); do kill $pid; done
+    for pid in $(pgrep -U "$(id -u)" ssh-agent); do kill "$pid"; done
     rm -f "$p"
     # spawn a new one
     ssh-agent -a "$p" >/dev/null

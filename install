@@ -1,13 +1,13 @@
 #!/bin/sh
-ln -sfn "$HOME"/.config/profile "${HOME}"/.profile
+ln -sfn .config/profile "${HOME}"/.profile
 
 case "$SHELL" in
 (*/bash)
   rm "$HOME/.bash_profile"
-  ln -sfn "$ENV" "$HOME/.bashrc"
+  ln -sfn "${ENV#$HOME/}" "$HOME/.bashrc"
   ;;
 (*/zsh)
-  ln -sfn "$ENV" "$HOME/.zshrc"
+  ln -sfn "${ENV#$HOME/}" "$HOME/.zshrc"
   ;;
 esac
 

@@ -1,18 +1,12 @@
 # .profile for POSIX-conformant shells
 
-# This is for really crappy environments
 : ${LOGNAME:=$(id -un)}
-: ${HOME:=~}
-
-# Systems without locales dont set it while some programs require it
 : ${LANG:=en_US.UTF-8}
-
-# Path to config for interactive shells
 : ${ENV:=$HOME/.config/env}
 
-PATH=$HOME/.local/bin:$HOME/.config/bin:$PATH
+PATH=${HOME:?}/.local/bin:${HOME}/.config/bin:${PATH:?}
 
-export LOGNAME HOME LANG ENV PATH
+export LOGNAME LANG ENV PATH
 
 # load drop-ins
 for f in "$HOME"/.config/*/profile; do
