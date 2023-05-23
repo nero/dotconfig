@@ -1,7 +1,7 @@
-# 3.1 introduced ~/.config/tmux/tmux.conf and in 3.2 XDG_CONFIG_HOME/tmux/tmux.conf was added
+# 3.1 introduced ~/.config/tmux/tmux.conf
 # before that, ~/.tmux.conf is the default
 case "$(tmux -V)" in
 ('tmux 2.'*|'tmux 3.0'*)
-  ln -sfn "${XDG_CONFIG_HOME#$HOME/}"/tmux/tmux.conf "${HOME}"/.tmux.conf  
+  ln -sfn .config/tmux/tmux.conf "${HOME}"/.tmux.conf
   ;;
 esac

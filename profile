@@ -8,24 +8,14 @@
 : ${LANG:=en_US.UTF-8}
 
 # Path to config for interactive shells
-: ${ENV:=${XDG_CONFIG_HOME:-$HOME/.config}/env}
+: ${ENV:=$HOME/.config/env}
 
-# Directory for sockets and pid files
-: ${XDG_RUNTIME_DIR:=$(
-  for i in "/run/user/$(id -u)" "$HOME/.local/run/$(uname -n)" "/tmp/${LOGNAME}-run"; do
-    mkdir -m 0700 -p "$i" 2>/dev/null \
-      && test -w "$i" \
-      && printf "%s\n" "$i" \
-      && break
-  done
-)}
+PATH=$HOME/.local/bin:$HOME/.config/bin:$PATH
 
-PATH=${HOME}/.local/bin:${XDG_CONFIG_HOME:-$HOME/.config}/bin:$PATH
-
-export LOGNAME HOME LANG ENV XDG_RUNTIME_DIR PATH
+export LOGNAME HOME LANG ENV PATH
 
 # load drop-ins
-for f in "${XDG_CONFIG_HOME:-$HOME/.config}"/*/profile; do
+for f in "$HOME"/.config/*/profile; do
   c=${f%/*}
   command -v "${c##*/}" >/dev/null 2>&1 && . "$f"
 done

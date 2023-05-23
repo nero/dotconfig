@@ -10,15 +10,15 @@ cmd_exists() {
 }
 
 if test -n "$WAYLAND_DISPLAY" && cmd_exists foot; then
-  cfg="${XDG_CONFIG_HOME:-$HOME/.config}"/foot/foot.ini
+  cfg="$HOME"/.config/foot/foot.ini
   if ! foot -c "$cfg" --check-config; then
-    cfg="${XDG_CONFIG_HOME:-$HOME/.config}"/foot/foot-$(foot -v|cut -d' ' -f3|cut -d'.' -f1-2).ini
+    cfg="$HOME"/.config/foot/foot-$(foot -v|cut -d' ' -f3|cut -d'.' -f1-2).ini
   fi
   exec foot -c "$cfg" "$@"
 elif cmd_exists xterm; then
   exec xterm -maximized "$@"
-elif cmd_exists urxvtd && test -n "${XDG_RUNTIME_DIR}"; then
-  export RXVT_SOCKET="${XDG_RUNTIME_DIR}/rxvt${DISPLAY}.sck"
+elif cmd_exists urxvtd; then
+  export RXVT_SOCKET="${TMPDIR:-/tmp}/${LOGNAME}.${DISPLAY#:}.rxvt.sck"
   urxvtc "$@"
   if [ $? -eq 2 ]; then
     urxvtd -q -o -f

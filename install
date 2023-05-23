@@ -1,6 +1,5 @@
 #!/bin/sh
-XDG_CONFIG_HOME="$(dirname "$PWD/${0#./}")"
-ln -sfn "${XDG_CONFIG_HOME#$HOME/}"/profile "${HOME}"/.profile
+ln -sfn "$HOME"/.config/profile "${HOME}"/.profile
 
 case "$SHELL" in
 (*/bash)
@@ -12,7 +11,7 @@ case "$SHELL" in
   ;;
 esac
 
-for f in "$XDG_CONFIG_HOME"/*/install; do
+for f in "$HOME"/.config/*/install; do
   c=${f%/*}
   command -v "${c##*/}" >/dev/null 2>&1 && . "$f"
 done

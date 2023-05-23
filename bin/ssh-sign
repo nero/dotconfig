@@ -7,12 +7,8 @@ serial="$(date +%s)"
 comment="Signed by $USER@$(uname -n) on $(date -R)"
 duration=+26w
 
-if test -n "$XDG_RUNTIME_DIR" && test -w "$XDG_RUNTIME_DIR"; then
-  export TMPDIR=${XDG_RUNTIME_DIR}
-fi
-
 umask 077
-ca=$(mktemp)
+ca=${TMPDIR:-/tmp}/.$$.${0##*/}
 secrets get ca > "$ca"
 ssh-keygen -s "$ca" -n "${2:-$USER}" -V "${duration}" -z "${serial}" -I "${comment}" "$1"
 dd if=/dev/urandom bs=512 count=3 of="$ca"

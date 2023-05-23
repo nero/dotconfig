@@ -1,5 +1,5 @@
 if ! test -L ~/.ssh; then
-  mv  ~/.ssh/* "$XDG_CONFIG_HOME"/ssh/
+  mv  ~/.ssh/* ~/.config/ssh/
   rmdir ~/.ssh
-  ln -sfn "${XDG_CONFIG_HOME#$HOME/}"/ssh ~/.ssh
+  ln -sfn .config/ssh ~/.ssh
 fi
