@@ -1,12 +1,5 @@
 # Config for setting up the environment across all sessions/applications
 
-# bash will source this file if its an non-interactive SSH login...
-# so lets prevent execution for non-interactive shells
-case "$-" in
-  (*i*) ;;
-  (*) return;;
-esac
-
 # unset to unexport
 unset PS1 PROMPT_COMMAND HISTFILE
 

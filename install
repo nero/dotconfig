@@ -1,15 +1,24 @@
 #!/bin/sh
+PATH=$(pwd)/bin:$PATH
 ln -sfn .config/profile "${HOME}"/.profile
 
-case "$SHELL" in
-(*/bash)
-  rm "$HOME/.bash_profile"
-  ln -sfn "${ENV#$HOME/}" "$HOME/.bashrc"
-  ;;
-(*/zsh)
-  ln -sfn "${ENV#$HOME/}" "$HOME/.zshrc"
-  ;;
+: | set_file "${HOME}"/.bash_profile 0644
+
+( command -v bash >/dev/null 2>&1 && cat<<'EOF' ) | set_file "${HOME}"/.bashrc 0644
+case "$-" in
+  (*i*) ;;
+  (*) return;;
 esac
+. "$ENV"
+EOF
+
+( command -v zsh >/dev/null 2>&1 && cat<<'EOF' ) | set_file "${HOME}"/.zshrc 0644
+. "$ENV"
+EOF
+
+( case "$SHELL" in (*/zsh) cat <<'EOF';; esac ) | set_file "${HOME}"/.zprofile 0644
+. ~/.profile
+EOF
 
 for f in "$HOME"/.config/*/install; do
   c=${f%/*}
