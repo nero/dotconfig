@@ -1,4 +1,4 @@
-if command -v startx >/dev/null 2>&1 && \
+if command -v tmux >/dev/null 2>&1 && \
   test -z "$TMUX"; then
 
   tmux a || tmux
