@@ -1,3 +1,0 @@
-case "$TERM:$(tty)" in
-(linux:/dev/tty1) XAUTHORITY=${TMPDIR:=/tmp}/${LOGNAME:?}.Xauthority startx "${HOME:?}"/.config/xinitrc ;;
-esac

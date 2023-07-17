@@ -15,6 +15,12 @@ for f in "$HOME"/.config/*/profile; do
 done
 unset c f
 
+# launch more complex session types if shell is interactive
+# this only happens once at SSH or getty login
+case "$-" in
+  (*i*) (for i in "$HOME"/.config/session/*; do . $i; done);;
+esac
+
 # When bash is started as interactive login shell, it sources the profile
 # like any other shell and then fails to load its own bashrc.
 [ -n "$BASH_VERSION" ] && . "$ENV"

@@ -1,0 +1,6 @@
+if command -v startx >/dev/null 2>&1 && \
+  test -z "$TMUX"; then
+
+  tmux a || tmux
+  exit 0
+fi
