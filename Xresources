@@ -27,6 +27,9 @@
 *color14:               #55ffff
 *color15:               #ffffff
 
+! advertise 256 color support
+xterm*termName:         xterm-256color
+
 ! padding between window border and buffer
 xterm*internalBorder:   0
 
