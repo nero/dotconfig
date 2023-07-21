@@ -22,8 +22,11 @@ keycode 65 = space Multi_key space
 keycode 66 = Shift_L NoSymbol Shift_L
 EOF
 
+uicolor='#d2738a'
+test -f "$HOME"/.config/color && uicolor=$(printf "#%02X%02X%02X" $(cat "$HOME"/.config/color))
+
 # Set wallpaper (yes, XPM images are actually C code)
-xsetroot -bg '#d2738a' -bitmap /dev/stdin <<EOF
+xsetroot -bg "$uicolor" -bitmap /dev/stdin <<EOF
 #define grey11_width 16
 #define grey11_height 16
 static char grey11_bits[] = {
@@ -33,7 +36,10 @@ static char grey11_bits[] = {
 EOF
 
 # Load Xresources
-xrdb "$HOME"/.config/Xresources
+(
+  cat "$HOME"/.config/Xresources
+  printf "uicolor: %s\n" "$uicolor"
+) | xrdb
 
 # Load drop-ins (most of them are machine-specific and not tracked here)
 for f in "$HOME"/.config/xinitrc.d/*; do
@@ -43,7 +49,7 @@ unset f
 
 # Handle reload with i3
 case "$I3SOCK/$DESKTOP_STARTUP_ID" in
-(*/i3/*) i3-msg restart && exit 0;;
+(*/i3*) i3-msg restart && exit 0;;
 esac
 
 # Bail out if window manager already running

@@ -11,13 +11,19 @@ PS1=$(
   (*) base=$base'\$ ';;
   esac
 
+  pat='%s'
+  test -n "$KSH_VERSION" && printf '\001\r' && pat='\001%s\001'
+  test -n "$BASH_VERSION" && pat='\['$osc'\]'
+  test -n "$ZSH_VERSION" && pat='%%{%s%%}'
+
   # OSC for terminal: window title
-  osc='\033]2;%s\033\\\\'
-  test -n "$KSH_VERSION" && printf '\001\r\001'$osc'\001' "$base"
-  test -n "$BASH_VERSION" && printf '\['$osc'\]' "$base"
-  test -n "$ZSH_VERSION" && printf '%%{'$osc'%%}' "$base"
+  osc=$(printf '\033]2;%s\033\\\\' "$base")
+  color=$(csi 0m)
+  test -f "${HOME}/.config/color" && color=$(csi 38 2 $(cat "${HOME}"/.config/color)m)
+  printf "$pat" "${osc}${color}"
 
   printf "%s" "$base"
+  printf "$pat" "$(csi 0m)"
 )
 
 # zsh needs to be told to do parameter expansion in PS1
