@@ -3,6 +3,8 @@
 # unset to unexport
 unset PS1 PROMPT_COMMAND HISTFILE
 
+csi() ( IFS=';'; printf '\033[%s' "$*" )
+
 PS1=$(
   base='${HOSTNAME:=$(uname -n)}:${PWD#$HOME/}'
 
