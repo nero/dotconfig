@@ -15,7 +15,7 @@ PS1=$(
 
   pat='%s'
   test -n "$KSH_VERSION" && printf '\001\r' && pat='\001%s\001'
-  test -n "$BASH_VERSION" && pat='\['$osc'\]'
+  test -n "$BASH_VERSION" && pat='\[%s\]'
   test -n "$ZSH_VERSION" && pat='%%{%s%%}'
 
   # OSC for terminal: window title
