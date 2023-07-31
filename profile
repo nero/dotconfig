@@ -4,9 +4,12 @@
 : ${LANG:=en_US.UTF-8}
 : ${ENV:=$HOME/.config/env}
 
-PATH=${HOME:?}/.local/bin:${HOME}/.config/bin:${PATH:?}
+for f in ${HOME:?}/.config ${HOME:?}/.local; do
+  PATH=${f}/bin:${PATH}
+  MANPATH=${f}/share/man:${MANPATH}
+done
 
-export LOGNAME LANG ENV PATH
+export LOGNAME LANG ENV PATH MANPATH
 
 # load drop-ins
 for f in "$HOME"/.config/*/profile; do
