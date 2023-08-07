@@ -14,8 +14,11 @@ finddisplay() {
   printf "%s" ":$d"
 }
 
-expr "$(tty)" : '/dev/tty[0-9][0-9]*$' > /dev/null || die "Needs tty console"
-vt=vt$(tty|sed 's/^[^0-9]*//')
+case "$(uname -s):$(tty)" in
+(*BSD:/dev/ttyv*) vt=vt$(( $(tty|sed 's/^[^0-9]*//') + 1 )) ;;
+(Linux:/dev/tty*) vt=vt$(tty|sed 's/^[^0-9]*//') ;;
+(*) die "Needs tty console";;
+esac
 
 test -z "$1" && set -- xterm -maximized
 command -v "$1" || die "Bad client command"
