@@ -1,0 +1,25 @@
+#!/bin/sh
+progname=$0
+
+die() {
+  echo "$progname: $1"; exit 1
+}
+
+finddisplay() {
+  d=0
+  while true ; do
+    [ -e "/tmp/.X$d-lock" -o -S "/tmp/.X11-unix/X$d" ] || break
+    d=$(($d + 1))
+  done
+  printf "%s" ":$d"
+}
+
+expr "$(tty)" : '/dev/tty[0-9][0-9]*$' > /dev/null || die "Needs tty console"
+vt=vt$(tty|sed 's/^[^0-9]*//')
+
+test -z "$1" && set -- xterm -maximized
+command -v "$1" || die "Bad client command"
+set -- /bin/sh -c ". .config/X/rc; $(argv "$@")"
+
+# not doing xauthority here because i dont forward the xorg socket
+exec xinit "$@" -- $(finddisplay) $vt -keeptty

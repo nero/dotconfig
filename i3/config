@@ -1,66 +1,41 @@
 set $mod mod1
 floating_modifier $mod
 
-# fetch settings from xresources
-set $fname Monospace
-set $fsize 12
-set $bgcol #000000
-set_from_resource $fgcol uicolor #d2738a
-set $ugcol #ffff55
-set $wkcol #333333
+font pango:Monospace 12
 
-exec exec x-terminal-emulator
+exec_always . .config/X/rc
+exec exec xterm
 
-# basic keybinds
-bindcode $mod+36 exec exec x-terminal-emulator
-bindcode $mod+31 exit
-bindcode $mod+46 exec --no-startup-id i3lock
-
-# compat keybinds
 bindsym Mod1+F4 kill
 bindsym Mod1+Tab focus right
 bindsym Mod1+Shift+Tab focus left
-
-# gimmick keys
+bindsym Super_L exec i3-dmenu-desktop
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 5dB+ unmute
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 5dB- unmute
 bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
 bindsym XF86PowerOff exit
 
-bindcode $mod+41 floating toggle
+bindsym $mod+Return exec exec xterm
+bindsym $mod+I exit
+bindsym $mod+L exec --no-startup-id i3lock
 
-# move focus (qwe/asd)
-bindcode $mod+24 workspace 1
-bindcode $mod+25 focus up
-bindcode $mod+26 workspace 2
-bindcode $mod+38 focus left
-bindcode $mod+39 focus down
-bindcode $mod+40 focus right
+# move focus
+bindsym $mod+Q workspace 1
+bindsym $mod+W focus up
+bindsym $mod+E workspace 2
+bindsym $mod+A focus left
+bindsym $mod+S focus down
+bindsym $mod+D focus right
 
-# move window (QWE/ASD)
-bindcode $mod+Shift+24 move container to workspace 1
-bindcode $mod+Shift+25 move up
-bindcode $mod+Shift+26 move container to workspace 2
-bindcode $mod+Shift+38 move left
-bindcode $mod+Shift+39 move down
-bindcode $mod+Shift+40 move right
+# move window
+bindsym $mod+Shift+Q move container to workspace 1
+bindsym $mod+Shift+W move up
+bindsym $mod+Shift+E move container to workspace 2
+bindsym $mod+Shift+A move left
+bindsym $mod+Shift+S move down
+bindsym $mod+Shift+D move right
 
-# resize window (you can also use the mouse for that)
-bindcode $mod+27 mode "resize"
-mode "resize" {
-  bindsym Left resize shrink width 10 px
-  bindsym Down resize grow height 10 px
-  bindsym Up resize shrink height 10 px
-  bindsym Right resize grow width 10 px
-  bindsym Escape mode "default"
-  bindsym $mod+Escape mode "default"
-}
-
-# disable shortcuts, relevant for games making use of the Alt key
-bindsym $mod+Escape mode "off"
-mode "off" {
-  bindsym $mod+Escape mode "default"
-}
+bindsym $mod+F floating toggle
 
 default_border pixel 2
 default_floating_border pixel 2
@@ -70,13 +45,3 @@ workspace_layout tabbed
 # Behavior quirks
 for_window [title="^rdesktop"] floating disable
 for_window [title="Desktop"] floating disable
-
-# Font
-font pango:$fname $fsize
-
-# Color scheme          border  backgr. text    indicator child_border
-client.focused          $fgcol  $fgcol  #bgcol  #2e9ef4   #285577
-client.focused_inactive $wkcol  $wkcol  $bgcol  #484e50   #5f676a
-client.unfocused        $fgcol  $bgcol  $fgcol  #292d2e   #222222
-client.urgent           $ugcol  $ugcol  $bgcol  #900000   #900000
-client.background       #ffffff
