@@ -4,7 +4,7 @@ floating_modifier $mod
 font pango:Monospace 12
 
 exec_always . .config/X/rc
-exec exec xterm
+exec exec i3-sensible-terminal
 
 bindsym Mod1+F4 kill
 bindsym Mod1+Tab focus right
@@ -15,7 +15,7 @@ bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 5dB- unmu
 bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
 bindsym XF86PowerOff exit
 
-bindsym $mod+Return exec exec xterm
+bindsym $mod+Return exec exec i3-sensible-terminal
 bindsym $mod+I exit
 bindsym $mod+L exec --no-startup-id i3lock
 
