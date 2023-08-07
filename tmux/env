@@ -1,3 +1,0 @@
-if test -n "$TMUX" && test -f "${HOME}/.config/color"; then
-  tmux set -g status-bg "#$(printf "%02X%02X%02X" $(cat "${HOME}/.config/color"))"
-fi
