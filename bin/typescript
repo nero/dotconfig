@@ -2,4 +2,10 @@
 # record a shell session or the output of a command
 # invocation: typescript [cmd] {args}
 test -n "$1" || set -- "$SHELL"
-exec script -ec "$(argv "$@")" ~/$(date +%Y-%m-%d-%H%M%S_$$_script.txt)
+name=$(date +%Y-%m-%d-%H%M%S_$$_script.txt)
+case "$(script --help 2>&1)" in
+# util-linux takes command as -c script
+(*-c*) exec script -ec "$(argv "$@")" ~/"$name";;
+# BSD takes command as argument vector
+(*) exec script -e ~/"$name" "$@";;
+esac
