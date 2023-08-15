@@ -3,33 +3,12 @@
 # unset to unexport
 unset PS1 PROMPT_COMMAND HISTFILE
 
-csi() ( IFS=';'; printf '\033[%s' "$*" )
+csi() ( IFS=';'; printf '\033[%s' "$*"; )
+osc() ( IFS=';'; printf '\033]%s\033\' "$*"; )
+bel() { printf '\007'; }
 
-# underline or bold or anything that makes it easier to spot
-emph=$(tput smul 2>/dev/null || tput bold 2>/dev/null || csi 4m)
-# reset for emph
-sgr0=$(tput sgr0 2>/dev/null || csi 0m)
-
-PS1=$(
-  base='${HOSTNAME:=$(uname -n)}:${PWD#$HOME/}'
-
-  case "$(id -un)" in
-  (0) base=$base'#';;
-  (*) base=$base'\$';;
-  esac
-
-  pat='%s'
-  test -n "$KSH_VERSION" && printf '\001\r' && pat='\001%s\001'
-  test -n "$BASH_VERSION" && pat='\[%s\]'
-  test -n "$ZSH_VERSION" && pat='%%{%s%%}'
-
-  # OSC for terminal: window title
-  osc=$(printf '\033]2;%s\033\\\\' "$base")
-  printf "${pat}%s${pat} " "${osc}${emph}" "${base}" "${sgr0}"
-)
-
-# zsh needs to be told to do parameter expansion in PS1
-test -n "$ZSH_VERSION" && setopt PROMPT_SUBST
+PS1='> '
+PS2='>> '
 
 # load drop-ins
 for f in "${ENV%/env}"/*/env; do
