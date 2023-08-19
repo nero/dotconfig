@@ -10,6 +10,8 @@ bel() { printf '\007'; }
 PS1='> '
 PS2='>> '
 
+alias ls='ls -AF'
+
 # load drop-ins
 for f in "${ENV%/env}"/*/env; do
   c=${f%/*}
