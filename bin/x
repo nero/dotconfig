@@ -21,8 +21,8 @@ case "$(uname -s):$(tty)" in
 esac
 
 test -z "$1" && set -- xterm -maximized
-command -v "$1" || die "Bad client command"
-set -- /bin/sh -c ". .config/X/rc; $(argv "$@")"
+command -v "$1" >/dev/null || die "Bad client command"
+set -- /bin/sh -c ". ~/.config/X/rc; $(argv "$@")"
 
 # not doing xauthority here because i dont forward the xorg socket
 exec xinit "$@" -- $(finddisplay) $vt -keeptty

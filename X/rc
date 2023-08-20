@@ -1,4 +1,4 @@
 xset b off
 xsetroot -solid '#444444'
 setxkbmap de
-xrdb .config/X/resources
+xrdb ~/.config/X/resources
