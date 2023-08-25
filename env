@@ -1,20 +1,10 @@
-# Config for setting up the environment across all sessions/applications
-
-# unset to unexport
+# Config for interactive shells
 unset PS1 PROMPT_COMMAND HISTFILE
 
 csi() ( IFS=';'; printf '\033[%s' "$*"; )
 osc() ( IFS=';'; printf '\033]%s\033\' "$*"; )
 bel() { printf '\007'; }
 
-PS1='> '
-PS2='>> '
+PS1='$ '
 
 alias ls='ls -AF'
-
-# load drop-ins
-for f in "${ENV%/env}"/*/env; do
-  c=${f%/*}
-  command -v "${c##*/}" >/dev/null 2>&1 && . "$f"
-done
-unset c f
