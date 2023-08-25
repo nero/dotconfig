@@ -1,2 +1,0 @@
-# Tell sway to use i3 config
-alias sway='sway -c ~/.config/i3/config'
