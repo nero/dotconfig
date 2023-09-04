@@ -1,25 +1,8 @@
 # Personal dotconfig
 
 This repository is for synchronizing my `~/.config` directory across machines.
-
 It does not use any dotfile manager, its only that directory tracked in git.
-
 There is an `./install` script that sets up some symlinks.
-
-Supported shells are `dash`, `mksh`, `bash` and `zsh`.
-
-## Topical directories
-
-Most directories in this repo are related to some specific software.
-I call these 'topical directory'.
-Each topical directory can have a selection of three snippets:
-
-- `install`, sourced during dotfiles installation
-- `profile` for login shells
-- `env` for interactive shells
-
-Each is called by the respective script in the repo root, if and only if a command with the same name of the topical directory exists.
-This is the mechamism to only select configuration of software that is installed on the specfic system.
 
 ## Shells launched in the background
 
@@ -28,19 +11,11 @@ Appending `-l` to the end of their shebang line will cause the executing shell t
 
 ## Xorg / i3 / xterm
 
-Somehow the `xinitrc` must be started, this integration depends on whether you use a display manager or startx.
-When run, it does the usual Xorg configuration including Xmodmap and Xresources.
+When launching from a tty, the ´bin/x´ script is used, replacing ´startx´ as wrapper to ´xinit´.
+Xresources and keyboard setup are done by the ´X/rc´ script, which can be re-sourced any time.
+For sessions started with XRDP or any display manager, i write a custom xinitrc/xsessionrc, whatever is needed.
+The ´x´ script takes the command for the main window program, which is usually xterm or i3.
 
-The setup is simple.
-All windows run maximized, only one bar at the top displays the titles of all windows.
-Windows are switched between by using the left Alt-Key and WASD, moved by additionally holding shift.
+With i3, all windows run maximized, only one bar at the top displays the titles of all windows.
+Windows are switched by using the left Alt-Key and WASD, moved by additionally holding shift.
 A new terminal is launched using Alt+Enter.
-
-xterm is configured via Xresources.
-If xterm is not installed, rxvt-unicode is tried.
-
-## Wayland / Sway / foot
-
-Sway can be started from the tty. Both `sway` and `foot` look into `~/.config` on their own.
-
-Sway is using the same config as i3.
