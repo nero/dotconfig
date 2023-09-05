@@ -1,5 +1,0 @@
-if ! test -L ~/.ssh; then
-  mv  ~/.ssh/* ~/.config/ssh/
-  rmdir ~/.ssh
-  ln -sfn .config/ssh ~/.ssh
-fi
