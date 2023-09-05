@@ -7,6 +7,6 @@ bel() { printf '\007'; }
 
 PS1='$ '
 
-has_dircolors=$(command -v dircolors)
+has_coreutils=$(command -v dircolors)
 
-alias ls="ls ${has_dircolors:+--color=auto }-AF"
+alias ls="ls ${has_coreutils:+--color=auto }-AF"
