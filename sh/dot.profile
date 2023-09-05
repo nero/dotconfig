@@ -2,7 +2,7 @@
 
 : ${LOGNAME:=$(id -un)}
 : ${LANG:=en_US.UTF-8}
-: ${ENV:=$HOME/.config/env}
+: ${ENV:=$HOME/.config/sh/rc}
 
 for f in ${HOME:?}/.config ${HOME:?}/.local; do
   PATH=${f}/bin:${PATH}
@@ -23,7 +23,3 @@ unset c f
 case "$-" in
   (*i*) (for i in "$HOME"/.config/session/*; do . $i; done);;
 esac
-
-# When bash is started as interactive login shell, it sources the profile
-# like any other shell and then fails to load its own bashrc.
-[ -n "$BASH_VERSION" ] && . "$ENV"
