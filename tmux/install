@@ -1,7 +1,0 @@
-# 3.1 introduced ~/.config/tmux/tmux.conf
-# before that, ~/.tmux.conf is the default
-case "$(tmux -V)" in
-('tmux 2.'*|'tmux 3.0'*)
-  ln -sfn .config/tmux/tmux.conf "${HOME}"/.tmux.conf
-  ;;
-esac
