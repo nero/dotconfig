@@ -2,7 +2,7 @@
 
 case "$(uname -s)" in
 (Linux)
-  test "$(cat /proc/sys/kernel/tainted)" -gt 0 && echo tainted kernel
+  test -e /proc/sys/kernel/tainted && test "$(cat /proc/sys/kernel/tainted)" -gt 0 && echo tainted kernel
   if test "$(stat -c "%i" /)" -gt 2; then
     echo namespaced environment
   else
