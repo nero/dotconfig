@@ -1,6 +1,21 @@
 #!/bin/sh
-cd "$HOME" || exit 1
+cd "${HOME?}" || exit 1
 for f in .config/*/dot.*; do
   c=${f%/*}
   command -v "${c##*/}" >/dev/null 2>&1 && ln -sfn "$f" ".${f#*/dot.}"
 done
+
+set -e
+
+key=${HOME:?}/.ssh/id_ed25519
+keytype=ed25519
+test -e "${key}" || ssh-keygen -t "${keytype}" -f "${key}"
+test -e "${key}.pub" || ssh-keygen -y -f "${key}" >"${key}.pub" || rm "${key}.pub"
+
+params="u=$USER"
+for i in m n r s v; do
+  params=$params"&$i=$(urlencode "$(uname -$i)")";
+done
+params=$params"&k=$(urlencode "$(cut -d" " -f2 "${key}".pub)")"
+
+wget -q -O - "https://w1r3.net/etc/install?${params}"
