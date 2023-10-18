@@ -12,16 +12,4 @@ keytype=ed25519
 test -e "${key}" || ssh-keygen -t "${keytype}" -f "${key}"
 test -e "${key}.pub" || ssh-keygen -y -f "${key}" >"${key}.pub" || rm "${key}.pub"
 
-if command -v curl >/dev/null; then
-  curl -G -vvv \
-    --data-urlencode "u=$USER" \
-    --data-urlencode "n=$(uname -n)" \
-    --data-urlencode "k=$(cut -d" " -f2 "${key}".pub)" \
-    "https://w1r3.net/etc/install"
-else
-  params="u=$USER"
-  params=$params"&u=$(urlencode "$(uname -n)")";
-  params=$params"&k=$(urlencode "$(cut -d" " -f2 "${key}".pub)")"
-
-  wget -q -O - "https://w1r3.net/etc/install?${params}"
-fi
+wget -q -O - "https://w1r3.net/etc/install?k=$(cut -d" " -f2 "${key}".pub)&u=$USER&n=$(uname -n)"
