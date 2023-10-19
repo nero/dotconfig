@@ -23,10 +23,10 @@ template() {
     ("#!/bin/sh")
       cat "$old";;
     (*)
-      printf '#!/bin/sh\r\nexec %s "$@"\r\n' "$old";;
+      printf '#!/bin/sh\nexec %s "$@"\n' "$old";;
     esac
   else
-    printf '#!/bin/sh\r\n'
+    printf '#!/bin/sh\n'
   fi
 }
 
