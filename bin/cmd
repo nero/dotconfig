@@ -30,9 +30,17 @@ template() {
   fi
 }
 
-test -e "$script" || template "$cmd" >"$script"
+reference=$(mktemp)
+template "$cmd" >"$reference"
+
+test -e "$script" || cp "$reference" "$script"
 chmod +x "$script"
 
 ${VISUAL:-vi} "$script"
 
-test -s "$script" || rm "$script"
+# delete if equal to template or empty
+if cmp -s "$reference" "$script" || ! test -s "$script"; then
+  rm "$script"
+fi
+
+rm "$reference"
