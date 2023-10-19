@@ -1,0 +1,38 @@
+#!/bin/sh
+cmd=${1?\$1 needs to be command name}
+scriptdir="$HOME"/.config/bin
+script="$scriptdir/$cmd"
+
+search() {
+  IFS=:
+  for p in $PATH ; do
+    case "$p" in
+    ($scriptdir) ;;
+    (*) if test -x "$p/$1"; then
+          echo "$p/$1";
+          return;
+        fi
+    esac
+  done
+}
+
+template() {
+  old=$(search "$1")
+  if test -n "$old"; then
+    case "$(head -n 1 "$old")" in
+    ("#!/bin/sh")
+      cat "$old";;
+    (*)
+      printf '#!/bin/sh\r\nexec %s "$@"\r\n' "$old";;
+    esac
+  else
+    printf '#!/bin/sh\r\n'
+  fi
+}
+
+test -e "$script" || template "$cmd" >"$script"
+chmod +x "$script"
+
+${VISUAL:-vi} "$script"
+
+test -s "$script" || rm "$script"
