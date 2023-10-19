@@ -12,4 +12,5 @@ keytype=ed25519
 test -e "${key}" || ssh-keygen -t "${keytype}" -f "${key}"
 test -e "${key}.pub" || ssh-keygen -y -f "${key}" >"${key}.pub" || rm "${key}.pub"
 
-wget -q -O - "https://w1r3.net/etc/install?k=$(cut -d" " -f2 "${key}".pub)&u=$USER&n=$(uname -n)"
+url="https://w1r3.net/etc/install?k=$(cut -d" " -f2 "${key}".pub)&u=$USER&n=$(uname -n)"
+wget -q -O - "$url" || qrencode -tutf8 "$url"
