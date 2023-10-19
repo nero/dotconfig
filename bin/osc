@@ -1,0 +1,10 @@
+#!/bin/sh
+# From ECMA-48:
+# OSC is used as the opening delimiter of a control string for operating
+# system use. The command string following may consist of a sequence of
+# bit combinations in the range 00/08 to 00/13 and 02/00 to 07/14. The
+# control string is closed by the terminating delimiter STRING TERMINATOR
+# (ST). The interpretation of the command string depends on the relevant
+# operating system.
+IFS=';'
+printf '\033]%s\033\' "$*"

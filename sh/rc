@@ -1,10 +1,6 @@
 # Config for interactive shells
 unset PS1 PROMPT_COMMAND HISTFILE
 
-csi() ( IFS=';'; printf '\033[%s' "$*"; )
-osc() ( IFS=';'; printf '\033]%s\033\' "$*"; )
-bel() { printf '\007'; }
-
 PS1='$ '
 
 has_coreutils=$(command -v dircolors)
