@@ -1,0 +1,20 @@
+#!/bin/sh
+magic=$(od -N 16 -A n -t x1 "$1")
+case "$magic" in
+(' ff d8 ff'*) echo jpg;;
+(' 89 50 4e 47 0d 0a 1a 0a'*) echo png;;
+(' 47 49 46 38 3'*' 61') echo gif;;
+(' 1a 45 df a3') echo mkv;;
+(' 50 4b 03 04'*) echo zip;;
+(' 7f 45 4c 46'*) echo elf;;
+(' 23 21 2f'*) echo txt;;
+(' 4d 5a'*) echo exe;;
+(' 25 50 44 46 2d'*) echo pdf;;
+(' 49 54 53 46 03 00 00 00'*) echo chm;;
+(' 1f 8b'*) echo gz;;
+(' fd 37 7a 58 5a 00'*) echo xz;;
+(' 77 4f 46 46'*) echo woff;;
+(' 77 4f 46 32'*) echo woff2;;
+(*' 8'*|*' 9'*|*' a'*|*' b'*|*' c'*|*' d'*|*' e'*|*' f'*) echo bin;;
+(*) echo txt;;
+esac
