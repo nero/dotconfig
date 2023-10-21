@@ -3,9 +3,11 @@ magic=$(od -N 16 -A n -t x1 "$1")
 case "$magic" in
 (' ff d8 ff'*) echo jpg;;
 (' 89 50 4e 47 0d 0a 1a 0a'*) echo png;;
-(' 47 49 46 38 3'*' 61') echo gif;;
-(' 00 00 00 20 66 74 79 70'*) echo mp4;;
-(' 1a 45 df a3') echo mkv;;
+(' 47 49 46 38 3'*) echo gif;;
+(' 42 4d'*) echo bmp;;
+(' 00 00'*'66 74 79 70'*) echo mp4;;
+(' 1a 45 df a3'*) echo mkv;;
+(' 52 49 46 46'*'57 41 56 45'*) echo wav;;
 (' 50 4b 03 04'*) echo zip;;
 (' 7f 45 4c 46'*) echo elf;;
 (' 23 21 2f'*) echo txt;;
@@ -16,6 +18,6 @@ case "$magic" in
 (' fd 37 7a 58 5a 00'*) echo xz;;
 (' 77 4f 46 46'*) echo woff;;
 (' 77 4f 46 32'*) echo woff2;;
-(*' 8'*|*' 9'*|*' a'*|*' b'*|*' c'*|*' d'*|*' e'*|*' f'*) echo bin;;
+(*'00'*|*' 8'*|*' 9'*|*' a'*|*' b'*|*' c'*|*' d'*|*' e'*|*' f'*) echo bin;;
 (*) echo txt;;
 esac
