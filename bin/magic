@@ -1,5 +1,5 @@
 #!/bin/sh
-magic=$(od -N 16 -A n -t x1 "$1")
+magic=$(od -N 16 -A n -t x1 "${1:--}")
 case "$magic" in
 (' ff d8 ff'*) echo jpg;;
 (' 89 50 4e 47 0d 0a 1a 0a'*) echo png;;
