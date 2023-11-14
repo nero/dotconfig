@@ -1,0 +1,1 @@
+export WGETRC="$HOME"/.config/wget/rc
