@@ -20,6 +20,7 @@ case "$magic" in
 (' fd 37 7a 58 5a 00'*) echo xz;;
 (' 77 4f 46 46'*) echo woff;;
 (' 77 4f 46 32'*) echo woff2;;
+(' ff fb'*) echo mp3;;
 (*'00'*|*' 8'*|*' 9'*|*' a'*|*' b'*|*' c'*|*' d'*|*' e'*|*' f'*) echo bin;;
 (*) echo txt;;
 esac
