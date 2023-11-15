@@ -1,4 +1,4 @@
-set $mod mod1
+set $mod mod4
 floating_modifier $mod
 
 font pango:Monospace 12
@@ -9,7 +9,7 @@ exec exec i3-sensible-terminal
 bindsym Mod1+F4 kill
 bindsym Mod1+Tab focus right
 bindsym Mod1+Shift+Tab focus left
-bindsym Super_L exec i3-dmenu-desktop
+#bindsym Super_L exec i3-dmenu-desktop
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 5dB+ unmute
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 5dB- unmute
 bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
