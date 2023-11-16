@@ -1,0 +1,11 @@
+#!/bin/sh
+for repo in $HOME/src/*/.git; do
+  test -e "$repo" || continue
+  repo=${repo%/.git}
+  name="${repo%/}"
+  name="${name##*/}"
+  (
+    cd "$repo"
+    git "$@"
+  ) 2>&1 | sed "s|^|$(printf "%16s: " "${name}")|"
+done
