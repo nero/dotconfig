@@ -1,11 +1,16 @@
 #!/bin/sh
-for repo in $HOME/src/*/.git; do
-  test -e "$repo" || continue
-  repo=${repo%/.git}
-  name="${repo%/}"
-  name="${name##*/}"
-  (
-    cd "$repo"
-    git "$@"
-  ) 2>&1 | sed "s|^|$(printf "%16s: " "${name}")|"
+# this searches for git repositories in your homedir and runs a git command in all of them.
+# `git all fetch --all`, `git all status -sb`.
+# this is really useful if you login in the morning and wanna see what happened in the projects you work on.
+cd ~ || exit 1
+for name in $(find -maxdepth 3 -type d -name '.git'|sed 's|^./||g;s|/.git$||'); do
+	(
+		[ -d "$name" ] || continue
+		if ! [ -d "$name/.git" ]; then
+			echo "Not an git repo"
+			continue
+		fi
+		cd "$name" || exit 1
+		git -c color.status=always "$@"
+	)|sed "s|^|$(printf "\033[1;36m% 32s\033[0m" "${name}"): |"
 done
