@@ -56,8 +56,6 @@ xterm*vt100.translations: \
                  ~Meta <Btn1Down>:select-start() \n\
                ~Meta <Btn1Motion>:select-extend() \n\
                    ~Meta <Btn1Up>:select-end(PRIMARY, CUT_BUFFER0) \n\
-           ~Ctrl ~Meta <Btn2Down>:ignore() \n\
-             ~Ctrl ~Meta <Btn2Up>:insert-selection(PRIMARY, CUT_BUFFER0) \n\
                   Ctrl <Btn4Down>:larger-vt-font() \n\
                        <Btn4Down>:scroll-back(5,line,m)     \n\
                   Ctrl <Btn5Down>:smaller-vt-font() \n\
