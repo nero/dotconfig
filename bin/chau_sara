@@ -1,0 +1,3 @@
+#!/bin/sh
+osc 2 "Chau Sara"
+exec mpv --no-video "https://www.youtube.com/watch?v=X9zVjEZ7W8Q"
