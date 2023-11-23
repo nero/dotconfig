@@ -5,8 +5,8 @@
 cd ~ || exit 1
 for name in $(find -maxdepth 3 -type d -name '.git'|sed 's|^./||g;s|/.git$||'); do
 	(
-		[ -d "$name" ] || continue
-		if ! [ -d "$name/.git" ]; then
+		test -d "$name" || continue
+		if ! test -d "$name/.git"; then
 			echo "Not an git repo"
 			continue
 		fi
