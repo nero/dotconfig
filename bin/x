@@ -8,7 +8,9 @@ die() {
 finddisplay() {
   d=0
   while true ; do
-    [ -e "/tmp/.X$d-lock" -o -S "/tmp/.X11-unix/X$d" ] || break
+    if test -e "/tmp/.X$d-lock" || test -S "/tmp/.X11-unix/X$d"; then
+      break
+    fi
     d=$(($d + 1))
   done
   printf "%s" ":$d"
