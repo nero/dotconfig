@@ -4,7 +4,7 @@
 ! urxvt, see urxvt(1), sharing some settings with xterm
 
 ! if this font is not found, xterm falls back to the next best monospace ttf
-*.faceName:             Monospace
+*.faceName:             MxPlus IBM VGA 8x16
 *.faceSize:             12
 
 ! EGA colors (yellow is brown plus intensity bit)
@@ -29,6 +29,7 @@
 
 ! padding between window border and buffer
 xterm*internalBorder:   0
+xterm*borderWidth:      0
 
 ! Show bold attribute as color, not font weight
 xterm*colorBDMode:      true
@@ -61,7 +62,7 @@ xterm*vt100.translations: \
                   Ctrl <Btn5Down>:smaller-vt-font() \n\
                        <Btn5Down>:scroll-forw(5,line,m)
 
-Rxvt.font:              xft:Monospace:size=12
+Rxvt.font:              xft:MxPlus IBM VGA 8x16:size=12
 
 ! hilight window on BEL char
 Rxvt.urgentOnBell:      true
