@@ -1,12 +1,14 @@
 #!/bin/sh
 dest=${HOME?}/archive
 
+sources=". Downloads Desktop"
+
 if test -z "$1"; then
   cd "$HOME" || exit 1
   # move away lingering files
-  find -L . Downloads -maxdepth 1 -type f ! -name '.*' -exec "$0" {} \;
+  find -L $sources -maxdepth 1 -type f ! -name '.*' ! -name '*.url' ! -name '*.lnk' ! -name 'desktop.ini' -exec "$0" {} \;
   # delete remaining empty directories
-  find -L . Downloads -maxdepth 1 -type d -empty -exec rmdir {} \;
+  find -L $sources -maxdepth 1 -type d -empty -exec rmdir {} \;
   exit
 fi
 
