@@ -11,15 +11,29 @@ done
 
 export LOGNAME LANG ENV PATH MANPATH
 
+cmd() {
+  command -v "$1" >/dev/null 2>&1
+}
+
 # load drop-ins
 for f in "$HOME"/.config/*/profile; do
   c=${f%/*}
-  command -v "${c##*/}" >/dev/null 2>&1 && . "$f"
+  cmd "${c##*/}" && . "$f"
 done
 unset c f
 
-# launch more complex session types if shell is interactive
-# this only happens once at SSH or getty login
+# We are done for non-interactive logins
 case "$-" in
-  (*i*) (for i in "$HOME"/.config/session/*; do . $i; done);;
+  (*i*) ;;
+  (*) return;;
 esac
+
+# Launch xorg session
+if cmd i3 && test -z "$DISPLAY" && cmd xinit; then
+  x i3
+fi
+
+# auto-attach to tmuxes
+if cmd tmux && test -z "$TMUX" && test -n "$SSH_CONNECTION"; then
+  tmux new -As0
+fi

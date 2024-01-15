@@ -1,5 +1,0 @@
-test -z "$DISPLAY" && \
-  expr "$(tty)" : '/dev/tty[0-9][0-9]*$' > /dev/null && \
-  command -v startx >/dev/null 2>&1 && \
-  command -v i3 >/dev/null 2>&1 && \
-  exec x i3
