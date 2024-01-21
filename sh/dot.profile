@@ -11,14 +11,14 @@ done
 
 export LOGNAME LANG ENV PATH MANPATH
 
-cmd() {
+has_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
 # load drop-ins
 for f in "$HOME"/.config/*/profile; do
   c=${f%/*}
-  cmd "${c##*/}" && . "$f"
+  has_cmd "${c##*/}" && . "$f"
 done
 unset c f
 
@@ -29,11 +29,11 @@ case "$-" in
 esac
 
 # Launch xorg session
-if cmd i3 && test -z "$DISPLAY" && cmd xinit; then
+if has_cmd i3 && test -z "$DISPLAY" && has_cmd xinit; then
   x i3
 fi
 
 # auto-attach to tmuxes
-if cmd tmux && test -z "$TMUX" && test -n "$SSH_CONNECTION"; then
+if has_cmd tmux && test -z "$TMUX" && test -n "$SSH_CONNECTION"; then
   tmux new -As0
 fi
