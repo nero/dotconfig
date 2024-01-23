@@ -1,2 +1,0 @@
-#!/bin/sh
-mosh -- "$1" sh -lc "tmux a -d||tmux"
