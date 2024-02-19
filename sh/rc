@@ -6,5 +6,6 @@ PS1='$ '
 has_coreutils=$(command -v dircolors)
 
 alias ls="ls ${has_coreutils:+--color=auto }-AF"
+alias bc="bc -l"
 
 greeter
