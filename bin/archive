@@ -1,10 +1,13 @@
 #!/bin/sh
+set -e
 dest=${HOME?}/archive
 
-sources=". Downloads Desktop"
-
 if test -z "$1"; then
-  cd "$HOME" || exit 1
+  sources=""
+  for i in $HOME $HOME/Downloads $HOME/Desktop; do
+    test -d "$i" && sources="$sources $i"
+  done
+
   # move away lingering files
   find -L $sources -maxdepth 1 -type f ! -name '.*' ! -name '*.url' ! -name '*.lnk' ! -name 'desktop.ini' -exec "$0" {} \;
   # delete remaining empty directories
@@ -12,18 +15,17 @@ if test -z "$1"; then
   exit
 fi
 
-while test -n "$1"; do
-  name=${1##*/}
+for src in "$@"; do
+  name=${src##*/}
 
   folder=$(printf "%s\n" "$name"|awk -v d="$folder" -F- '/^[0-9]+-[01][0-9]-[0-3][0-9]-/ {print("/"$1"/"$2)}')
   test -n "$folder" || folder=$(date +'/%Y/%m')
-
-  unset num
-  while test -e "${dest}${folder}/${name}${num:+_$num}"; do
-    num=$(( $num + 1 ))
-  done
-
   mkdir -p "${dest}${folder}"
-  mv -v "$1" "${dest}${folder}/${name}${num:+_$num}"
-  shift
+  dest="${dest}${folder}/${name}"
+
+  rotate "$dest"
+  (
+    set -x
+    mv "${src}" "${dest}"
+  )
 done
