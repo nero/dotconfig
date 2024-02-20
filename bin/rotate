@@ -1,0 +1,14 @@
+#!/bin/sh
+# Basically like "rm" but moves instead of unlinking
+# No provision to clean up renamed files
+set -e
+oldname=${1?}
+test -e "$oldname" || return 0
+if expr "$oldname" : ".*\.[0-9]*$" >/dev/null; then
+  oldnum="${oldname##*.}"
+  newname="${oldname%.*}".$(( oldnum + 1 ))
+else
+  newname="${oldname}".1
+fi
+rotate "$newname"
+mv "$oldname" "$newname"

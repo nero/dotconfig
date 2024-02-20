@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+trash=$HOME/.local/share/deleted
+
+for name in "$@"; do
+  case "$name" in
+  (/*) ;;
+  (*) name=$PWD/$name ;;
+  esac
+
+  hash=$(urlencode "$name")
+  test -e "${trash}/${hash}"
+  (
+    set -x
+    mv "${trash}/${hash}" "$name"
+  )
+done
