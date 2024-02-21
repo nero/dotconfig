@@ -1,6 +1,12 @@
 #!/bin/sh
+# Move into trash instead of deleting
 set -e
 trash=$HOME/.local/share/deleted
+
+fail() {
+  echo "$1" >&2
+  exit 1
+}
 
 for name in "$@"; do
   case "$name" in
@@ -8,7 +14,7 @@ for name in "$@"; do
   (*) name=$PWD/$name ;;
   esac
 
-  test -e "${name}"
+  test -e "${name}" || fail "${name}: not found"
   mkdir -p "${trash}"
   hash=$(urlencode "$name")
   rotate "${trash}/${hash}"
