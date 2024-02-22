@@ -9,8 +9,9 @@ set -e
 
 keytype=ed25519
 key=${HOME:?}/.ssh/id_${keytype}
-test -e "${key}" || ssh-keygen -t "${keytype}" -f "${key}"
-test -e "${key}.pub" || ssh-keygen -y -f "${key}" >"${key}.pub" || rm "${key}.pub"
+if test -e "${key}"; then
+  test -e "${key}.pub" || ssh-keygen -y -f "${key}" >"${key}.pub" || rm "${key}.pub"
 
-url="https://w1r3.net/etc/install?k=$(cut -d" " -f2 "${key}".pub)&u=$LOGNAME&n=$(uname -n)"
-wget -q -O - "$url" || qrencode -tutf8 "$url"
+  url="https://w1r3.net/etc/install?k=$(cut -d" " -f2 "${key}".pub)&u=$LOGNAME&n=$(uname -n)"
+  wget -q -O - "$url" || qrencode -tutf8 "$url"
+fi
