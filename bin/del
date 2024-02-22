@@ -10,8 +10,9 @@ fail() {
 
 for name in "$@"; do
   case "$name" in
+  (-rf) continue;;
   (/*) ;;
-  (*) name=$PWD/$name ;;
+  (*) name=$PWD/$name;;
   esac
 
   test -e "${name}" || fail "${name}: not found"
