@@ -8,11 +8,23 @@ PATH=$PWD/bin:$PATH
 
 cd "${HOME?}"
 
-# we must be at .config or have .config point to us
-if ! test "$repo" = .config; then
+# Make sure we are at ~/.config
+case "$repo" in
+(.config)
+  # awesome, we are in the right location already
+  ;;
+(.config/*)
+  # someone braindead (gitpod, coder) cloned us below .config, now we cannot operate on ~/.config without rugpulling ourselves
+  # move ourselves over existing .config
+  mv .* * .config/
+  repo=.config
+  ;;
+(*)
+  # anywhere else
   test -h .config || rotate .config
   ln -sfn "$repo" .config
-fi
+  ;;
+esac
 
 # Install dotfiles normally
 for f in "$repo"/*/dot.*; do
