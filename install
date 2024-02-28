@@ -1,6 +1,21 @@
 #!/bin/sh
-cd "${HOME?}" || exit 1
-for f in .config/*/dot.*; do
+set -e
+
+cd "$(dirname "$0")"
+test -x ./install
+repo=${PWD#$HOME/}
+PATH=$PWD/bin:$PATH
+
+cd "${HOME?}"
+
+# we must be at .config or have .config point to us
+if ! test "$repo" = .config; then
+  test -h .config || rotate .config
+  ln -sfn "$repo" .config
+fi
+
+# Install dotfiles normally
+for f in "$repo"/*/dot.*; do
   c=${f%/*}
   command -v "${c##*/}" >/dev/null 2>&1 && ln -sfn "$f" ".${f#*/dot.}"
 done
