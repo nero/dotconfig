@@ -16,8 +16,7 @@ case "$repo" in
 (.config/*)
   # someone braindead (gitpod, coder) cloned us below .config, now we cannot operate on ~/.config without rugpulling ourselves
   # move ourselves over existing .config
-  mv .* * .config/
-  repo=.config
+  mv "$repo"/.git "$repo"/* .config/
   ;;
 (*)
   # anywhere else
@@ -27,7 +26,7 @@ case "$repo" in
 esac
 
 # Install dotfiles normally
-for f in "$repo"/*/dot.*; do
+for f in .config/*/dot.*; do
   c=${f%/*}
   command -v "${c##*/}" >/dev/null 2>&1 && ln -sfn "$f" ".${f#*/dot.}"
 done
