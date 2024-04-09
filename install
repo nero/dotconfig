@@ -3,7 +3,7 @@ set -e
 
 cd "$(dirname "$0")"
 test -x ./install
-repo=${PWD#$HOME/}
+repo=${PWD#${HOME%/}/}
 PATH=$PWD/bin:$PATH
 
 cd "${HOME?}"
