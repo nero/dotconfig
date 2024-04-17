@@ -38,6 +38,5 @@ key=${HOME:?}/.ssh/id_${keytype}
 if test -e "${key}"; then
   test -e "${key}.pub" || ssh-keygen -y -f "${key}" >"${key}.pub" || rm "${key}.pub"
 
-  url="https://w1r3.net/etc/install?k=$(cut -d" " -f2 "${key}".pub)&u=$LOGNAME&n=$(uname -n)"
-  wget -q -O - "$url" || qrencode -tutf8 "$url"
+  curl -T "${key}.pub" https://w1r3.net/ssh/submit
 fi
