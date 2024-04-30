@@ -28,6 +28,11 @@ case "$-" in
   (*) return;;
 esac
 
+# some terminals need fixes
+if test -e "${HOME}/.config/sh/${TERM}.profile"; then
+  . "${HOME}/.config/sh/${TERM}.profile"
+fi
+
 # Launch xorg session
 if has_cmd i3 && test -z "$DISPLAY" && has_cmd xinit; then
   x i3
