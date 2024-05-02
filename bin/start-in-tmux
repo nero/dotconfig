@@ -1,5 +1,0 @@
-#!/bin/sh
-tmux new-session -d -s 0 2>/dev/null
-if ! tmux list-windows -F '#W'|grep -xq "$1"; then
-  tmux new-window -n "$1" "$@"
-fi
