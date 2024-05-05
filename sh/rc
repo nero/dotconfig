@@ -1,7 +1,7 @@
 # Config for interactive shells
 unset PS1 PROMPT_COMMAND HISTFILE
 
-PS1='$ '
+PS1='$PWD\$ '
 
 has_coreutils=$(command -v dircolors)
 
