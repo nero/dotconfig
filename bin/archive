@@ -10,8 +10,6 @@ if test -z "$1"; then
 
   # move away lingering files
   find -L $sources -maxdepth 1 -type f ! -name '.*' ! -name '*.url' ! -name '*.lnk' ! -name 'desktop.ini' -exec "$0" {} \;
-  # delete remaining empty directories
-  find -L $sources -maxdepth 1 -type d -empty -exec rmdir {} \;
   exit
 fi
 
