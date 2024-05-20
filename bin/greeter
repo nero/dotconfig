@@ -16,4 +16,4 @@ case "$(uname -s)" in
 esac
 
 # print free diskspace if less than 1GB
-df -k -P "$HOME"|awk '/^\// {if ($4<10*1024*1024) {printf("%d MB available\n",$4/1024)}}'
+df -k -P "$HOME" 2>/dev/null|awk '/^\// {if ($4<10*1024*1024) {printf("%d MB available\n",$4/1024)}}'
