@@ -2,3 +2,4 @@ xset b off
 xsetroot -solid '#444444'
 setxkbmap de
 xrdb ~/.config/X/resources
+test -e ~/.config/wallpaper && feh --no-fehbg --bg-fill ~/.config/wallpaper
