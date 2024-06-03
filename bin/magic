@@ -1,6 +1,6 @@
 #!/bin/sh
 for i in "$@"; do
-  magic=$(od -N 16 -A n -t x1 "$@")
+  magic=$(od -N 16 -A n -t x1 "$i")
   case "$magic" in
   ('') exit 1;;
   (' ff d8 ff'*) echo jpg;;
@@ -10,18 +10,27 @@ for i in "$@"; do
   (' 00 00'*'66 74 79 70'*) echo mp4;;
   (' 1a 45 df a3'*) echo mkv;;
   (' 49 44 33'*) echo mp3;;
-  (' 52 49 46 46'*'57 41 56 45'*) echo wav;;
+
+  # riff containers
+  (' 52 49 46 46'*' 57 45 42 50 56 50 38 '*) echo webp;;
+  (' 52 49 46 46'*' 57 41 56 45 '*) echo wav;;
+
+  # compression layers
+  (' 1f 8b'*) echo gz;;
+  (' fd 37 7a 58 5a 00'*) echo xz;;
+
+  # misc
   (' 50 4b 03 04'*) echo zip;;
   (' 7f 45 4c 46'*) echo elf;;
   (' 23 21 2f'*) echo txt;;
   (' 4d 5a'*) echo exe;;
   (' 25 50 44 46 2d'*) echo pdf;;
   (' 49 54 53 46 03 00 00 00'*) echo chm;;
-  (' 1f 8b'*) echo gz;;
-  (' fd 37 7a 58 5a 00'*) echo xz;;
   (' 77 4f 46 46'*) echo woff;;
   (' 77 4f 46 32'*) echo woff2;;
   (' ff fb'*) echo mp3;;
+
+  # either bin or txt depending on presence of bytes >= 128
   (*'00'*|*' 8'*|*' 9'*|*' a'*|*' b'*|*' c'*|*' d'*|*' e'*|*' f'*) echo bin;;
   (*) echo txt;;
   esac
