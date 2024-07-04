@@ -1,0 +1,3 @@
+#!/bin/sh
+host=pipebert
+mpv --ao=pulse --pulse-host=$host.local --volume=40 "$@"
