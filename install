@@ -1,9 +1,10 @@
 #!/bin/sh
-set -e
+set -ex
 
 cd "$(dirname "$0")"
 test -x ./install
 repo=${PWD#${HOME%/}/}
+
 PATH=$PWD/bin:$PATH
 
 cd "${HOME?}"
