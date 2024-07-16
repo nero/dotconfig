@@ -7,33 +7,46 @@
 *.faceName:             MxPlus IBM VGA 8x16
 *.faceSize:             12
 
-! EGA colors (yellow is brown plus intensity bit)
-*background:            #000000
-*foreground:            #aaaaaa
-*color0:                #000000
-*color1:                #aa0000
-*color2:                #00aa00
-*color3:                #aa5500
-*color4:                #0000aa
-*color5:                #aa00aa
-*color6:                #00aaaa
-*color7:                #aaaaaa
-*color8:                #555555
-*color9:                #ff5555
-*color10:               #55ff55
-*color11:               #ffff55
-*color12:               #5555ff
-*color13:               #ff55ff
-*color14:               #55ffff
-*color15:               #ffffff
+! special
+*.foreground:   #586e75
+*.background:   #fdf6e3
+*.cursorColor:  #586e75
+
+! black
+*.color0:       #002b36
+*.color8:       #657b83
+
+! red
+*.color1:       #dc322f
+*.color9:       #dc322f
+
+! green
+*.color2:       #859900
+*.color10:      #859900
+
+! yellow
+*.color3:       #b58900
+*.color11:      #b58900
+
+! blue
+*.color4:       #268bd2
+*.color12:      #268bd2
+
+! magenta
+*.color5:       #6c71c4
+*.color13:      #6c71c4
+
+! cyan
+*.color6:       #2aa198
+*.color14:      #2aa198
+
+! white
+*.color7:       #93a1a1
+*.color15:      #fdf6e3
 
 ! padding between window border and buffer
 xterm*internalBorder:   0
 xterm*borderWidth:      0
-
-! Show bold attribute as color, not font weight
-xterm*colorBDMode:      true
-xterm*colorBD:          #ffffff
 
 ! hilight window on ascii bell
 xterm*bellIsUrgent:     true
