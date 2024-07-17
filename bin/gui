@@ -1,0 +1,154 @@
+#!/bin/sh
+#set -x
+
+progname=$0
+
+: "${DISPLAY_SUBPIXEL_ORDER:=rgba}"
+: "${DISPLAY_DPI:=96}"
+: "${TEXT_FONT:=Monospace}"
+: "${TEXT_SIZE:=12}"
+: "${TEXT_FG:=586e75}"
+: "${TEXT_BG:=fdf6e3}"
+: "${TEXT_PALETTE:=002b36 dc322f 859900 b58900 268bd2 6c71c4 2aa198 93a1a1 657b83 dc322f 859900 b58900 268bd2 6c71c4 2aa198 fdf6e3}"
+
+test -f "$HOME/.config/gui.conf" && . "$HOME/.config/gui.conf"
+
+die() {
+  echo "$progname: $1"; exit 1
+}
+
+# poke around in /tmp, see if we can find a value for DISPLAY
+finddisplay() {
+  d=0
+  while test -e "/tmp/.X$d-lock" || test -S "/tmp/.X11-unix/X$d"; do
+    d=$(($d + 1));
+  done
+  printf "%s" ":$d"
+}
+
+# settings to xresources
+xresources() {
+  test -f "$HOME/.config/X/resources" && cat "$HOME/.config/X/resources"
+  cat <<EOF
+Xft.antialias: true
+Xft.hinting:   true
+Xft.rgba:      $DISPLAY_SUBPIXEL_ORDER
+Xft.hintstyle: hintfull
+Xft.dpi:       $DISPLAY_DPI
+
+*.faceName: $TEXT_FONT
+*.faceSize: $TEXT_SIZE
+Rxvt.font: xft:$TEXT_FONT:size=$TEXT_SIZE
+
+*.cursorColor: #$TEXT_FG
+*.foreground: #$TEXT_FG
+*.background: #$TEXT_BG
+
+EOF
+  printf "%s\n" $TEXT_PALETTE | awk 'BEGIN{n=0} {print("*.color" n++ ": #" $1)}'
+}
+
+# settings to i3 config
+i3conf() {
+  term=$1
+  lock=$2
+  mod=Mod4
+  cat <<EOF
+floating_modifier $mod
+
+font pango:$TEXT_FONT $TEXT_SIZE
+
+exec exec $term
+
+bindsym Mod1+F4 kill
+bindsym Mod1+Tab focus right
+bindsym Mod1+Shift+Tab focus left
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 5dB+ unmute
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 5dB- unmute
+bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
+bindsym XF86PowerOff exit
+
+bindsym $mod+Return exec exec $term
+bindsym $mod+I exit
+bindsym $mod+L exec --no-startup-id $lock
+
+# move focus
+bindsym $mod+Q workspace 1
+bindsym $mod+W focus up
+bindsym $mod+E workspace 2
+bindsym $mod+A focus left
+bindsym $mod+S focus down
+bindsym $mod+D focus right
+
+# move window
+bindsym $mod+Shift+Q move container to workspace 1
+bindsym $mod+Shift+W move up
+bindsym $mod+Shift+E move container to workspace 2
+bindsym $mod+Shift+A move left
+bindsym $mod+Shift+S move down
+bindsym $mod+Shift+D move right
+
+bindsym $mod+F floating toggle
+
+default_border pixel 2
+default_floating_border pixel 2
+hide_edge_borders both
+workspace_layout tabbed
+
+# Behavior quirks
+for_window [title="^rdesktop"] floating disable
+for_window [title="Desktop"] floating disable
+
+gaps inner 20px
+gaps outer 20px
+
+client.focused              #$TEXT_BG #$TEXT_BG #$TEXT_FG
+client.focused_inactive     #$TEXT_BG #$TEXT_BG #$TEXT_FG
+client.unfocused            #$TEXT_FG #$TEXT_FG #$TEXT_BG
+EOF
+}
+
+argv=$(argv "$progname" "$@")
+
+while test -n "$1"; do
+  case "$1" in
+  (-s) DISPLAY_SUBPIXEL_ORDER="$2"
+    shift
+    ;;
+  (-d) DISPLAY_DPI="$2"
+    shift
+    ;;
+  (*)
+    die "Unknown option $1"
+    ;;
+  esac
+  shift
+done
+
+# we are running inside an Xorg, setup that
+if test -n "$DISPLAY"; then
+  xresources|xrdb
+  xset b off
+  setxkbmap 'de(nodeadkeys)'
+  xsetroot -solid '#444444'
+  test -e ~/.config/wallpaper && feh --no-fehbg --bg-fill ~/.config/wallpaper
+  i3conf i3-sensible-terminal i3lock > /tmp/i3$DISPLAY.conf
+  exec i3 -c /tmp/i3$DISPLAY.conf
+  exit 1
+fi
+
+# Try to start sway (instantly fails on unsupported GPUs)
+#start=$(date +%s)
+#sway
+#test $(( start +1 )) -lt $(date +%s) && exit 0
+
+# Guess what virtual terminal we are on
+case "$(uname -s):$(tty)" in
+(*BSD:/dev/ttyv*) vt=vt$(( $(tty|sed 's/^[^0-9]*//') + 1 )) ;;
+(Linux:/dev/tty*) vt=vt$(tty|sed 's/^[^0-9]*//') ;;
+(*) die "Needs tty console";;
+esac
+
+# Relaunch ourselves inside Xorg
+set -- /bin/sh -c "exec $argv"
+exec xinit "$@" -- $(finddisplay) $vt -keeptty

@@ -1,48 +1,5 @@
-! these Xresources are used by:
-! i3wm, as configured in i3/config
-! xterm, see xterm(1)
-! urxvt, see urxvt(1), sharing some settings with xterm
-
-! if this font is not found, xterm falls back to the next best monospace ttf
-*.faceName:             MxPlus IBM VGA 8x16
-*.faceSize:             12
-
-! special
-*.foreground:   #586e75
-*.background:   #fdf6e3
-*.cursorColor:  #586e75
-
-! black
-*.color0:       #002b36
-*.color8:       #657b83
-
-! red
-*.color1:       #dc322f
-*.color9:       #dc322f
-
-! green
-*.color2:       #859900
-*.color10:      #859900
-
-! yellow
-*.color3:       #b58900
-*.color11:      #b58900
-
-! blue
-*.color4:       #268bd2
-*.color12:      #268bd2
-
-! magenta
-*.color5:       #6c71c4
-*.color13:      #6c71c4
-
-! cyan
-*.color6:       #2aa198
-*.color14:      #2aa198
-
-! white
-*.color7:       #93a1a1
-*.color15:      #fdf6e3
+! snippet for fixed behavior
+! read by the gui(1) script
 
 ! padding between window border and buffer
 xterm*internalBorder:   0
@@ -74,8 +31,6 @@ xterm*vt100.translations: \
                        <Btn4Down>:scroll-back(5,line,m)     \n\
                   Ctrl <Btn5Down>:smaller-vt-font() \n\
                        <Btn5Down>:scroll-forw(5,line,m)
-
-Rxvt.font:              xft:MxPlus IBM VGA 8x16:size=12
 
 ! hilight window on BEL char
 Rxvt.urgentOnBell:      true

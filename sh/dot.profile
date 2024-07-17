@@ -35,7 +35,7 @@ fi
 
 # Launch xorg session
 if has_cmd i3 && test -z "$DISPLAY" && has_cmd xinit; then
-  x i3
+  gui
 fi
 
 # auto-attach to tmuxes
