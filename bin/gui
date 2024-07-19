@@ -101,10 +101,6 @@ for_window [title="Desktop"] floating disable
 
 gaps inner 20px
 gaps outer 20px
-
-client.focused              #$TEXT_BG #$TEXT_BG #$TEXT_FG
-client.focused_inactive     #$TEXT_BG #$TEXT_BG #$TEXT_FG
-client.unfocused            #$TEXT_FG #$TEXT_FG #$TEXT_BG
 EOF
 }
 
