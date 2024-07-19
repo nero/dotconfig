@@ -66,6 +66,8 @@ bindsym Mod1+Shift+Tab focus left
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 5dB+ unmute
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 5dB- unmute
 bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 bindsym XF86PowerOff exit
 
 bindsym $mod+Return exec exec $term
