@@ -1,6 +1,29 @@
 #!/bin/sh
 set -ex
 
+_cmd_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+_symlink() {
+  target="$1"
+  linkname="$2"
+  if test -h "$linkname"; then
+    if test "$(readlink "$linkname")" = "$target"; then
+      return
+    fi
+    rm "$linkname"
+  elif test -f "$linkname"; then
+    # remove existing but conflicting dotfiles
+    # it is assumed that they are from /etc/skel and expendable
+    rm "$linkname"
+  elif test -d "$linkname"; then
+    mv -f "$linkname"/* "$target"/ || true
+    rmdir "$linkname"
+  fi
+  ln -s "$target" "$linkname"
+}
+
 cd "$(dirname "$0")"
 test -x ./install
 repo=${PWD#${HOME%/}/}
@@ -22,14 +45,14 @@ case "$repo" in
 (*)
   # anywhere else
   test -h .config || rotate .config
-  ln -sfn "$repo" .config
+  _symlink "$repo" .config
   ;;
 esac
 
 # Install dotfiles normally
 for f in .config/*/dot.*; do
   c=${f%/*}
-  command -v "${c##*/}" >/dev/null 2>&1 && ln -sfn "$f" ".${f#*/dot.}"
+  _cmd_exists "${c##*/}" && _symlink "$f" ".${f#*/dot.}"
 done
 
 set -e
