@@ -1,6 +1,0 @@
-#!/bin/sh
-# ECMA-48 Code
-# CSI is used as the first character of a control sequence
-# 'csi 31m' would make text red
-IFS=';'
-printf '\033[%s' "$*"
