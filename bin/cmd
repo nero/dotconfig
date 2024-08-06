@@ -1,7 +1,10 @@
 #!/bin/sh
 cmd=${1?\$1 needs to be command name}
-scriptdir="$HOME"/.config/bin
+prefix="$HOME"/.config
+scriptdir="$prefix"/bin
 script="$scriptdir/$cmd"
+mandir="$prefix"/share/man/man1
+man="$mandir/$cmd.1"
 
 search() {
   IFS=:
@@ -30,10 +33,50 @@ template() {
   fi
 }
 
+man_template() {
+  cat <<EOF
+.Dd \$Mdocdate\$
+.Dt $1 1
+.Os
+.Sh NAME
+.Nm $1
+.Nd do something
+.Sh SYNOPSIS
+.Nm $1
+.Fl flag
+.Ar argument
+.Op Fl optional-flag
+.Op Ar optional-argument
+.Sh DESCRIPTION
+The
+.Nm
+utility processes files ...
+.Sh ENVIRONMENT
+.Sh FILES
+.Sh EXIT STATUS
+.Sh EXAMPLES
+.Sh DIAGNOSTICS
+.Sh SEE ALSO
+.Xr foobar 1
+.Sh STANDARDS
+.Sh HISTORY
+.Sh AUTHORS
+The
+.Nm
+reference was written by
+.An $(git config user.name) Aq Mt $(git config user.email) .
+.Sh CAVEATS
+.Sh BUGS
+.Sh SECURITY CONSIDERATIONS
+EOF
+}
+
 reference=$(mktemp)
 template "$cmd" >"$reference"
 
-test -e "$script" || cp "$reference" "$script"
+if ! test -e "$script"; then
+  cp "$reference" "$script"
+fi
 chmod +x "$script"
 
 ${VISUAL:-vi} "$script"
@@ -41,6 +84,12 @@ ${VISUAL:-vi} "$script"
 # delete if equal to template or empty
 if cmp -s "$reference" "$script" || ! test -s "$script"; then
   rm "$script"
+  rm "$man"
 fi
 
 rm "$reference"
+
+if test -e "$script"; then
+  test -e "$man" || man_template "$cmd" > "$man"
+  ${VISUAL:-vi} "$man"
+fi
