@@ -42,7 +42,7 @@ man_template() {
 .Nm $1
 .Nd do something
 .Sh SYNOPSIS
-.Nm $1
+.Nm
 .Fl flag
 .Ar argument
 .Op Fl optional-flag
