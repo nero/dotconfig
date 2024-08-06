@@ -1,0 +1,8 @@
+Include config.d/*
+
+Host *
+	CheckHostIP yes
+	HashKnownHosts no
+	StrictHostKeyChecking accept-new
+	UserKnownHostsFile ~/.local/share/ssh/known_hosts
+	ServerAliveInterval 60
