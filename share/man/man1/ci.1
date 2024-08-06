@@ -1,0 +1,23 @@
+.Dd $Mdocdate$
+.Dt ci 1
+.Os
+.Sh NAME
+.Nm ci
+.Nd Push current staging area of git into an the origin remote, triggering the remote CI without having to make a branch or commit
+.Sh SYNOPSIS
+.Nm ci
+.Sh DESCRIPTION
+Modern CI is painful if you are working by try & error.
+.Nm
+provides a shortcut so you don't have to write a commit message for something that is likely not going to work anyways.
+.Sh FILES
+The current working directory is expected to be a git repository.
+.Sh EXIT STATUS
+Inherited from git
+.Sh AUTHORS
+The
+.Nm
+reference was written by
+.An Nero Aq Mt 41307858+nero@users.noreply.github.com .
+.Sh CAVEATS
+Coworkers might find the generated branches or commits annoying.
