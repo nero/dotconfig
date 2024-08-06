@@ -1,0 +1,29 @@
+.Dd $Mdocdate$
+.Dt argv 1
+.Os
+.Sh NAME
+.Nm argv
+.Nd print argument vector, shell-quoted
+.Sh SYNOPSIS
+.Nm argv
+.Op Ar arguments ...
+.Sh DESCRIPTION
+The arguments given to
+.Nm
+are shell-quoted and printed to stdout.
+Commands like
+.Xr su 1
+or
+.Xr ssh 1
+take command strings as single parameter and pass these string to
+.Xr sh 1
+for execution.
+.Nm
+takes an argument vector and generates a string suitable for execution by
+.Xr sh 1
+\&.
+.Sh EXAMPLES
+.Bl
+.It
+su -c "$(argv "$@")"
+.El
