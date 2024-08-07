@@ -1,0 +1,50 @@
+.Dd $Mdocdate$
+.Dt cmd 1
+.Os
+.Sh NAME
+.Nm cmd
+.Nd Create or edit a system command
+.Sh SYNOPSIS
+.Nm
+.Ar command name
+.Sh DESCRIPTION
+The
+.Nm
+utility provides an easy to use way to create and edit scripts that can be tracked as part of your dotfiles.
+It only takes one argument, which is the name of the command that you want to edit.
+PATH is checked if such an command already exists.
+.Bl
+.It
+If the command exists and is a POSIX shell script, the script is copied to the script directory where it can be edited.
+.It
+If the command exists, a script with the same name is created, defaulting to calling the original binary via exec.
+.El
+
+This allows for quick changes of system functionality like
+.Xr xdg-open 1
+which unfortunately needs patching often.
+
+To nag the user to create manual pages for their script, the editor is launched twice, once for the script, and once for the manpage.
+.Sh ENVIRONMENT
+.Bl
+.It
+The PATH variable is expected to include
+.Ql ~/.config/bin
+before any of the system-wide locations.
+.It
+VISUAL determines which editor to invoke.
+.El
+.Sh FILES
+The scripts are stored in
+.Ql ~/.config/bin
+\&.
+The location of the manual pages is hard-coded to 
+.Ql ~/.config/share/man
+\&.
+.Sh EXAMPLES
+.Ql cmd xdg-open
+.Sh AUTHORS
+The
+.Nm
+reference was written by
+.An Nero Aq Mt 41307858+nero@users.noreply.github.com .
