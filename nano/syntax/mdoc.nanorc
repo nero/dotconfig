@@ -1,0 +1,4 @@
+syntax "mdoc" "\.[0-9]p?$"
+comment ".\""
+
+color bold,yellow "^\.[A-Z][a-z]"
