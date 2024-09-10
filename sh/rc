@@ -2,6 +2,7 @@
 unset PS1 PROMPT_COMMAND HISTFILE
 
 PS1='$PWD\$ '
+FCEDIT=$VISUAL
 
 has_coreutils=$(command -v dircolors)
 
