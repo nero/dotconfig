@@ -1,0 +1,6 @@
+xrdb ~/.config/X/resources
+xset b off
+xset +dpms
+xset s 300
+setxkbmap 'de(nodeadkeys)'
+feh --no-fehbg --bg-fill ~/.config/wallpaper || xsetroot -solid '#444444'
