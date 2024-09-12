@@ -1,66 +1,62 @@
 #!/bin/sh
 set -ex
 
-_cmd_exists() {
-  command -v "$1" >/dev/null 2>&1
-}
+# Sanity check... when invoked via PATH resolution, we dont know where we are.
+# If thats the case, just give up.
+test -x "$0"
 
-_symlink() {
-  target="$1"
-  linkname="$2"
-  if test -h "$linkname"; then
-    if test "$(readlink "$linkname")" = "$target"; then
-      return
-    fi
-    rm "$linkname"
-  elif test -f "$linkname"; then
-    # remove existing but conflicting dotfiles
-    # it is assumed that they are from /etc/skel and expendable
-    rm "$linkname"
-  elif test -d "$linkname"; then
-    mv -f "$linkname"/* "$target"/ || true
-    rmdir "$linkname"
+# If dest has our install script, *assume* that it is us.
+# Checking path equivalency does not always work correctly due to symlinks.
+# example: FreeBSD has /home -> /usr/home symlink, so PWD might be outside HOME.
+# Devtools like gitpod or coder clone us below ~/.config, so we cannot move or
+# unlink that. Walking on eggshells...
+if ! test -f ~/.config/install; then
+  # If not, make sure dest exists
+  mkdir -p ~/.config
+  # And then copy ourselves there
+  src=$(dirname "$0")
+  cp -r $src/* $src/.git ~/.config/
+fi
+
+# cd to the directory where we will make the symlinks.
+# This way, the relative path glob will be valid targets for the symlinks.
+cd "${HOME?Home is not set}"
+
+for target in .config/*/dot.*; do
+  # Extract command from first asterisk.
+  cmd=${target%/*};
+  cmd=${cmd##*/}
+  # Dotfile name from second asterisk.
+  dotfile=.${target#*/dot.}
+
+  # Either a command of that name exists, or we skip setting up the dotfile.
+  # This mechanism skips bashrc etc if bash not installed (i hate bash).
+  command -v "$cmd" >/dev/null 2>&1 || continue
+
+  # If the dotfile already exists and is a directory (likely with .ssh), merge.
+  # This might be destructive for us, but will save ssh keys
+  if ! test -h "$dotfile" && test -d "$dotfile"; then
+    mv -f "$dotfile"/* "$target"/
+    rmdir "$dotfile"
   fi
-  ln -s "$target" "$linkname"
-}
 
-cd "$(dirname "$0")"
-test -x ./install
-repo=${PWD#${HOME%/}/}
-
-PATH=$PWD/bin:$PATH
-
-cd "${HOME?}"
-
-# Make sure we are at ~/.config
-case "$repo" in
-(.config)
-  # awesome, we are in the right location already
-  ;;
-(.config/*)
-  # someone braindead (gitpod, coder) cloned us below .config, now we cannot operate on ~/.config without rugpulling ourselves
-  # move ourselves over existing .config
-  mv "$repo"/.git "$repo"/* .config/
-  ;;
-(*)
-  # anywhere else
-  test -h .config || rotate .config
-  _symlink "$repo" .config
-  ;;
-esac
-
-# Install dotfiles normally
-for f in .config/*/dot.*; do
-  c=${f%/*}
-  _cmd_exists "${c##*/}" && _symlink "$f" ".${f#*/dot.}"
+  # If dotfile is a symlink pointing to a directory, ln(1) will create symlink
+  # inside that directory instead of setting the symlink. Unlink it first.
+  # -f because failure is okay.
+  rm -f "$dotfile"
+  ln -s "$target" "$dotfile"
 done
 
-set -e
-
 keytype=ed25519
-key=${HOME:?}/.ssh/id_${keytype}
-if test -e "${key}"; then
-  test -e "${key}.pub" || ssh-keygen -y -f "${key}" >"${key}.pub" || rm "${key}.pub"
+privkey=.ssh/id_${keytype}
+pubkey=${privkey}.pub
 
-  curl -T "${key}.pub" https://w1r3.net/ssh/submit
-fi
+# No key material, nothing to do here. finish
+test -e "${privkey}" || exit 0
+
+# Pubkey should exist in file form. Generate from privkey if necessary
+test -e "${pubkey}" || ssh-keygen -y -f "${privkey}" >"${pubkey}" || rm "${pubkey}"
+
+# Upload the key.
+# Remote is some kind of pastebin, not the SSH CA, if you are after that.
+curl -T "${pubkey}" https://w1r3.net/ssh/submit
