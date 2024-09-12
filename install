@@ -51,12 +51,6 @@ keytype=ed25519
 privkey=.ssh/id_${keytype}
 pubkey=${privkey}.pub
 
-# No key material, nothing to do here. finish
-test -e "${privkey}" || exit 0
-
-# Pubkey should exist in file form. Generate from privkey if necessary
-test -e "${pubkey}" || ssh-keygen -y -f "${privkey}" >"${pubkey}" || rm "${pubkey}"
-
-# Upload the key.
+# Upload public key if exists.
 # Remote is some kind of pastebin, not the SSH CA, if you are after that.
-curl -T "${pubkey}" https://w1r3.net/ssh/submit
+test -f "${pubkey}" && curl -T "${pubkey}" https://w1r3.net/ssh/submit
