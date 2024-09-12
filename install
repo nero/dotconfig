@@ -1,10 +1,6 @@
 #!/bin/sh
 set -ex
 
-# Sanity check... when invoked via PATH resolution, we dont know where we are.
-# If thats the case, just give up.
-test -x "$0"
-
 # If dest has our install script, *assume* that it is us.
 # Checking path equivalency does not always work correctly due to symlinks.
 # example: FreeBSD has /home -> /usr/home symlink, so PWD might be outside HOME.
@@ -13,10 +9,28 @@ test -x "$0"
 if ! test -f ~/.config/install; then
   # If not, make sure dest exists
   mkdir -p ~/.config
-  # And then copy ourselves there
-  src=$(dirname "$0")
-  cp -r $src/* $src/.git ~/.config/
+  # This evaluates true when we got called directly by path
+  # Only then we know where we got cloned to
+  if test -x "$0"; then
+    # Copy ourselves there
+    src=$(dirname "$0")
+    cp -r $src/* $src/.git ~/.config/
+  else
+    # No idea where we got cloned to. Re-fetch our data from codeberg.
+    # This happens when you stdin this file into ssh.
+    (
+      cd ~/.config
+      # Turn this into a git repo
+      git init .
+      git remote add origin https://codeberg.org/ain/dotconfig.git
+      git fetch origin
+      git checkout -b master --track origin/master
+    )
+    # Make sure checkout worked correctly
+    test -f ~/.config/install
+  fi
 fi
+
 
 # cd to the directory where we will make the symlinks.
 # This way, the relative path glob will be valid targets for the symlinks.
