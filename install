@@ -26,11 +26,11 @@ if ! test -f ~/.config/install; then
       git fetch origin
       git checkout -b master --track origin/master
     )
-    # Make sure checkout worked correctly
-    test -f ~/.config/install
   fi
 fi
 
+# Make sure checkout worked
+test -f ~/.config/install
 
 # cd to the directory where we will make the symlinks.
 # This way, the relative path glob will be valid targets for the symlinks.

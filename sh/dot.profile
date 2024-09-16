@@ -34,7 +34,7 @@ if test -e "${HOME}/.config/sh/${TERM}.profile"; then
 fi
 
 # Launch xorg session
-if has_cmd i3 && test -z "$DISPLAY" && has_cmd xinit; then
+if has_cmd i3 && test -z "$DISPLAY" && has_cmd xinit && test -z "$SSH_CONNECTION"; then
   startx
 fi
 
