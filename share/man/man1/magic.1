@@ -1,0 +1,29 @@
+.Dd $Mdocdate$
+.Dt magic 1
+.Os
+.Sh NAME
+.Nm magic
+.Nd Apply heuristics to a file to determine its extension
+.Sh SYNOPSIS
+.Nm
+.Ar filename
+.Sh DESCRIPTION
+The
+.Nm
+utility reads the first 16 bytes from a file and matches that against magic numbers of well-known media formats.
+A common filename extension (popular on windows) for that format is printed to stdout.
+This utility is intended as a light-weight and portable replacement for
+.Xr file 1
+, which is not installed on every system where i need this functionality.
+.Sh EXIT STATUS
+Returns non-zero if file cannot be read from.
+.Sh CAVEATS
+Since WebM files are a specific kind of Matroshka containers, they get mis-identified as mkv.
+.Sh SEE ALSO
+.Xr file 1
+.Xr magic 4
+.Sh AUTHORS
+The
+.Nm
+reference was written by
+.An Nero Aq Mt 41307858+nero@users.noreply.github.com .
