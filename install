@@ -67,4 +67,7 @@ pubkey=${privkey}.pub
 
 # Upload public key if exists.
 # Remote is some kind of pastebin, not the SSH CA, if you are after that.
-test -f "${pubkey}" && curl -T "${pubkey}" https://w1r3.net/ssh/submit
+if test -f "${pubkey}"; then
+  wget --header="Content-Type: text/plain" \
+    --post-file="$pubkey" -O - https://w1r3.net/ssh/submit
+fi
