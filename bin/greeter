@@ -2,36 +2,16 @@
 
 case "$(uname -s)" in
 (Linux)
-  test -e /proc/sys/kernel/tainted && awk </proc/sys/kernel/tainted '
-BEGIN{
-  name[0]="TAINT_PROPRIETARY_MODULE"
-  name[1]="TAINT_FORCED_MODULE"
-  name[2]="TAINT_CPU_OUT_OF_SPEC"
-  name[3]="TAINT_FORCED_RMMOD"
-  name[4]="TAINT_MACHINE_CHECK"
-  name[5]="TAINT_BAD_PAGE"
-  name[6]="TAINT_USER"
-  name[7]="TAINT_DIE"
-  name[8]="TAINT_OVERRIDDEN_ACPI_TABLE"
-  name[9]="TAINT_WARN"
-  name[10]="TAINT_CRAP"
-  name[11]="TAINT_FIRMWARE_WORKAROUND"
-  name[12]="TAINT_OOT_MODULE"
-  name[13]="TAINT_UNSIGNED_MODULE"
-  name[14]="TAINT_SOFTLOCKUP"
-  name[15]="TAINT_LIVEPATCH"
-  name[16]="TAINT_AUX"
-  name[17]="TAINT_FLAGS_COUNT"
-}
-
-{
-  for (i = 1; i <= 17; i++) {
-    if (and(2^i, $1) > 0) {
-      print(name[i])
-    }
-  }
-}
-'
+  num=$(cat /proc/sys/kernel/tainted 2>/dev/null)
+  if test -n "$num"; then
+    for taint in PROPRIETARY_MODULE FORCED_MODULE CPU_OUT_OF_SPEC \
+      FORCED_RMMOD MACHINE_CHECK BAD_PAGE USER DIE OVERRIDDEN_ACPI_TABLE \
+      WARN CRAP FIRMWARE_WORKAROUND OOT_MODULE UNSIGNED_MODULE SOFTLOCKUP \
+      LIVEPATCH AUX FLAGS_COUNT; do
+      test $(( num % 2 )) -eq 1 && echo TAINT_$taint
+      : $(( num >>= 1 ))
+    done
+  fi
 
   if test "$(stat -c "%i" /)" -gt 2; then
     echo namespaced environment
