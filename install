@@ -16,16 +16,22 @@ if ! test -f ~/.config/install; then
     src=$(dirname "$0")
     cp -r $src/* $src/.git ~/.config/
   else
-    # No idea where we got cloned to. Re-fetch our data from codeberg.
+    repo=https://codeberg.org/ain/dotconfig
+    # No idea where we got installed to. Re-fetch our data from codeberg.
     # This happens when you stdin this file into ssh.
-    (
-      cd ~/.config
-      # Turn this into a git repo
-      git init .
-      git remote add origin https://codeberg.org/ain/dotconfig.git
-      git fetch origin
-      git checkout -b master --track origin/master
-    )
+    if command -v git >/dev/null 2>&1; then
+      (
+        cd ~/.config
+        # Turn this into a git repo
+        git init .
+        git remote add origin $repo.git
+        git fetch origin
+        git checkout -b master --track origin/master
+      )
+    else
+      wget -O - $repo/archive/master.tar.gz \
+        | tar x -zC .config --strip-components=1
+    fi
   fi
 fi
 
