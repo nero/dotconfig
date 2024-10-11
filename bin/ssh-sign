@@ -3,6 +3,9 @@
 # Sign a ssh public key, so machines can trust it without needing it in authorized_keys
 # if they already trust my ssh ca.
 
+: ${1?pubkey must be specified}
+: ${2?username must be specified}
+
 serial="$(date +%s)"
 comment="Signed by $USER@$(uname -n) on $(date -R)"
 duration=+26w
