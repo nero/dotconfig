@@ -3,14 +3,16 @@
 case "$(uname -s)" in
 (Linux)
   num=$(cat /proc/sys/kernel/tainted 2>/dev/null)
-  if test -n "$num"; then
+  if test -n "$num" && test "$num" -gt 0; then
+    taints=""
     for taint in PROPRIETARY_MODULE FORCED_MODULE CPU_OUT_OF_SPEC \
       FORCED_RMMOD MACHINE_CHECK BAD_PAGE USER DIE OVERRIDDEN_ACPI_TABLE \
       WARN CRAP FIRMWARE_WORKAROUND OOT_MODULE UNSIGNED_MODULE SOFTLOCKUP \
       LIVEPATCH AUX FLAGS_COUNT; do
-      test $(( num % 2 )) -eq 1 && echo TAINT_$taint
+      test $(( num % 2 )) -eq 1 && taints="$taints$taint "
       : $(( num >>= 1 ))
     done
+    test -n "$taints" && echo "linux taints: $taints"
   fi
 
   if test "$(stat -c "%i" /)" -gt 2; then
@@ -18,6 +20,7 @@ case "$(uname -s)" in
   else
    test -d "/lib/modules/$(uname -r)" || echo "kernel module version mismatch"
   fi
+
   if test -r /proc/pressure/cpu; then
     test "$(awk '/some/ {gsub(/avg[0-9]*=/,"");printf("%d",$2)}' /proc/pressure/cpu)" -gt 20 && echo cpu stall
     test "$(awk '/full/ {gsub(/avg[0-9]*=/,"");printf("%d",$2)}' /proc/pressure/memory)" -gt 20 && echo memory stall
