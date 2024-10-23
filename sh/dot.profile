@@ -37,8 +37,3 @@ fi
 if has_cmd i3 && test -z "$DISPLAY" && has_cmd xinit && test -z "$SSH_CONNECTION"; then
   startx
 fi
-
-# auto-attach to tmuxes
-if has_cmd tmux && test -z "$TMUX" && test -n "$SSH_CONNECTION"; then
-  tmux new -As0
-fi
