@@ -30,3 +30,8 @@ esac
 
 # print free diskspace if less than 1GB
 df -k -P "$HOME" 2>/dev/null|awk '/^\// {if ($4<10*1024*1024) {printf("%d MB available\n",$4/1024)}}'
+
+# tell me about open tmux sessions
+if command -v tmux >/dev/null 2>&1 && test -z "$TMUX"; then
+  tmux ls -F 'Open tmux session from #{t:start_time}, use "tmux a -t #S" to attach' 2>/dev/null
+fi
