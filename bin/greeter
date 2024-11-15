@@ -22,8 +22,9 @@ case "$(uname -s)" in
   fi
 
   if test -r /proc/pressure/cpu; then
-    test "$(awk '/some/ {gsub(/avg[0-9]*=/,"");printf("%d",$2)}' /proc/pressure/cpu)" -gt 20 && echo cpu stall
-    test "$(awk '/full/ {gsub(/avg[0-9]*=/,"");printf("%d",$2)}' /proc/pressure/memory)" -gt 20 && echo memory stall
+    for i in cpu io memory; do
+      test "$(awk '/some/ {gsub(/avg[0-9]*=/,"");printf("%d",$2)}' /proc/pressure/$i)" -gt 5 && echo $i stall
+    done
   fi
   ;;
 esac
