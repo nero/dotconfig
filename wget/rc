@@ -1,1 +1,1 @@
-hsts-file = /home/nero/.local/share/wget-hsts
+hsts-file = ~/.local/share/wget-hsts
