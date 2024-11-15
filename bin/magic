@@ -21,6 +21,7 @@ for i in "$@"; do
 
   # misc
   (' 50 4b 03 04'*) echo zip;;
+  (' 21 3c 61 72 63 68 3e 0a'*) echo deb;;
   (' 7f 45 4c 46'*) echo elf;;
   (' 23 21 2f'*) echo txt;;
   (' 4d 5a'*) echo exe;;
