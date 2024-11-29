@@ -55,3 +55,7 @@ for_window [title="Desktop"] floating disable
 
 #gaps inner 20px
 #gaps outer 20px
+
+bar {
+  status_command i3status
+}
