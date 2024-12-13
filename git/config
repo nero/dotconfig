@@ -14,3 +14,5 @@
 	ffpull = pull --ff-only
 	ffmerge = merge --ff-only
 	whoami = var GIT_AUTHOR_IDENT
+[url "git@codeberg.org:"]
+	pushInsteadOf = https://codeberg.org/
