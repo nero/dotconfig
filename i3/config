@@ -14,6 +14,8 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 bindsym XF86PowerOff exit
 
 bindsym $mod+Return exec exec xterm
+bindsym Ctrl+Mod1+T exec exec xterm
+
 bindsym $mod+I exit
 bindsym $mod+L exec --no-startup-id i3lock
 
