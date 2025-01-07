@@ -1,8 +1,6 @@
 set $mod Mod4
 floating_modifier $mod
 
-font pango:Monospace 12
-
 exec_always . ~/.config/X/rc
 
 bindsym Mod1+F4 kill
