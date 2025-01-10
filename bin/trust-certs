@@ -1,0 +1,21 @@
+#!/bin/sh
+set -x
+
+importlist=""
+
+for certfile in "$@"; do
+  cn="$(openssl x509 -noout -subject -in "$certfile" | sed 's/.*CN* = //')"
+
+  # pkcs12 based: chrome, electron-based, firefox
+  for db in ~/.pki/nssdb ~/.mozilla/firefox/*.default*; do
+    test -d "$db" && certutil -d "$db" -A -n "$cn" -i "$certfile" -t "CT,c,c"
+  done
+
+  importlist="$importlist$(argv "$(readlink -f "$certfile")")"
+done
+
+case " $(id -Gn) " in
+(*' sudo '*|*' wheel '*) sudo sh -c "cp $importlist /usr/local/share/ca-certificates/; update-ca-certificates";;
+esac
+
+echo success
