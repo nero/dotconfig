@@ -17,7 +17,7 @@ alias bc="bc -l"
 stty \
 	eof ^D \
 	eol ^- \
-	erase ^H \
+	erase ^? \
 	intr ^C \
 	kill ^- \
 	quit ^- \
