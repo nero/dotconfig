@@ -1,7 +1,13 @@
 # .profile for POSIX-conformant shells
 
+# The variables are possibly already set. We wrap the definitions into
+# a case switch that does nothing if the definition globs onto the
+# current value. This is meant to avoid duplication in PATH.
 eval "$(cat .config/environment.d/* | grep -E '^[A-Za-z0-9_]*=' | while read -r line; do
-  printf "case \"\$${line%%=*}\" in\n(%s) ;;\n(*) export %s;;\nesac\n" "$(printf "%s\n" "${line#*=}"|sed "s/\${${line%%=*}}/*/g")" "$line"
+  printf 'case "$%s" in\n(%s) ;;\n(*) export %s;;\nesac\n' \
+    "${line%%=*}" \
+    "$(printf "%s\n" "${line#*=}"|sed "s/\${${line%%=*}}/*/g")" \
+    "$line"
 done)"
 
 test -n "$TMPDIR" && mkdir -p "${TMPDIR}"
