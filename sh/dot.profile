@@ -1,15 +1,10 @@
 # .profile for POSIX-conformant shells
 
-: ${LOGNAME:=$(id -un)}
-: ${LANG:=en_US.UTF-8}
-: ${ENV:=$HOME/.config/sh/rc}
+eval "$(cat .config/environment.d/* | grep -E '^[A-Za-z0-9_]*=' | while read -r line; do
+  printf "case \"\$${line%%=*}\" in\n(%s) ;;\n(*) export %s;;\nesac\n" "$(printf "%s\n" "${line#*=}"|sed "s/\${${line%%=*}}/*/g")" "$line"
+done)"
 
-mkdir -p "${HOME:?}/.local/tmp"
-TMPDIR=${HOME:?}/.local/tmp
-PATH=${HOME:?}/.local/bin:${HOME:?}/.config/bin:${PATH:?}
-MANPATH=${HOME:?}/.local/share/man:${HOME:?}/.config/share/man:${MANPATH}
-
-export LOGNAME LANG ENV TMPDIR PATH MANPATH
+test -n "$TMPDIR" && mkdir -p "${TMPDIR}"
 
 has_cmd() {
   command -v "$1" >/dev/null 2>&1
