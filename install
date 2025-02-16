@@ -67,13 +67,14 @@ for target in .config/*/dot.*; do
   ln -s "$target" "$dotfile"
 done
 
-keytype=ed25519
-privkey=.ssh/id_${keytype}
-pubkey=${privkey}.pub
+for keytype in ed25519 ecdsa_sk; do
+  privkey=~/.ssh/id_${keytype}
+  pubkey=${privkey}.pub
 
-# Upload public key if exists.
-# Remote is some kind of pastebin, not the SSH CA, if you are after that.
-if test -f "${pubkey}"; then
-  wget --header="Content-Type: text/plain" \
-    --post-file="$pubkey" -O - https://w1r3.net/ssh/submit
-fi
+  # Upload public key if exists.
+  # Remote is some kind of pastebin, not the SSH CA, if you are after that.
+  if test -f "${pubkey}"; then
+    wget --header="Content-Type: text/plain" \
+      --post-file="$pubkey" -O - https://w1r3.net/ssh/submit
+  fi
+done
