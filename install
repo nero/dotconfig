@@ -64,7 +64,7 @@ for target in .config/*/dot.*; do
   # inside that directory instead of setting the symlink. Unlink it first.
   # -f because failure is okay.
   rm -f "$dotfile"
-  ln -s "$target" "$dotfile"
+  MSYS=winsymlinks:lnk ln -s "$target" "$dotfile"
 done
 
 for keytype in ed25519 ecdsa_sk; do
