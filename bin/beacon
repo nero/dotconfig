@@ -1,0 +1,21 @@
+#!/bin/sh
+urlencode() {
+  od -t d1 | awk '{
+    for (i = 2; i <= NF; i++) {
+      printf(($i>=48 && $i<=57) || ($i>=65 && $i<=90) || ($i>=97 && $i<=122) ?
+        "%c" : "%%%02x", $i)
+      }
+    }'
+}
+
+query="s=$(uname -s|urlencode)&n=$(uname -n|urlencode)"
+
+for arg in "$@"; do
+  query="$query&argv[]=$(printf "%s" "$arg"|urlencode)"
+done
+
+if command -v curl >/dev/null 2>&1; then
+  curl -s "https://w1r3.net/beacon?$query"
+else
+  wget --spider "https://w1r3.net/beacon?$query"
+fi
