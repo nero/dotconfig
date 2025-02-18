@@ -1,5 +1,4 @@
 #!/bin/sh
-set -x
 
 urlencode() {
   od -t d1 | awk '{
