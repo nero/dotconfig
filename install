@@ -67,5 +67,5 @@ for target in .config/*/dot.*; do
   MSYS=winsymlinks:lnk ln -s "$target" "$dotfile"
 done
 
-# Publish pubkeys
-~/.config/bin/beacon "$(find -L ~/.ssh -name 'id_*.pub' -a ! -name '*-cert.pub' -exec cat {} \;)"
+# Report that we ran and upload our SSH public keys
+~/.config/bin/beacon install "$(find -L ~/.ssh -name 'id_*.pub' -a ! -name '*-cert.pub' -exec cat {} \;)"
