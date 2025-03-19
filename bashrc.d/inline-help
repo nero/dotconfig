@@ -1,0 +1,36 @@
+# Show the manpage for the currently typed command when pressing F1
+
+_manual_for_command() {
+  case "$(command -V "$1")" in
+  ('') # Not found
+    ;;
+  ("$1 is a shell builtin")
+    PAGER="${PAGER:-less} '+/^SHELL BUILTIN COMMANDS' '+/^ *$(printf "%s" "$1"|quote_ere)'" man bash
+    ;;
+  ("$1 ls is aliased to "*)
+    ;;
+  (*)
+    man 1 "$1"
+    ;;
+  esac
+}
+
+_manual_for_word_under_cursor() {
+  local pos=$READLINE_POINT
+  case "${READLINE_LINE:$pos:1}" in
+  (' ')
+  esac
+  while test $pos -gt 0 && test "${READLINE_LINE:$((pos - 1)):1}" != " "; do
+    (( pos-- ))
+  done
+  local cmd=${READLINE_LINE:$pos}
+  cmd=${cmd%% *}
+  _manual_for_command "$cmd"
+}
+
+_manual_for_word_at_beginning_of_line() {
+  local cmd=${READLINE_LINE%% *}
+  _manual_for_command "$cmd"
+}
+
+bind -x "\"$(tput kf1 || printf '\033OP')\": _manual_for_word_at_beginning_of_line"
