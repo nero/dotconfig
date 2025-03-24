@@ -1,11 +1,16 @@
-#!/bin/sh
-# does the reverse of the argument splitting done by the shell
-# takes a number of arguments and outputs them as a single string
-# example usecase: su -c "$(argv "$@")"
-# can also be used to diagnose quoting problems
-test $# -eq 0 && exit 0
-printf '%s\0' "$@" | tr '\n\0' '\0\n' | sed \
-  -e "s/'/'\\\\''/g" \
-  -e "s/^/'/" \
-  -e "s/\$/'/" | tr '\0\n' '\n '
-printf "\n"
+#!/usr/bin/awk -f
+BEGIN {
+  for (i = 1; i < ARGC; i++) {
+    escaped = ARGV[i]
+    gsub(/[|&;<>()$`\\"\' \t\n*?\[#~=%]/, "\\\\&", escaped)
+    single_quoted = ARGV[i]
+    gsub(/'/,"'\\''", single_quoted)
+    single_quoted = "'" single_quoted "'"
+    if (length(escaped) > length(single_quoted)) {
+      printf "%s ", single_quoted
+    } else {
+      printf "%s ", escaped
+    }
+  }
+  printf "\n"
+}
