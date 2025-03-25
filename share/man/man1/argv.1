@@ -3,25 +3,23 @@
 .Os
 .Sh NAME
 .Nm argv
-.Nd print argument vector, shell-quoted
+.Nd print argument vector, safe for re-evaluation
 .Sh SYNOPSIS
 .Nm argv
 .Op Ar arguments ...
 .Sh DESCRIPTION
-The arguments given to
 .Nm
-are shell-quoted and printed to stdout.
-Commands like
+takes arguments like any other program, but prints all of them in a single line to stdout.
+The arguments are escaped or quoted in such a way that they will be treated as string literals by an evaluating
+.Xr sh 1
+\&.
+This is useful for commands like
 .Xr su 1
 or
 .Xr ssh 1
-take command strings as single parameter and pass these string to
+, who take command strings as single parameter and pass these string to
 .Xr sh 1
-for execution.
-.Nm
-takes an argument vector and generates a string suitable for execution by
-.Xr sh 1
-\&.
+for evaluation.
 .Sh EXAMPLES
 .Bl
 .It
@@ -29,6 +27,8 @@ su -c "$(argv "$@")"
 .El
 .Sh EXIT STATUS
 Always zero
+.Sh STANDARDS
+IEEE Std 1003.1-2017 ("POSIX"), "Shell Command Language", Chapter "Quoting"
 .Sh AUTHORS
 The
 .Nm
