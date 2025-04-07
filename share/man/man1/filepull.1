@@ -1,0 +1,31 @@
+.Dd $Mdocdate$
+.Dt filepull 1
+.Os
+.Sh NAME
+.Nm filepull
+.Nd Keep a local file in sync with contents from a web url
+.Sh SYNOPSIS
+.Nm
+.Op Fl x
+.Op Fl c Ar 'command'
+.Ar url
+.Ar path
+.Sh DESCRIPTION
+When invoked, the
+.Nm
+program fetches the data from the url.
+This happens by calling out to wget or curl or whatever is installed.
+If the data is not empty and different from the local file, the local file is replaced.
+
+The -x option specifies that the local file should get its executable flag set.
+
+If the local file is replaced and -c is specified, the command given is executed.
+This is intended to SIGHUP a service that needs to re-read that file.
+.Sh SEE ALSO
+.Xr wget 1
+.Xr curl 1
+.Sh AUTHORS
+The
+.Nm
+reference was written by
+.An Nero Aq Mt 41307858+nero@users.noreply.github.com .

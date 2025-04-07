@@ -1,0 +1,53 @@
+#!/bin/sh
+fail() {
+  echo "$1" >&2
+  exit 1
+}
+
+executable=false
+updatecommand=''
+
+while test -n "$1"; do
+  case "$1" in
+  (-c)
+    shift
+    updatecommand=$1
+    ;;
+  (-h|--help)
+    echo "Syntax: $0 [options] http-url local-path"
+    exit 0
+    ;;
+  (-x)
+    executable=true
+    ;;
+  (*)
+    break
+    ;;
+  esac
+  shift
+done
+
+url="${1?:URL not set}"
+target="${2?:Local path not set}"
+
+if test -d "$target"; then
+  fail "Target is a directory"
+fi
+
+tmpfile=".${target##*/}.$$.\$\$\$"
+trap "rm -f '$tmpfile'" EXIT
+
+if false && command -v curl >/dev/null 2>&1; then
+  curl -LsS "$url" >"$tmpfile" || fail "Fetch error"
+else
+  wget -q -O - "$url" >"$tmpfile" || fail "Fetch error"
+fi
+
+if $executable; then
+  chmod +x "$tmpfile"
+fi
+
+if test -s "$tmpfile" && ( ! test -f "$target" || ! cmp -s "$target" "$tmpfile" ); then
+  mv "$tmpfile" "$target"
+  test -n "$updatecommand" && eval "$updatecommand"
+fi
