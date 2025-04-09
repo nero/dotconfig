@@ -1,12 +1,11 @@
 # Config for interactive shells
 unset PS1 PROMPT_COMMAND HISTFILE
 
-if test -n "$BASH_VERSION"; then
-  PS1='\[\e]2;\w - \h\a\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ '
-  trap 'echo -ne "\033]2;${BASH_COMMAND} - $(uname -n)\007"' DEBUG
-else
-  PS1='$PWD\$ '
-fi
+xtitle() (
+  printf "\033]2;%s\007" "$( printf "%s" "$*" | tr -d "\007\033" )"
+)
+
+PS1='${PWD##*/}\$ '
 FCEDIT=$VISUAL
 
 has_coreutils=$(command -v dircolors)
@@ -24,5 +23,7 @@ stty \
 	susp ^Z \
 	start ^- \
 	stop ^-
+
+xtitle "$PWD - $HOSTNAME"
 
 greeter
