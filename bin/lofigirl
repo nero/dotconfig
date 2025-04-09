@@ -1,3 +1,0 @@
-#!/bin/sh
-osc 2 lofi
-exec mpv --no-video "https://www.youtube.com/watch?v=jfKfPfyJRdk"
