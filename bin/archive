@@ -9,7 +9,7 @@ if test -z "$1"; then
   done
 
   # move away lingering files
-  find -L $sources -maxdepth 1 -type f ! -name '.*' ! -name '*.url' ! -name '*.lnk' ! -name 'desktop.ini' -exec "$0" {} \;
+  find -L $sources -maxdepth 1 -type f ! -name '.*' ! -name '*.url' ! -name '*.desktop' ! -name '*.lnk' ! -name 'desktop.ini' -exec "$0" {} \;
   exit
 fi
 
