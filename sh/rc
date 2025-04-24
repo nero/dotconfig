@@ -10,7 +10,7 @@ debian_chroot=''
 if test -e /etc/debian_chroot; then
   debian_chroot=$(cat /etc/debian_chroot)
 elif test "$(\ls -d -i /)" != "2 /"; then
-  debian_chroot=$(mount|awk '/on \/ / {gsub(/ on \/ .*/,"");gsub(/.*\//,"");print($0);exit}')
+  debian_chroot=$(mount 2>/dev/null|awk '/on \/ / {gsub(/ on \/ .*/,"");gsub(/.*\//,"");print($0);exit}')
   case "$debian_chroot" in
   ('') debian_chroot='';;
   esac
