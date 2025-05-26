@@ -2,35 +2,26 @@
 
 case "$(uname -s)" in
 (Linux)
-  num=$(cat /proc/sys/kernel/tainted 2>/dev/null)
-  if test -n "$num" && test "$num" -gt 0; then
-    taints=""
-    for taint in PROPRIETARY_MODULE FORCED_MODULE CPU_OUT_OF_SPEC \
-      FORCED_RMMOD MACHINE_CHECK BAD_PAGE USER DIE OVERRIDDEN_ACPI_TABLE \
-      WARN CRAP FIRMWARE_WORKAROUND OOT_MODULE UNSIGNED_MODULE SOFTLOCKUP \
-      LIVEPATCH AUX FLAGS_COUNT; do
-      test $(( num % 2 )) -eq 1 && taints="$taints$taint "
-      : $(( num >>= 1 ))
-    done
-    test -n "$taints" && echo "linux taints: $taints"
+  if test $(( $(cat /proc/sys/kernel/tainted 2>/dev/null || echo 0) & (4+32+128+512) )) -gt 0; then
+    echo kdmg
   fi
 
   if ! test "$(stat -c "%i" /)" -gt 2; then
-   test -d "/lib/modules/$(uname -r)" || echo "kernel module version mismatch"
+    test -d "/lib/modules/$(uname -r)" || echo "kver"
   fi
 
   if test -r /proc/pressure/cpu; then
     for i in cpu io memory; do
-      test "$(awk '/some/ {gsub(/avg[0-9]*=/,"");printf("%d",$2)}' /proc/pressure/$i)" -gt 5 && echo $i stall
+      test "$(awk '/some/ {gsub(/avg[0-9]*=/,"");printf("%d",$2)}' /proc/pressure/$i)" -gt 5 && echo ${i}_stall
     done
   fi
   ;;
 esac
 
-# print free diskspace if less than 1GB
-df -k -P "$HOME" 2>/dev/null|awk '/^\// {if ($4<10*1024*1024) {printf("%d MB available\n",$4/1024)}}'
+# print free diskspace if less than 100GB
+df -k -P "$HOME" 2>/dev/null|awk '/^\// {if ($4<100*1024*1024) {printf("%dGB\n",$4/(1024*1024))}}'
 
 # tell me about open tmux sessions
 if command -v tmux >/dev/null 2>&1 && test -z "$TMUX"; then
-  tmux ls -F 'Open tmux session from #{t:start_time}, use "tmux a -t #S" to attach' 2>/dev/null
+  tmux ls -F 'tmux###S' 2>/dev/null
 fi
