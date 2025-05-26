@@ -1,2 +1,0 @@
-#!/bin/sh
-xrandr --listmonitors | tr '+x/' ' ' | awk -v d="${1?:Specify the display size in inch as argument}" '/^ / {print($9,sqrt($3*$3+$5*$5)/d)}'

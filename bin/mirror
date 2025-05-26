@@ -1,5 +1,0 @@
-#!/bin/sh
-# mirror a website from the web.  if you call this with http://example.com
-# as argument, you will get $PWD/example.com.
-wget --recursive --html-extension --page-requisites \
-	--no-parent --convert-links --timestamping -l 999 "$@"
