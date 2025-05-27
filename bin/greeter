@@ -19,7 +19,7 @@ case "$(uname -s)" in
 esac
 
 # print free diskspace if less than 100GB
-df -k -P "$HOME" 2>/dev/null|awk '/^\// {if ($4<100*1024*1024) {printf("%dGB\n",$4/(1024*1024))}}'
+df -k -P "$HOME" 2>/dev/null|awk '/^\// {if ($4<100*1024*1024) {printf("%dMB\n",$4/1024)}}'
 
 # tell me about open tmux sessions
 if command -v tmux >/dev/null 2>&1 && test -z "$TMUX"; then
