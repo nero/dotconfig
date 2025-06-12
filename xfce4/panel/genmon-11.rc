@@ -1,6 +1,0 @@
-Command=sh -c 'echo $(greeter)'
-UseLabel=0
-Text=(genmon)
-UpdatePeriod=30000
-Font=Sans 10
-
