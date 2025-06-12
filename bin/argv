@@ -2,14 +2,18 @@
 BEGIN {
   for (i = 1; i < ARGC; i++) {
     escaped = ARGV[i]
-    gsub(/[|&;<>()$`\\"\' \t\n*?\[#~=%]/, "\\\\&", escaped)
-    single_quoted = ARGV[i]
-    gsub(/'/,"'\\''", single_quoted)
-    single_quoted = "'" single_quoted "'"
-    if (length(escaped) > length(single_quoted)) {
-      printf "%s ", single_quoted
+    if (length(escaped) == 0) {
+      printf "'' "
     } else {
-      printf "%s ", escaped
+      gsub(/[|&;<>()$`\\"\' \t\n*?\[#~=%]/, "\\\\&", escaped)
+      single_quoted = ARGV[i]
+      gsub(/'/,"'\\''", single_quoted)
+      single_quoted = "'" single_quoted "'"
+      if (length(escaped) > length(single_quoted)) {
+        printf "%s ", single_quoted
+      } else {
+        printf "%s ", escaped
+      }
     }
   }
   printf "\n"
