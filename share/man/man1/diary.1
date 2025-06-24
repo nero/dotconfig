@@ -1,0 +1,22 @@
+.Dd $Mdocdate$
+.Dt diary 1
+.Os
+.Sh NAME
+.Nm diary
+.Nd Edit diary entries for current day
+.Sh SYNOPSIS
+.Nm
+.Sh DESCRIPTION
+THe command invokes
+.Xr nano 1
+on a day-specific file in ~/diary.
+If the remote option is set in the diaryrc, the diary data on a remote machine is edited.
+Remote connection happens via SSH.
+.Sh FILES
+The diary entries are kept in ~/diary.
+The diaryrc in ~/.config is sourced by this script, when you define the "remote" variable there, the ssh remote functionality is enabled.
+.Sh AUTHORS
+The
+.Nm
+reference was written by
+.An Nero Aq Mt 41307858+nero@users.noreply.github.com .
