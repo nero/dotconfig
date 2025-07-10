@@ -3,7 +3,7 @@
 # No provision to clean up renamed files
 set -e
 oldname=${1?}
-test -e "$oldname" || return 0
+test -e "$oldname" || exit 0
 if expr "$oldname" : ".*\.[0-9]*$" >/dev/null; then
   oldnum="${oldname##*.}"
   newname="${oldname%.*}".$(( oldnum + 1 ))
