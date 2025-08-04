@@ -37,7 +37,7 @@ fi
 tmpfile=".${target##*/}.$$.\$\$\$"
 trap 'rm -f "$tmpfile"' EXIT
 
-if false && command -v curl >/dev/null 2>&1; then
+if command -v curl >/dev/null 2>&1; then
   curl -LsS "$url" >"$tmpfile" || fail "Fetch error"
 else
   wget -q -O - "$url" >"$tmpfile" || fail "Fetch error"
