@@ -1,9 +1,32 @@
 # Config for interactive shells
+histfile_basename=${HISTFILE##*/}
+histfile_basename=${histfile_basename:-.history}
+
 unset PS1 PROMPT_COMMAND HISTFILE
 
 xtitle() (
   printf "\033]2;%s\007" "$( printf "%s" "$*" | tr -d "\007\033" )"
 )
+
+set_histfile() {
+  if test -n "$BASH_VERSION"; then
+    history -w
+    history -c
+  fi
+  HISTFILE="$1"
+  if test -n "$BASH_VERSION"; then
+    history -r
+  fi
+}
+
+pwd_change() {
+  previous_pwd=$PWD
+  xtitle "$PWD - $HOSTNAME"
+  case "$PWD/" in
+  ($HOME/*) set_histfile "$PWD/$histfile_basename";;
+  (*) set_histfile "$HOME/$histfile_basename";;
+  esac
+}
 
 debian_chroot=''
 
@@ -19,7 +42,9 @@ fi
 prompt_hostname=$(uname -n)${debian_chroot:+/$debian_chroot}
 
 if test -n "$BASH_VERSION"; then
+  PROMPT_COMMAND='test "$PWD" = "$previous_pwd" || pwd_change'
   PS1='\[\033[1;32m\]${prompt_hostname}\[\033[0m\]:\[\033[1;34m\]${PWD##*/}\[\033[0m\]\$ '
+  histfile_basename=.bash_history
   # bash-specific implementation that does not fork
   quote() {
     for i in "$@"; do
@@ -28,7 +53,8 @@ if test -n "$BASH_VERSION"; then
     printf "\n"
   }
 elif test -n "$KSH_VERSION"; then
-  PS1=$'\001\r\001\033[1;32m\001''${prompt_hostname}'$'\001\033[0m\001'':'$'\001\033[1;34m\001''${PWD##*/}'$'\001\033[0m\001''\$ '
+  PS1='${|test "$PWD" = "$previous_pwd" || pwd_change}'$'\001\r\001\033[1;32m\001''${prompt_hostname}'$'\001\033[0m\001'':'$'\001\033[1;34m\001''${PWD##*/}'$'\001\033[0m\001''\$ '
+  histfile_basename=.mksh_history
 else
   PS1='${prompt_hostname}:${PWD##*/}\$ '
 fi
@@ -50,7 +76,5 @@ stty \
 	susp ^Z \
 	start ^- \
 	stop ^-
-
-xtitle "$PWD - $HOSTNAME"
 
 greeter
