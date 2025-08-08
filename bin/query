@@ -1,0 +1,21 @@
+#!/usr/bin/awk -f
+function urlencode(s,c,i,r,l) {
+  l = length(s)
+  for (i = 1; i <= l; i++) {
+    c = substr(s, i, 1)
+    r = r "" hex[c]
+  }
+  return r
+}
+BEGIN {
+  if (ARGC % 2 != 1) {
+    print("Number of arguments must be even") > "/dev/stderr"
+    exit 1
+  }
+  for (i = 1; i <= 255; i++) {
+    c = sprintf("%c", i)
+    hex[c] = (c ~ /^[-._~0-9a-zA-Z]$/ ? c : sprintf("%%%02X", i))
+  }
+  for (i = 1; i < ARGC / 2; i++)
+    printf("%s%s=%s", (i > 1 ? "&" : ""), urlencode(ARGV[2*i-1]), urlencode(ARGV[2*i]) )
+}

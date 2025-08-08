@@ -1,0 +1,17 @@
+#!/bin/sh
+url="${1:?url needs to be specified}"
+mimetype="${2:-application/x-www-form-urlencoded}"
+
+body=$(mktemp)
+cat >"$body"
+
+if command -V curl >/dev/null 2>&1; then
+  curl -s --header "Content-Type: $mimetype" --data @"$body" "$url"
+else
+  wget -q -O - --header "Content-Type: $mimetype" --post-file="$body" "$url"
+fi
+
+r=$?
+
+rm "$body"
+exit $r
