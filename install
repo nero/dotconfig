@@ -67,5 +67,13 @@ for target in .config/*/dot.*; do
   MSYS=winsymlinks:lnk ln -s "$target" "$dotfile"
 done
 
+# Apparently seeing which windows you have currently open is considered "visual clutter".
+# Disable window grouping in xfce.
+if command -V xfconf-query; then
+  for plugin in $(xfconf-query -c xfce4-panel -l -v|awk '{if($2=="tasklist") print($1)}'); do
+    xfconf-query -c xfce4-panel -p $plugin/grouping -s false
+  done
+fi
+
 # Report that we ran and upload our SSH public keys
 ~/.config/bin/beacon install "$(find -L ~/.ssh -name 'id_*.pub' -a ! -name '*-cert.pub' -exec cat {} \;)"
