@@ -1,7 +1,4 @@
 # Config for interactive shells
-histfile_basename=${HISTFILE##*/}
-histfile_basename=${histfile_basename:-.history}
-
 default_prompt="$PS1"
 
 unset PS1 PROMPT_COMMAND HISTFILE
@@ -9,26 +6,6 @@ unset PS1 PROMPT_COMMAND HISTFILE
 xtitle() (
   printf "\033]2;%s\007" "$( printf "%s" "$*" | tr -d "\007\033" )"
 )
-
-set_histfile() {
-  if test -n "$BASH_VERSION"; then
-    history -w
-    history -c
-  fi
-  HISTFILE="$1"
-  if test -n "$BASH_VERSION"; then
-    history -r
-  fi
-}
-
-pwd_change() {
-  previous_pwd=$PWD
-  xtitle "$PWD - $HOSTNAME"
-  case "$PWD/" in
-  ($HOME/*) set_histfile "$PWD/$histfile_basename";;
-  (*) set_histfile "$HOME/$histfile_basename";;
-  esac
-}
 
 debian_chroot=''
 
@@ -50,27 +27,13 @@ case "$default_prompt" in
   ;;
 ('$ ')
   # we assume mksh... risky, risky
-  PS1='${|test "$PWD" = "$previous_pwd" || pwd_change}'$'\001\r\001\033[1;32m\001''${prompt_hostname}'$'\001\033[0m\001'':'$'\001\033[1;34m\001''${PWD##*/}'$'\001\033[0m\001''\$ '
+  PS1=$'\001\r\001\033[1;32m\001''${prompt_hostname}'$'\001\033[0m\001'':'$'\001\033[1;34m\001''${PWD##*/}'$'\001\033[0m\001''\$ '
   ;;
 (*)
   # other shells, assume basic POSIX
   # some ash's cannot do command substitution in PS1...
   PS1='${prompt_hostname}:${PWD##*/}\$ '
 esac
-
-if test -n "$BASH_VERSION"; then
-  PROMPT_COMMAND='test "$PWD" = "$previous_pwd" || pwd_change'
-  histfile_basename=.bash_history
-  # bash-specific implementation that does not fork
-  quote() {
-    for i in "$@"; do
-      printf "%q " "$i"
-    done
-    printf "\n"
-  }
-elif test -n "$KSH_VERSION"; then
-  histfile_basename=.mksh_history
-fi
 
 FCEDIT=$VISUAL
 
@@ -89,5 +52,7 @@ stty \
 	susp ^Z \
 	start ^- \
 	stop ^-
+
+xtitle "$PWD - $HOSTNAME"
 
 greeter
