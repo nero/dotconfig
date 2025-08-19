@@ -25,3 +25,14 @@ df -k -P "$HOME" 2>/dev/null|awk '/^\// {if ($4<100*1024*1024) {printf("%dMB\n",
 if command -v tmux >/dev/null 2>&1 && test -z "$TMUX"; then
   tmux ls -F 'tmux###S' 2>/dev/null
 fi
+
+if command -v gpg >/dev/null 2>&1; then
+  gpg --list-secret-keys | awk '
+BEGIN {
+  limit=strftime("%Y-%m-%d", systime()+60*60*24*14)
+}
+/expires/ {
+  gsub(/[\[\]]/," ")
+  if(limit > $6) print($0)
+}'
+fi
