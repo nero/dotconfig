@@ -1,58 +1,7 @@
 # Config for interactive shells
-default_prompt="$PS1"
-
-unset PS1 PROMPT_COMMAND HISTFILE
-
-xtitle() (
-  printf "\033]2;%s\007" "$( printf "%s" "$*" | tr -d "\007\033" )"
-)
-
-debian_chroot=''
-
-if test -e /etc/debian_chroot; then
-  debian_chroot=$(cat /etc/debian_chroot)
-elif ! expr "$(\ls -d -i /)" : ".*2 /" >/dev/null; then
-  debian_chroot=$(mount 2>/dev/null|awk '/on \/ / {gsub(/ on \/ .*/,"");gsub(/.*\//,"");print($0);exit}')
-  case "$debian_chroot" in
-  ('') debian_chroot='';;
-  esac
-fi
-
-prompt_hostname=$(uname -n)${debian_chroot:+/$debian_chroot}
-
-case "$default_prompt" in
-(*'\w'*|*'\$'*)
-  # bash and maybe busybox ash if compiled with FANCY_PROMPT
-  PS1='\[\033[1;32m\]${prompt_hostname}\[\033[0m\]:\[\033[1;34m\]${PWD##*/}\[\033[0m\]\$ '
-  ;;
-('$ ')
-  # we assume mksh... risky, risky
-  PS1=$'\001\r\001\033[1;32m\001''${prompt_hostname}'$'\001\033[0m\001'':'$'\001\033[1;34m\001''${PWD##*/}'$'\001\033[0m\001''\$ '
-  ;;
-(*)
-  # other shells, assume basic POSIX
-  # some ash's cannot do command substitution in PS1...
-  PS1='${prompt_hostname}:${PWD##*/}\$ '
-esac
-
-FCEDIT=$VISUAL
-
 has_coreutils=$(command -v dircolors)
 
 alias ls="ls ${has_coreutils:+--color=auto }-AF"
 alias bc="bc -l"
-
-stty \
-	eof ^D \
-	eol ^- \
-	erase ^? \
-	intr ^C \
-	kill ^- \
-	quit ^- \
-	susp ^Z \
-	start ^- \
-	stop ^-
-
-xtitle "$PWD - $HOSTNAME"
 
 greeter
