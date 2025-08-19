@@ -67,6 +67,11 @@ for target in .config/*/dot.*; do
   MSYS=winsymlinks:lnk ln -s "$target" "$dotfile"
 done
 
+# Globally set TMPDIR if system failed to do so
+case "$TMPDIR" in
+'') printf 'TMPDIR=${HOME}/.local/tmp' > "$HOME"/.config/environment.d/tmpdir.conf ;;
+esac
+
 # Apparently seeing which windows you have currently open is considered "visual clutter".
 # Disable window grouping in xfce.
 if command -V xfconf-query; then
