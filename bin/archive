@@ -1,36 +1,33 @@
 #!/bin/sh
 set -e
-dest=${HOME?}/archive
 
+test -f "${HOME?}"/.config/user-dirs.dirs && . "${HOME}"/.config/user-dirs.dirs
+
+# Collect mode: put away files from desktop and downloads dir
 if test -z "$1"; then
-  sources=""
-  for i in $HOME $HOME/Downloads $HOME/Desktop; do
-    test -d "$i" && sources="$sources $i"
-  done
-
   # move away lingering files
-  find -L $sources -maxdepth 1 -type f \
+  find -L "${HOME}" "${XDG_DESKTOP_DIR:-~/Desktop}" "${XDG_DOWNLOAD_DIR:-~/Downloads}" -maxdepth 1 -type f \
     ! -name '.*' \
     ! -name '*.url' \
     ! -name '*.desktop' \
     ! -name '*.lnk' \
     ! -name 'desktop.ini' \
     ! -iname 'ntuser.*' \
-    -exec "$0" {} \;
+    -exec "$0" {} \; 2>/dev/null
   exit
 fi
+
+# Put away specifically named files
+now=$(date +'%Y/%m')
 
 for src in "$@"; do
   name=${src##*/}
 
-  folder=$(printf "%s\n" "$name"|awk -v d="$folder" -F- '/^[0-9]+-[01][0-9]-[0-3][0-9]-/ {print("/"$1"/"$2)}')
-  test -n "$folder" || folder=$(date +'/%Y/%m')
-  mkdir -p "${dest}${folder}"
-  dest="${dest}${folder}/${name}"
+  dest=~/archive/$now
+  mkdir -p "${dest}"
 
-  rotate "$dest"
   (
     set -x
-    mv "${src}" "${dest}"
+    mv "${src}" "${dest}/${name}" || mv "${src}" "${dest}/${name}.$$"
   )
 done
