@@ -2,6 +2,8 @@
 histfile_basename=${HISTFILE##*/}
 histfile_basename=${histfile_basename:-.history}
 
+default_prompt="$PS1"
+
 unset PS1 PROMPT_COMMAND HISTFILE
 
 xtitle() (
@@ -41,9 +43,23 @@ fi
 
 prompt_hostname=$(uname -n)${debian_chroot:+/$debian_chroot}
 
+case "$default_prompt" in
+(*'\w'*|*'\$'*)
+  # bash and maybe busybox ash if compiled with FANCY_PROMPT
+  PS1='\[\033[1;32m\]${prompt_hostname}\[\033[0m\]:\[\033[1;34m\]${PWD##*/}\[\033[0m\]\$ '
+  ;;
+('$ ')
+  # we assume mksh... risky, risky
+  PS1='${|test "$PWD" = "$previous_pwd" || pwd_change}'$'\001\r\001\033[1;32m\001''${prompt_hostname}'$'\001\033[0m\001'':'$'\001\033[1;34m\001''${PWD##*/}'$'\001\033[0m\001''\$ '
+  ;;
+(*)
+  # other shells, assume basic POSIX
+  # some ash's cannot do command substitution in PS1...
+  PS1='${prompt_hostname}:${PWD##*/}\$ '
+esac
+
 if test -n "$BASH_VERSION"; then
   PROMPT_COMMAND='test "$PWD" = "$previous_pwd" || pwd_change'
-  PS1='\[\033[1;32m\]${prompt_hostname}\[\033[0m\]:\[\033[1;34m\]${PWD##*/}\[\033[0m\]\$ '
   histfile_basename=.bash_history
   # bash-specific implementation that does not fork
   quote() {
@@ -53,10 +69,7 @@ if test -n "$BASH_VERSION"; then
     printf "\n"
   }
 elif test -n "$KSH_VERSION"; then
-  PS1='${|test "$PWD" = "$previous_pwd" || pwd_change}'$'\001\r\001\033[1;32m\001''${prompt_hostname}'$'\001\033[0m\001'':'$'\001\033[1;34m\001''${PWD##*/}'$'\001\033[0m\001''\$ '
   histfile_basename=.mksh_history
-else
-  PS1='${prompt_hostname}:${PWD##*/}\$ '
 fi
 
 FCEDIT=$VISUAL
