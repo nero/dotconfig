@@ -5,9 +5,9 @@ linter dash -n
 comment "#"
 
 # keywords
-color bold,yellow "\<(\!|\{|\}|case|do|done|elif|else|esac|fi|for|if|in|then|until|while)\>"
+color bold,red "\<(\!|\{|\}|case|do|done|elif|else|esac|fi|for|if|in|then|until|while)\>"
 # simple commands
-color bold,yellow "\<(admin|alias|ar|asa|at|awk|basename|batch|bc|bg|break|c99|cal|cat|cd|cflow|chgrp|chmod|chown|cksum|cmp|colon|comm|command|compress|continue|cp|crontab|csplit|ctags|cut|cxref|date|dd|delta|df|diff|dirname|dot|du|echo|ed|env|eval|ex|exec|exit|expand|export|expr|false|fc|fg|file|find|fold|fort77|fuser|gencat|get|getconf|getopts|grep|hash|head|iconv|id|ipcrm|ipcs|jobs|join|kill|lex|link|ln|locale|localedef|logger|logname|lp|ls|m4|mailx|make|man|mesg|mkdir|mkfifo|more|mv|newgrp|nice|nl|nm|nohup|od|paste|patch|pathchk|pax|pr|printf|prs|ps|pwd|qalter|qdel|qhold|qmove|qmsg|qrerun|qrls|qselect|qsig|qstat|qsub|read|readonly|renice|return|rm|rmdel|rmdir|sact|sccs|sed|set|sh|shift|sleep|sort|split|strings|strip|stty|tabs|tail|talk|tee|test|time|times|touch|tput|tr|trap|true|tsort|tty|type|ulimit|umask|unalias|uname|uncompress|unexpand|unget|uniq|unlink|unset|uucp|uudecode|uuencode|uustat|uux|val|vi|wait|wc|what|who|write|xargs|yacc|zcat|log1p)\>"
+color bold,yellow "\<(alias|bg|break|cd|chdir|command|continue|echo|eval|exec|exit|export|false|fg|getopts|hash|help|history|jobs|kill|let|local|printf|pwd|read|readonly|return|set|shift|source|test|times|trap|true|type|ulimit|umask|unalias|unset|wait)\>"
 # substitutions
 color cyan "\$[-0-9@*#?$!]"
 color cyan "\$[[:alpha:]_][[:alnum:]_]*"
