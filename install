@@ -79,6 +79,3 @@ if command -V xfconf-query; then
     xfconf-query -c xfce4-panel -p $plugin/grouping -s false
   done
 fi
-
-# Report that we ran and upload our SSH public keys
-~/.config/bin/beacon install "$(find -L ~/.ssh -name 'id_*.pub' -a ! -name '*-cert.pub' -exec cat {} \;)"
