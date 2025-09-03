@@ -73,4 +73,7 @@ if command -V xfconf-query; then
   for plugin in $(xfconf-query -c xfce4-panel -l -v|awk '{if($2=="tasklist") print($1)}'); do
     xfconf-query -c xfce4-panel -p $plugin/grouping -s 0
   done
+  case "$(xfconf-query -c xsettings -p /Net/ThemeName)" in
+  (Adwaita) xfconf-query -c xsettings -p /Net/ThemeName -s Adwaita-dark;;
+  esac
 fi
