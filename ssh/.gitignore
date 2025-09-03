@@ -1,2 +1,3 @@
 dot.ssh/id_*
 dot.ssh/known_hosts*
+dot.ssh/authorized_keys
