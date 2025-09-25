@@ -1,4 +1,15 @@
 # Config for interactive shells
+
+case "$PS1" in
+(*'\w'*|*'\W'*)
+  PS1='\[\033[1;32m\]\u@\h\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\]\$ '
+  ;;
+(*)
+  test -z "${LOGNAME}" && export LOGNAME=$(id -un)
+  test -z "${HOSTNAME}" && export HOSTNAME=$(uname -n)
+  PS1='${LOGNAME}@${HOSTNAME}:${PWD}\$ '
+esac
+
 has_coreutils=$(command -v dircolors)
 
 alias ls="ls ${has_coreutils:+--color=auto }-AF"
