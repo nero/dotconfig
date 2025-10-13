@@ -69,7 +69,7 @@ done
 
 # Apparently seeing which windows you have currently open is considered "visual clutter".
 # Disable window grouping in xfce.
-if command -V xfconf-query; then
+if command -V xfconf-query >/dev/null 2>&1; then
   for plugin in $(xfconf-query -c xfce4-panel -l -v|awk '{if($2=="tasklist") print($1)}'); do
     xfconf-query -c xfce4-panel -p $plugin/grouping -s 0
   done
