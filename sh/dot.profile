@@ -36,12 +36,7 @@ has_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
-# load drop-ins
-for f in "$HOME"/.config/*/profile; do
-  c=${f%/*}
-  has_cmd "${c##*/}" && . "$f"
-done
-unset c f
+has_cmd nano && export VISUAL=nano
 
 # We are done for non-interactive logins
 case "$-" in
