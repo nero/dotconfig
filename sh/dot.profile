@@ -49,7 +49,12 @@ case "$-" in
   (*) return;;
 esac
 
-# Launch xorg session
-if has_cmd i3 && test -z "$DISPLAY" && has_cmd xinit && test -z "$SSH_CONNECTION" && test -z "$TMUX"; then
-  startx
-fi
+# If i log in on the linux tty, i usually want a GUI session
+case "$TERM" in
+(linux)
+  if has_cmd niri; then
+    niri
+  elif has_cmd i3 && has_cmd xinit; then
+    startx
+  fi
+esac
