@@ -1,0 +1,27 @@
+.Dd $Mdocdate$
+.Dt cookie 1
+.Os
+.Sh NAME
+.Nm cookie
+.Nd Generate a cookie string that has no meaning by itself but is otherwise unpredictable.
+.Sh SYNOPSIS
+.Nm
+.Op Ar bits
+.Sh DESCRIPTION
+Generates a string with a certain unpredictability.
+The unpredictability is measured in Shannon Entropy.
+Default are 64 bits.
+.Pp
+This util was written for debugging production systems.
+I would put the cookie into my user agent or input data and try to reproduce a bug.
+The cookie is unique enough that grepping for it only returns the data produced by myself.
+.Pp
+With sufficient entropy it also works as password generator.
+.Sh ENVIRONMENT
+.Sh AUTHORS
+The
+.Nm
+reference was written by
+.An Nero Aq Mt 41307858+nero@users.noreply.github.com .
+.Sh SECURITY CONSIDERATIONS
+.Mn is meant to be cryptographically secure.

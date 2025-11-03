@@ -1,0 +1,5 @@
+#!/bin/sh
+bits=${1:-64}
+chars=$(( ( 5882 + (1000 * $bits) ) / 5882 ))
+LC_ALL=C tr -dc A-HJ-Za-hk-z0-9 </dev/urandom | dd bs=1 count=$chars 2>/dev/null
+printf '\n'
