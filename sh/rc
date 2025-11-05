@@ -1,18 +1,21 @@
 # Config for interactive shells
 
 # Launch SSH Agent on first use of ssh-add
-_ssh_add_wrapper() {
-  case "$SSH_AUTH_SOCK" in
-  ('')
-    SSH_AUTH_SOCK="${HOME}/.ssh/auth.sock"
-    export SSH_AUTH_SOCK
-    ;;
-  esac
-  ssh-add -L >/dev/null 2>&1
-  test $? -lt 2 || eval "$(ssh-agent -a "$SSH_AUTH_SOCK")"
-  \ssh-add "$@"
+ssh-add() {
+  command ssh-add -L >/dev/null 2>&1
+  if test $? -ge 2; then
+    rm -f "$SSH_AUTH_SOCK"
+    eval "$(ssh-agent -a "$SSH_AUTH_SOCK")"
+  fi
+  command ssh-add "$@"
 }
-alias ssh-add=_ssh_add_wrapper
+
+case "$SSH_AUTH_SOCK" in
+('')
+  SSH_AUTH_SOCK="${HOME}/.ssh/auth.sock"
+  export SSH_AUTH_SOCK
+  ;;
+esac
 
 case "$PS1" in
 (*'\w'*|*'\W'*)
